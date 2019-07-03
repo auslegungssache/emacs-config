@@ -1,3 +1,9 @@
+* TODOS
+** TODO Add more todos
+** TODO Add descriptions
+** TODO Add tags and labels
+** TODO Restructure
+
 * Behavior
 ** Loading
 #+BEGIN_SRC emacs-lisp
@@ -6,8 +12,8 @@
 ** Scrolling
 #+BEGIN_SRC emacs-lisp
   (setq scroll-margin 0
-        scroll-conservatively 100000
-        scroll-preserve-screen-position 1)
+  scroll-conservatively 100000
+  scroll-preserve-screen-position 1)
 #+END_SRC
 ** Backups
 #+BEGIN_SRC emacs-lisp
@@ -26,15 +32,15 @@
 #+BEGIN_SRC emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
+   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+  (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
+    (url-retrieve-synchronously
+     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+     'silent 'inhibit-cookies)
+  (goto-char (point-max))
+  (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 ** use-package
@@ -42,16 +48,61 @@
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
 #+END_SRC
-* Ivy
+* Buffer / window navigation
+** Ibuffer
 #+BEGIN_SRC emacs-lisp
-  (use-package counsel)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+END_SRC
+** Windmove
+#+BEGIN_SRC emacs-lisp
+  (windmove-default-keybindings)
+#+END_SRC
+** Zoom
+Disabled: isn't suitable for small screens
+#+BEGIN_SRC emacs-lisp
+  (use-package zoom
+    :disabled t
+    :config
+    (zoom-mode 1)
+    )
+#+END_SRC
+** Eyebrowse
+#+BEGIN_SRC emacs-lisp
+  (use-package eyebrowse
+    :config
+    (eyebrowse-mode 1)
+    )
+#+END_SRC
+** ace-window
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :config
+    (global-set-key (kbd "M-o") 'ace-window)
+    )
+#+END_SRC
+* Project navigation
+** Ripgrep
+*** TODO Use counsel-rg
+** TODO Projectile
+* Ivy
+*** Ivy itself
+#+BEGIN_SRC emacs-lisp
   (use-package ivy
-    :after counsel
     :config
     (ivy-mode 1)
+    (global-set-key (kbd "C-c r") 'ivy-resume)
+    )
+#+END_SRC
+*** Counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :after ivy
+    :config
     (global-set-key (kbd "M-x") 'counsel-M-x)
     )
 #+END_SRC
+**** TODO Use more counsel functions
+*** TODO Swiper
 * Vim
 ** Evil
 #+BEGIN_SRC emacs-lisp
@@ -112,7 +163,7 @@ Add some widgets
 *** Indentation
 #+BEGIN_SRC emacs-lisp
   (setq-default tab-width 2
-                indent-tabs-mode nil)
+    indent-tabs-mode nil)
 #+END_SRC
 *** Parenthesis
 #+BEGIN_SRC emacs-lisp
@@ -124,6 +175,16 @@ Add some widgets
   (use-package company
     :config
     (add-hook 'prog-mode-hook (lambda () (company-mode 1)))
+    )
+#+END_SRC
+**** TODO Use counsel-company
+*** Error checking
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :init
+    :config
+    (global-flycheck-mode 1)
+    (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)))
     )
 #+END_SRC
 ** Go
@@ -153,3 +214,35 @@ Add some widgets
     (global-set-key (kbd "C-x g") 'magit-status)
     )
 #+END_SRC
+* Text editing
+** Olivetti
+#+BEGIN_SRC emacs-lisp
+  (use-package olivetti
+    )
+#+END_SRC
+** Avy
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :config
+    (global-set-key (kbd "C-:") 'avy-goto-char)
+    )
+#+END_SRC
+** ace-link
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-link
+    )
+#+END_SRC
+* Web services
+** Pastebins
+#+BEGIN_SRC emacs-lisp
+  (use-package webpaste
+    )
+#+END_SRC
+* Hydras
+** Install
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra
+    )
+#+END_SRC
+** Scripts
+No hydras yet
