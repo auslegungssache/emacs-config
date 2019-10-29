@@ -1,8 +1,6 @@
-* TODOS
-** TODO Add more todos
-** TODO Add descriptions
-** TODO Add tags and labels
-** TODO Restructure
+#+TITLE: aeggy's emacs config
+#+AUTHOR: aeggy
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Behavior
 ** Loading
