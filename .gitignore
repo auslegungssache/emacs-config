@@ -1,4 +1,5 @@
 straight/
+elpa/
 auto-save-list/
 backups/
 transient/
@@ -8,5 +9,11 @@ request/
 eshell/history
 eshell/lastdir
 
+# http
+url/
+
 # org-babel
 main-config.el
+
+# desktop
+.emacs.desktop*
