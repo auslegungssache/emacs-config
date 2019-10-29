@@ -107,10 +107,18 @@ Resume the previous session
   (use-package counsel
     :after ivy
     :config
-    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (counsel-mode 1)
+
+    (global-set-key (kbd "M-x") #'counsel-M-x)
+    (global-set-key (kbd "C-x b") #'counsel-switch-buffer)
+    (global-set-key (kbd "C-c h") #'counsel-command-history)
+    (global-set-key (kbd "C-c m") #'counsel-imenu)
+    (global-set-key (kbd "C-c x") #'counsel-linux-app)
+    (global-set-key (kbd "C-c g") #'counsel-recentf)
+    (global-set-key (kbd "<f10>") #'counsel-tmm)
+    (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-c h") #'counsel-esh-history)))
     )
 #+END_SRC
-**** TODO Use more counsel functions
 *** TODO Swiper
 * Vim
 ** Evil
