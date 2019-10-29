@@ -161,7 +161,14 @@ Add some widgets
 #+END_SRC
 ** Babel
 #+BEGIN_SRC emacs-lisp
-  ;;(setq org-src-tab-acts-natively t)
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+*** Exporting
+**** HTML
+Allow exporting to HTML
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize
+    )
 #+END_SRC
 * Dired
 #+BEGIN_SRC emacs-lisp
