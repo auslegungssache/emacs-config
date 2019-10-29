@@ -30,6 +30,10 @@ Resume the previous session
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
+** Recent
+#+BEGIN_SRC emacs-lisp
+  (recentf-mode 1)
+#+END_SRC
 * Package management
 ** Straight
 #+BEGIN_SRC emacs-lisp
