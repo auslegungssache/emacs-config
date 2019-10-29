@@ -79,9 +79,20 @@ Resume the previous session
     )
 #+END_SRC
 * Project navigation
-** Ripgrep
-*** TODO Use counsel-rg
-** TODO Projectile
+** TODO counsel-rg
+** Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :config
+    (setq projectile-completion-system 'ivy)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode 1)
+    )
+
+  (use-package counsel-projectile
+    :after counsel projectile
+    )
+#+END_SRC
 * Ivy
 *** Ivy itself
 #+BEGIN_SRC emacs-lisp
