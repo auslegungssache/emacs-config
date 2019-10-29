@@ -3,6 +3,11 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Behavior
+** Startup
+Resume the previous session
+#+BEGIN_SRC emacs-lisp
+  (desktop-save-mode 1)
+#+END_SRC
 ** Loading
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode 1)
