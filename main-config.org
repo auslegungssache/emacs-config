@@ -9,24 +9,29 @@ Resume the previous session
   (desktop-save-mode 1)
 #+END_SRC
 ** Loading
+Automatically revert a buffer when it changes on disk
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode 1)
 #+END_SRC
 ** Scrolling
+Smoother scrolling
 #+BEGIN_SRC emacs-lisp
   (setq scroll-margin 0)
   (setq scroll-conservatively 100000)
   (setq scroll-preserve-screen-position 1)
 #+END_SRC
 ** Backups
+Put all backups in a single directory
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 #+END_SRC
 ** Dialogs
+Make all prompts y-or-n
 #+BEGIN_SRC emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 ** Saving
+Clean up the whitespace when saving
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
@@ -36,6 +41,8 @@ Resume the previous session
 #+END_SRC
 * Package management
 ** Straight
+*** TODO Load
+This contains legacy code; fix it.
 #+BEGIN_SRC emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -51,20 +58,24 @@ Resume the previous session
     (load bootstrap-file nil 'nomessage))
 #+END_SRC
 ** use-package
+Load use-package and make it install all packages by default
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
 #+END_SRC
 * Buffer / window navigation
 ** Ibuffer
+Ibuffer provides a dired-like interface for working with buffers
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+END_SRC
 ** Windmove
+Allow navigating windows with Shift-<key arrow>
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings)
 #+END_SRC
 ** Eyebrowse
+Adds workspaces
 #+BEGIN_SRC emacs-lisp
   (use-package eyebrowse
     :config
@@ -72,6 +83,7 @@ Resume the previous session
     )
 #+END_SRC
 ** ace-window
+Manipulate windows with ace
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :config
@@ -94,7 +106,8 @@ Resume the previous session
     )
 #+END_SRC
 * Ivy
-*** Ivy itself
+*** Ivy
+Ivy provides vertical completion for prompts
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :config
@@ -156,6 +169,7 @@ Add some widgets
 #+END_SRC
 * Org
 ** Formatting
+Make org buffers look better
 #+BEGIN_SRC emacs-lisp
   (setq org-startup-indented t)
 #+END_SRC
@@ -301,7 +315,7 @@ Run emacs commands from eshell
   (use-package olivetti
     )
 #+END_SRC
-** Avy
+** avy
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :config
@@ -315,6 +329,7 @@ Run emacs commands from eshell
 #+END_SRC
 * Web services
 ** Pastebins
+Easy access to pastebins
 #+BEGIN_SRC emacs-lisp
   (use-package webpaste
     )
