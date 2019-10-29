@@ -158,6 +158,8 @@ Add some widgets
   (size-indication-mode 1)
 #+END_SRC
 ** Fringe
+*** TODO git gutter
+** Line numbers
 #+BEGIN_SRC emacs-lisp
   (setq-default display-line-numbers-type 'relative)
   (global-display-line-numbers-mode 1)
