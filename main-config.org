@@ -178,8 +178,13 @@ Allow exporting to HTML
 ** Universal
 *** Indentation
 #+BEGIN_SRC emacs-lisp
-  (setq-default tab-width 2
-    indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil)
+
+  (use-package aggressive-indent
+    :config
+    (global-aggressive-indent-mode 1)
+    )
 #+END_SRC
 *** Parenthesis
 #+BEGIN_SRC emacs-lisp
@@ -218,7 +223,7 @@ Allow exporting to HTML
 #+BEGIN_SRC emacs-lisp
   (use-package tide
     :init
-    (setq typescript-indent-level 2)
+    (setq typescript-indent-level 4)
     :config
     (add-hook 'typescript-mode-hook (lambda () (tide-mode 1)))
     )
