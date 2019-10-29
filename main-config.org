@@ -185,6 +185,55 @@ Allow exporting to HTML
                                  (display-line-numbers-mode 0)))
     )
 #+END_SRC
+** Eshell
+#+BEGIN_SRC emacs-lisp
+  (require 'eshell)
+#+END_SRC
+*** Completion
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "<tab>") #'completion-at-point)
+              (define-key eshell-mode-map (kbd "C-M-i") #'completion-at-point)))
+#+END_SRC
+*** Clear
+Clear the eshell buffer
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/nuke ()
+    "Clear the eshell buffer."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (eshell-send-input)
+      (delete-region 1 2)))
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "M-l") #'eshell/nuke)))
+#+END_SRC
+*** Last
+Go to the last line of the window
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/last ()
+    "Clear the window"
+    (interactive)
+    (goto-char (point-max))
+    (recenter 0))
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "C-l") #'eshell/last)))
+#+END_SRC
+*** TODO Close
+Close eshell by pressing C-d on the prompt
+*** M-x
+Run emacs commands from eshell
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/run (&optional command)
+    (if command
+        (call-interactively (intern command))
+      (error "No command")))
+#+END_SRC
 * Programming languages
 ** Universal
 *** Indentation
