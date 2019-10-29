@@ -64,15 +64,6 @@ Resume the previous session
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings)
 #+END_SRC
-** Zoom
-Disabled: isn't suitable for small screens
-#+BEGIN_SRC emacs-lisp
-  (use-package zoom
-    :disabled t
-    :config
-    (zoom-mode 1)
-    )
-#+END_SRC
 ** Eyebrowse
 #+BEGIN_SRC emacs-lisp
   (use-package eyebrowse
