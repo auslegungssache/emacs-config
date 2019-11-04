@@ -140,7 +140,11 @@ Ivy provides vertical completion for prompts
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
-  (load-theme 'wombat t)
+  (use-package leuven-theme
+    :disabled t
+    :config
+    (load-theme 'leuven-dark t)
+    )
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
@@ -205,6 +209,10 @@ Allow exporting to HTML
 #+BEGIN_SRC emacs-lisp
   (require 'eshell)
 #+END_SRC
+*** Decoration
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'eshell-mode-hook (lambda () (display-line-numbers-mode 0)))
+#+END_SRC
 *** Completion
 #+BEGIN_SRC emacs-lisp
   (add-hook 'eshell-mode-hook
@@ -240,8 +248,21 @@ Go to the last line of the window
             (lambda ()
               (define-key eshell-mode-map (kbd "C-l") #'eshell/last)))
 #+END_SRC
-*** TODO Close
-Close eshell by pressing C-d on the prompt
+*** TODO Backspace
+Pressing backspace on an empty prompt should send the user to the previous prompt
+#+BEGIN_SRC emacs-lisp
+  (defun eshell--backspace ()
+    (interactive)
+    (if (get-char-property (- (point) 1) 'read-only)
+        (eshell-previous-prompt 1)
+      (backward-delete-char-untabify 'untabify)))
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (define-key eshell-mode-map (kbd "DEL") #'eshell--backspace)
+              (define-key eshell-mode-map (kbd "<M-left>") #'eshell-previous-prompt)
+              (define-key eshell-mode-map (kbd "<M-right>") #'eshell-next-prompt)))
+#+END_SRC
 *** M-x
 Run emacs commands from eshell
 #+BEGIN_SRC emacs-lisp
@@ -249,6 +270,23 @@ Run emacs commands from eshell
     (if command
         (call-interactively (intern command))
       (error "No command")))
+#+END_SRC
+*** C-d
+#+BEGIN_SRC emacs-lisp
+  (defun eshell-C-d () (interactive) (if (eq (point) (point-max)) (eshell-life-is-too-much) (delete-char 1)))
+  (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-d") 'eshell-C-d)))
+#+END_SRC
+*** View
+View a file in a read-only window with syntax highlighting
+**** TODO Kill buffer and window after pressing q
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/view (filename)
+    (let ((opened (get-file-buffer filename))))
+    (with-current-buffer (find-file-noselect filename)
+      (view-mode)
+      (switch-to-buffer-other-window (current-buffer))
+      (local-set-key (kbd "q") #'kill-buffer-and-window)
+      ()))
 #+END_SRC
 * Programming languages
 ** Universal
