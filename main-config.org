@@ -135,13 +135,13 @@ Ivy provides vertical completion for prompts
 *** TODO Swiper
 * Aesthetics
 ** Font
+Use system font
 #+begin_src emacs-lisp
-  (set-default-font "xos4 Terminus 14")
+  (set-face-attribute 'default nil :height 180)
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
   (use-package leuven-theme
-    :disabled t
     :config
     (load-theme 'leuven-dark t)
     )
@@ -198,6 +198,7 @@ Allow exporting to HTML
 ** Vterm
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
+    :disabled t
     :config
     (add-to-list 'vterm-exit-functions #'kill-buffer)
 
