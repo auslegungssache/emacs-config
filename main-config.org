@@ -6,7 +6,7 @@
 ** Startup
 Resume the previous session
 #+BEGIN_SRC emacs-lisp
-  (desktop-save-mode 1)
+  (desktop-save-mode 0)
 #+END_SRC
 ** Loading
 Automatically revert a buffer when it changes on disk
@@ -37,7 +37,7 @@ Clean up the whitespace when saving
 #+END_SRC
 ** Recent
 #+BEGIN_SRC emacs-lisp
-  (recentf-mode 1)
+  (recentf-mode 0)
 #+END_SRC
 * Package management
 ** Straight
@@ -137,7 +137,7 @@ Ivy provides vertical completion for prompts
 ** Font
 Use system font
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :height 180)
+  (set-face-attribute 'default nil :height 100)
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
@@ -170,8 +170,7 @@ Add some widgets
 #+END_SRC
 ** Modeline
 #+BEGIN_SRC emacs-lisp
-  (use-package diminish
-    )
+  (use-package diminish)
 #+END_SRC
 * Org
 ** Formatting
@@ -187,8 +186,13 @@ Make org buffers look better
 **** HTML
 Allow exporting to HTML
 #+BEGIN_SRC emacs-lisp
-  (use-package htmlize
-    )
+  (use-package htmlize)
+#+END_SRC
+* Evil
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :config
+    (evil-mode t))
 #+END_SRC
 * Dired
 #+BEGIN_SRC emacs-lisp

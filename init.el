@@ -1,3 +1,5 @@
 (setq inhibit-startup-screen t)
+(setq frame-resize-pixelwise t)
+(setq ring-bell-function (lambda ()))
 (org-babel-load-file (concat user-emacs-directory "main-config.org"))
-(setq mac-right-option-modifier 'none)
+(put 'upcase-region 'disabled nil)
