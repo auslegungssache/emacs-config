@@ -6,6 +6,7 @@ transient/
 request/
 recentf
 projectile-bookmarks.eld
+.mc-lists.el
 
 # Eshell
 eshell/history
