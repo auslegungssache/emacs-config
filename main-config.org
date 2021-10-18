@@ -189,6 +189,7 @@ Manipulate windows with ace
 #+end_src
 * Ivy
 *** Ivy
+TODO: quit minibuffer on ESC
 Ivy provides vertical completion for prompts
 #+begin_src emacs-lisp
   (use-package ivy
