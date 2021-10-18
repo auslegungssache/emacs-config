@@ -83,8 +83,7 @@ Put all backups in a single directory
   (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))))
 #+end_src
 ** Quitting
-#+begin_src emacs-lisp
-#+end_src
+TODO: add support for quitting any minibuffer dialogue with ESC
 ** Dialogs
 Make all prompts y-or-n
 #+begin_src emacs-lisp
@@ -110,11 +109,15 @@ Replace selection when you start typing
   (setq echo-keystrokes 0.1) ; show keystrokes right away
 #+end_src
 ** Parenthesis highlighting
+TODO: extend this to all kinds of blocks
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t))))
 #+end_src
+** Prettify symbols
+TODO: add more characters
+TODO: add ligatures
 ** Tooltips
 #+begin_src emacs-lisp
   (setq x-gtk-use-system-tooltips nil)
@@ -268,6 +271,10 @@ Add some widgets
     (display-time-mode t))
 #+end_src
 * Org
+** Evil
+#+begin_src emacs-lisp
+  ;; TODO: add make blocks cycleable from evil normal mode
+#+end_src
 ** Formatting
 Make org buffers look better
 #+begin_src emacs-lisp
