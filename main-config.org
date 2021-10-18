@@ -489,11 +489,13 @@ TODO: disable line numbers
 #+begin_src emacs-lisp
   (use-package avy
     :config
-    (global-set-key (kbd "C-:") 'avy-goto-char))
+    (global-set-key (kbd "C-:") 'avy-goto-char-timer))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
-  (use-package ace-link)
+  (use-package ace-link
+    :config
+    (global-set-key (kbd "C-c l") #'ace-link))
 #+end_src
 * Web services
 ** Pastebins
