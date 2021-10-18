@@ -4,6 +4,8 @@ auto-save-list/
 backups/
 transient/
 request/
+recentf
+projectile-bookmarks.eld
 
 # Eshell
 eshell/history
