@@ -324,6 +324,22 @@ Allow exporting to HTML
     (evil-mode t))
 #+end_src
 * Dired
+** DWIM
+#+begin_src emacs-lisp
+  (setq dired-dwim-target t)
+#+end_src
+** Details
+#+begin_src emacs-lisp
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+  (use-package dired-collapse
+    :config
+    (add-hook 'dired-mode-hook #'dired-collapse-mode))
+  (use-package dired-subtree
+    :bind (:map dired-mode-map
+                (("i" . 'dired-subtree-insert)
+                 ("I" . 'dired-subtree-remove))))
+#+end_src
+** Interacting with the outside
 #+begin_src emacs-lisp
   (setq dired-auto-revert-buffer t)
 #+end_src
