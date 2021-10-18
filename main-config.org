@@ -10,7 +10,7 @@ Resume the previous session
 ** Loading
 Automatically revert a buffer when it changes on disk
 #+BEGIN_SRC emacs-lisp
-  (global-auto-revert-mode 1)
+  (global-auto-revert-mode 0)
 #+END_SRC
 ** Scrolling
 Smoother scrolling
@@ -78,16 +78,14 @@ Adds workspaces
 #+BEGIN_SRC emacs-lisp
   (use-package eyebrowse
     :config
-    (eyebrowse-mode 1)
-    )
+    (eyebrowse-mode 1))
 #+END_SRC
 ** ace-window
 Manipulate windows with ace
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :config
-    (global-set-key (kbd "M-o") 'ace-window)
-    )
+    (global-set-key (kbd "M-o") 'ace-window))
 #+END_SRC
 * Project navigation
 ** TODO counsel-rg
@@ -97,12 +95,10 @@ Manipulate windows with ace
     :config
     (setq projectile-completion-system 'ivy)
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (projectile-mode 1)
-    )
+    (projectile-mode 1))
 
   (use-package counsel-projectile
-    :after counsel projectile
-    )
+    :after counsel projectile)
 #+END_SRC
 * Ivy
 *** Ivy
@@ -111,8 +107,7 @@ Ivy provides vertical completion for prompts
   (use-package ivy
     :config
     (ivy-mode 1)
-    (global-set-key (kbd "C-c r") 'ivy-resume)
-    )
+    (global-set-key (kbd "C-c r") 'ivy-resume))
 #+END_SRC
 *** Counsel
 #+BEGIN_SRC emacs-lisp
@@ -128,8 +123,7 @@ Ivy provides vertical completion for prompts
     (global-set-key (kbd "C-c x") #'counsel-linux-app)
     (global-set-key (kbd "C-c g") #'counsel-recentf)
     (global-set-key (kbd "<f10>") #'counsel-tmm)
-    (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-c h") #'counsel-esh-history)))
-    )
+    (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-c h") #'counsel-esh-history))))
 #+END_SRC
 *** TODO Swiper
 * Aesthetics
@@ -142,8 +136,7 @@ Use system font
 #+begin_src emacs-lisp
   (use-package leuven-theme
     :config
-    (load-theme 'leuven-dark t)
-    )
+    (load-theme 'leuven-dark t))
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
@@ -206,8 +199,7 @@ Allow exporting to HTML
     (add-to-list 'vterm-exit-functions #'kill-buffer)
 
     (add-hook 'vterm-mode-hook (lambda ()
-                                 (display-line-numbers-mode 0)))
-    )
+                                 (display-line-numbers-mode 0))))
 #+END_SRC
 ** Eshell
 #+BEGIN_SRC emacs-lisp
@@ -301,8 +293,7 @@ View a file in a read-only window with syntax highlighting
 
   (use-package aggressive-indent
     :config
-    (global-aggressive-indent-mode 1)
-    )
+    (global-aggressive-indent-mode 1))
 #+END_SRC
 *** Parenthesis
 #+BEGIN_SRC emacs-lisp
@@ -313,8 +304,7 @@ View a file in a read-only window with syntax highlighting
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :config
-    (add-hook 'prog-mode-hook (lambda () (company-mode 1)))
-    )
+    (add-hook 'prog-mode-hook (lambda () (company-mode 1))))
 #+END_SRC
 **** TODO Use counsel-company
 *** Error checking
@@ -323,18 +313,15 @@ View a file in a read-only window with syntax highlighting
     :init
     :config
     (global-flycheck-mode 1)
-    (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)))
-    )
+    (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc))))
 #+END_SRC
 ** Go
 #+BEGIN_SRC emacs-lisp
   (use-package go-mode
     :config
-    (add-hook 'before-save-hook 'gofmt-before-save)
-    )
+    (add-hook 'before-save-hook 'gofmt-before-save))
   (use-package company-go
-    :after company
-    )
+    :after company)
 #+END_SRC
 ** Web
 *** TypeScript
@@ -343,46 +330,39 @@ View a file in a read-only window with syntax highlighting
     :init
     (setq typescript-indent-level 4)
     :config
-    (add-hook 'typescript-mode-hook (lambda () (tide-mode 1)))
-    )
+    (add-hook 'typescript-mode-hook (lambda () (tide-mode 1))))
 #+END_SRC
 * Git
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :config
-    (global-set-key (kbd "C-x g") 'magit-status)
-    )
+    (global-set-key (kbd "C-x g") 'magit-status))
 #+END_SRC
 * Text editing
 ** Olivetti
 #+BEGIN_SRC emacs-lisp
-  (use-package olivetti
-    )
+  (use-package olivetti)
 #+END_SRC
 ** avy
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :config
-    (global-set-key (kbd "C-:") 'avy-goto-char)
-    )
+    (global-set-key (kbd "C-:") 'avy-goto-char))
 #+END_SRC
 ** ace-link
 #+BEGIN_SRC emacs-lisp
-  (use-package ace-link
-    )
+  (use-package ace-link)
 #+END_SRC
 * Web services
 ** Pastebins
 Easy access to pastebins
 #+BEGIN_SRC emacs-lisp
-  (use-package webpaste
-    )
+  (use-package webpaste)
 #+END_SRC
 * Hydras
 ** Install
 #+BEGIN_SRC emacs-lisp
-  (use-package hydra
-    )
+  (use-package hydra)
 #+END_SRC
 ** Scripts
 No hydras yet
