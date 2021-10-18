@@ -96,6 +96,11 @@ Load use-package and make it install all packages by default
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
+* Help
+** Help buffer
+Automatically select the help buffer, so that it'd be easier to close after reading
+#+begin_src emacs-lisp
+  (setq help-window-select t)
 #+end_src
 * Buffer / window navigation
 ** Ibuffer
