@@ -24,6 +24,8 @@ Load use-package and make it install all packages by default
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
+
+  (use-package diminish)
 #+end_src
 * Behavior
 ** Initial buffer
@@ -149,6 +151,7 @@ Manipulate windows with ace
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
+    :diminish
     :config
     (setq projectile-completion-system 'ivy)
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -170,6 +173,7 @@ Ivy provides vertical completion for prompts
 *** Counsel
 #+begin_src emacs-lisp
   (use-package counsel
+    :diminish
     :after ivy
     :config
     (counsel-mode 1)
