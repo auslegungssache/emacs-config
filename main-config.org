@@ -130,6 +130,15 @@ Replace selection when you start typing
     :config
     (beacon-mode t)) ; show cursor when it jumps
 #+end_src
+** Highlight TODOs
+TODO: Make it look better
+TODO: Add FIXME and so too
+TODO: Add color variety
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :config
+    (add-hook 'prog-mode-hook hl-todo-mode))
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
