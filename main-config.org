@@ -1,6 +1,30 @@
 #+TITLE: aeggy's emacs config
 #+AUTHOR: aeggy
 
+* Package management
+** Straight
+*** TODO Load
+This contains legacy code; fix it.
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+  (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+    (url-retrieve-synchronously
+     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+     'silent 'inhibit-cookies)
+  (goto-char (point-max))
+  (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+end_src
+** use-package
+Load use-package and make it install all packages by default
+#+begin_src emacs-lisp
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+#+end_src
 * Behavior
 ** Initial buffer
 #+begin_src emacs-lisp
@@ -73,26 +97,11 @@ Clean up the whitespace when saving
 #+begin_src emacs-lisp
   (recentf-mode 0)
 #+end_src
-* Package management
-** Straight
-*** TODO Load
-This contains legacy code; fix it.
+** Text replacing
+Replace selection when you start typing
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-  (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-    (url-retrieve-synchronously
-     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-     'silent 'inhibit-cookies)
-  (goto-char (point-max))
-  (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+  (delete-selection-mode t)
 #+end_src
-** use-package
-Load use-package and make it install all packages by default
 ** Echoing status
 *** Keystrokes
 #+begin_src emacs-lisp
