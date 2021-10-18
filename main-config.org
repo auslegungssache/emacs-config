@@ -2,6 +2,13 @@
 #+AUTHOR: aeggy
 
 * Behavior
+** Initial buffer
+#+begin_src emacs-lisp
+  (setq inhibit-startup-screen t) ; don't show the info startup screen
+  (setq inhibit-startup-message t) ; ... and the message
+  (setq initial-scratch-message nil) ; remove all text from the scratch buffer
+  (setq initial-major-mode 'org-mode) ; create scratch buffer with org mode
+#+end_src
 ** Startup
 Resume the previous session
 #+begin_src emacs-lisp
