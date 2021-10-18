@@ -4,45 +4,48 @@
 * Behavior
 ** Startup
 Resume the previous session
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (desktop-save-mode 0)
-#+END_SRC
+#+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-auto-revert-mode 0)
-#+END_SRC
+#+end_src
 ** Scrolling
 Smoother scrolling
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq scroll-margin 0)
   (setq scroll-conservatively 100000)
   (setq scroll-preserve-screen-position 1)
-#+END_SRC
+#+end_src
 ** Backups
 Put all backups in a single directory
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))))
-#+END_SRC
+#+end_src
+** Quitting
+#+begin_src emacs-lisp
+#+end_src
 ** Dialogs
 Make all prompts y-or-n
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
+#+end_src
 ** Saving
 Clean up the whitespace when saving
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
-#+END_SRC
+#+end_src
 ** Recent
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (recentf-mode 0)
-#+END_SRC
+#+end_src
 * Package management
 ** Straight
 *** TODO Load
 This contains legacy code; fix it.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
    (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -55,42 +58,42 @@ This contains legacy code; fix it.
   (goto-char (point-max))
   (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
-#+END_SRC
+#+end_src
 ** use-package
 Load use-package and make it install all packages by default
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (setq straight-use-package-by-default t)
-#+END_SRC
+#+end_src
 * Buffer / window navigation
 ** Ibuffer
 Ibuffer provides a dired-like interface for working with buffers
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
-#+END_SRC
+#+end_src
 ** Windmove
 Allow navigating windows with Shift-<key arrow>
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (windmove-default-keybindings)
-#+END_SRC
+#+end_src
 ** Eyebrowse
 Adds workspaces
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package eyebrowse
     :config
     (eyebrowse-mode 1))
-#+END_SRC
+#+end_src
 ** ace-window
 Manipulate windows with ace
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package ace-window
     :config
     (global-set-key (kbd "M-o") 'ace-window))
-#+END_SRC
+#+end_src
 * Project navigation
 ** TODO counsel-rg
 ** Projectile
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package projectile
     :config
     (setq projectile-completion-system 'ivy)
@@ -99,18 +102,18 @@ Manipulate windows with ace
 
   (use-package counsel-projectile
     :after counsel projectile)
-#+END_SRC
+#+end_src
 * Ivy
 *** Ivy
 Ivy provides vertical completion for prompts
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package ivy
     :config
     (ivy-mode 1)
     (global-set-key (kbd "C-c r") 'ivy-resume))
-#+END_SRC
+#+end_src
 *** Counsel
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package counsel
     :after ivy
     :config
@@ -124,7 +127,7 @@ Ivy provides vertical completion for prompts
     (global-set-key (kbd "C-c g") #'counsel-recentf)
     (global-set-key (kbd "<f10>") #'counsel-tmm)
     (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-c h") #'counsel-esh-history))))
-#+END_SRC
+#+end_src
 *** TODO Swiper
 * Aesthetics
 ** Font
@@ -140,64 +143,65 @@ Use system font
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (scroll-bar-mode 0)
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (blink-cursor-mode 0)
-#+END_SRC
+#+end_src
 
 Add some widgets
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;;(global-hl-line-mode 1)
   (column-number-mode 1)
   (size-indication-mode 1)
-#+END_SRC
+#+end_src
 ** Fringe
 *** TODO git gutter
 ** Line numbers
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default display-line-numbers-type 'relative)
   (global-display-line-numbers-mode 1)
-#+END_SRC
+#+end_src
 ** Modeline
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package diminish)
-#+END_SRC
+#+end_src
 * Org
 ** Formatting
 Make org buffers look better
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-startup-indented t)
-#+END_SRC
+#+end_src
 ** Babel
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq org-src-tab-acts-natively t)
-#+END_SRC
+#+end_src
 *** Source blocks
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-#+END_SRC
+#+begin_src emacs-lisp
+  (setq org-structure-template-alist ())
+  (add-to-list 'org-structure-template-alist '("e" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("s" . "src sh"))
+#+end_src
 *** Exporting
 **** HTML
 Allow exporting to HTML
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package htmlize)
-#+END_SRC
+#+end_src
 * Evil
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package evil
     :config
     (evil-mode t))
-#+END_SRC
+#+end_src
 * Dired
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq dired-auto-revert-buffer t)
-#+END_SRC
+#+end_src
 * Terminal
 ** Vterm
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package vterm
     :disabled t
     :config
@@ -205,25 +209,25 @@ Allow exporting to HTML
 
     (add-hook 'vterm-mode-hook (lambda ()
                                  (display-line-numbers-mode 0))))
-#+END_SRC
+#+end_src
 ** Eshell
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (require 'eshell)
-#+END_SRC
+#+end_src
 *** Decoration
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'eshell-mode-hook (lambda () (display-line-numbers-mode 0)))
-#+END_SRC
+#+end_src
 *** Completion
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-hook 'eshell-mode-hook
             (lambda ()
               (define-key eshell-mode-map (kbd "<tab>") #'completion-at-point)
               (define-key eshell-mode-map (kbd "C-M-i") #'completion-at-point)))
-#+END_SRC
+#+end_src
 *** Clear
 Clear the eshell buffer
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell/nuke ()
     "Clear the eshell buffer."
     (interactive)
@@ -235,10 +239,10 @@ Clear the eshell buffer
   (add-hook 'eshell-mode-hook
             (lambda ()
               (define-key eshell-mode-map (kbd "M-l") #'eshell/nuke)))
-#+END_SRC
+#+end_src
 *** Last
 Go to the last line of the window
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell/last ()
     "Clear the window"
     (interactive)
@@ -248,10 +252,10 @@ Go to the last line of the window
   (add-hook 'eshell-mode-hook
             (lambda ()
               (define-key eshell-mode-map (kbd "C-l") #'eshell/last)))
-#+END_SRC
+#+end_src
 *** TODO Backspace
 Pressing backspace on an empty prompt should send the user to the previous prompt
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell--backspace ()
     (interactive)
     (if (get-char-property (- (point) 1) 'read-only)
@@ -263,24 +267,24 @@ Pressing backspace on an empty prompt should send the user to the previous promp
               (define-key eshell-mode-map (kbd "DEL") #'eshell--backspace)
               (define-key eshell-mode-map (kbd "<M-left>") #'eshell-previous-prompt)
               (define-key eshell-mode-map (kbd "<M-right>") #'eshell-next-prompt)))
-#+END_SRC
+#+end_src
 *** M-x
 Run emacs commands from eshell
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell/run (&optional command)
     (if command
         (call-interactively (intern command))
       (error "No command")))
-#+END_SRC
+#+end_src
 *** C-d
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell-C-d () (interactive) (if (eq (point) (point-max)) (eshell-life-is-too-much) (delete-char 1)))
   (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-d") 'eshell-C-d)))
-#+END_SRC
+#+end_src
 *** View
 View a file in a read-only window with syntax highlighting
 **** TODO Kill buffer and window after pressing q
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (defun eshell/view (filename)
     (let ((opened (get-file-buffer filename))))
     (with-current-buffer (find-file-noselect filename)
@@ -288,86 +292,86 @@ View a file in a read-only window with syntax highlighting
       (switch-to-buffer-other-window (current-buffer))
       (local-set-key (kbd "q") #'kill-buffer-and-window)
       ()))
-#+END_SRC
+#+end_src
 * Programming languages
 ** Universal
 *** Indentation
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default tab-width 4)
   (setq-default indent-tabs-mode nil)
 
   (use-package aggressive-indent
     :config
     (global-aggressive-indent-mode 1))
-#+END_SRC
+#+end_src
 *** Parenthesis
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (electric-pair-mode 1)
   (show-paren-mode 1)
-#+END_SRC
+#+end_src
 *** Completion
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package company
     :config
     (add-hook 'prog-mode-hook (lambda () (company-mode 1))))
-#+END_SRC
+#+end_src
 **** TODO Use counsel-company
 *** Error checking
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package flycheck
     :init
     :config
     (global-flycheck-mode 1)
     (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc))))
-#+END_SRC
+#+end_src
 ** Go
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package go-mode
     :config
     (add-hook 'before-save-hook 'gofmt-before-save))
   (use-package company-go
     :after company)
-#+END_SRC
+#+end_src
 ** Web
 *** TypeScript
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package tide
     :init
     (setq typescript-indent-level 4)
     :config
     (add-hook 'typescript-mode-hook (lambda () (tide-mode 1))))
-#+END_SRC
+#+end_src
 * Git
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit
     :config
     (global-set-key (kbd "C-x g") 'magit-status))
-#+END_SRC
+#+end_src
 * Text editing
 ** Olivetti
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package olivetti)
-#+END_SRC
+#+end_src
 ** avy
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package avy
     :config
     (global-set-key (kbd "C-:") 'avy-goto-char))
-#+END_SRC
+#+end_src
 ** ace-link
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package ace-link)
-#+END_SRC
+#+end_src
 * Web services
 ** Pastebins
 Easy access to pastebins
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package webpaste)
-#+END_SRC
+#+end_src
 * Hydras
 ** Install
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package hydra)
-#+END_SRC
+#+end_src
 ** Scripts
 No hydras yet
