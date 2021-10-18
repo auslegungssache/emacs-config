@@ -115,6 +115,7 @@ Manipulate windows with ace
 Ivy provides vertical completion for prompts
 #+begin_src emacs-lisp
   (use-package ivy
+    :diminish
     :config
     (ivy-mode 1)
     (global-set-key (kbd "C-c r") 'ivy-resume))
