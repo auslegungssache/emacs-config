@@ -115,6 +115,10 @@ Replace selection when you start typing
     :config
     (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t))))
 #+end_src
+** Tooltips
+#+begin_src emacs-lisp
+  (setq x-gtk-use-system-tooltips nil)
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
