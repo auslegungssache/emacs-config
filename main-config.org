@@ -22,7 +22,7 @@ Smoother scrolling
 ** Backups
 Put all backups in a single directory
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))))
 #+END_SRC
 ** Dialogs
 Make all prompts y-or-n
