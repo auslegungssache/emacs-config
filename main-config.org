@@ -98,6 +98,12 @@ Load use-package and make it install all packages by default
 #+begin_src emacs-lisp
   (setq echo-keystrokes 0.1) ; show keystrokes right away
 #+end_src
+** Parenthesis highlighting
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :config
+    (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t))))
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
