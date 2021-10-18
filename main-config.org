@@ -242,6 +242,17 @@ Add some widgets
   (size-indication-mode 1)
 #+end_src
 ** Fringe
+*** Size
+#+begin_src emacs-lisp
+  (set-fringe-mode 8)
+#+end_src
+*** EOF
+FIXME: doesn't show up
+#+begin_src emacs-lisp
+  (use-package vi-tilde-fringe
+    :config
+    (global-visual-line-mode t))
+#+end_src
 *** TODO git gutter
 ** Frame title
 #+begin_src emacs-lisp
