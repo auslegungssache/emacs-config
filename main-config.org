@@ -221,6 +221,10 @@ Add some widgets
 #+end_src
 ** Fringe
 *** TODO git gutter
+** Frame title
+#+begin_src emacs-lisp
+  (setq-default frame-title-format "%b (%f)") ; add a bit better frame title
+#+end_src
 ** Line numbers
 #+begin_src emacs-lisp
   (setq-default display-line-numbers-type 'relative)
