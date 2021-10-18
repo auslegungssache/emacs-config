@@ -93,9 +93,11 @@ This contains legacy code; fix it.
 #+end_src
 ** use-package
 Load use-package and make it install all packages by default
+** Echoing status
+*** Keystrokes
 #+begin_src emacs-lisp
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
+  (setq echo-keystrokes 0.1) ; show keystrokes right away
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
