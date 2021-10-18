@@ -22,9 +22,23 @@ Automatically revert a buffer when it changes on disk
 ** Scrolling
 Smoother scrolling
 #+begin_src emacs-lisp
-  (setq scroll-margin 0)
+  (setq scroll-margin 10)
+  (setq scroll-step 1)
   (setq scroll-conservatively 100000)
-  (setq scroll-preserve-screen-position 1)
+  (setq next-line-add-newlines t) ; automatically add newlines when scrolling
+                                  ; past end of buffer
+  (setq scroll-preserve-screen-position t)
+#+end_src
+*** Mouse
+#+begin_src emacs-lisp
+  (setq mouse-wheel-follow-mouse t) ; scroll buffer over which the mouse is
+  (setq mouse-wheel-scroll-amount '(1
+                                    ((shift)
+                                     . hscroll)
+                                    ((meta))
+                                    ((control)
+                                     . text-scale))) ; add various modifiers to scrolling
+#+end_src
 ** Indent guides
 Show lines that highlight the indentation levels
 #+begin_src emacs-lisp
