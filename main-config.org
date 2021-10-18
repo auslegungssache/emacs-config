@@ -450,8 +450,8 @@ TODO: Fix for elisp
   (use-package flycheck
     :init
     :config
-    (global-flycheck-mode 1)
-    (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc))))
+    (global-flycheck-mode 0)
+    (setq-default flycheck-disabled-checkers '(emacs-list-checkdoc)))
 #+end_src
 ** Go
 #+begin_src emacs-lisp
