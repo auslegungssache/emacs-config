@@ -25,6 +25,17 @@ Smoother scrolling
   (setq scroll-margin 0)
   (setq scroll-conservatively 100000)
   (setq scroll-preserve-screen-position 1)
+** Indent guides
+Show lines that highlight the indentation levels
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :config
+    (setq highlight-indent-guides-method 'character
+          highlight-indent-guides-auto-enabled nil)
+    (set-face-background 'highlight-indent-guides-odd-face "darkgray")
+    (set-face-background 'highlight-indent-guides-even-face "dimgray")
+    (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+    (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 #+end_src
 ** Backups
 Put all backups in a single directory
