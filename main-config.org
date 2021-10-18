@@ -1,6 +1,5 @@
 #+TITLE: aeggy's emacs config
 #+AUTHOR: aeggy
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 * Behavior
 ** Startup
