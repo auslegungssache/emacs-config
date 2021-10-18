@@ -28,6 +28,8 @@ Load use-package and make it install all packages by default
   (use-package diminish)
 #+end_src
 * Behavior
+** TODO Path
+Inherit PATH from the shell
 ** Initial buffer
 #+begin_src emacs-lisp
   (setq inhibit-startup-screen t) ; don't show the info startup screen
@@ -123,6 +125,8 @@ TODO: add ligatures
   (setq inhibit-compacting-font-caches t)
   (prettify-symbols-mode t)
 #+end_src
+** TODO Undo
+Add support for undo-tree with evil integration
 ** Tooltips
 #+begin_src emacs-lisp
   (setq x-gtk-use-system-tooltips nil)
@@ -441,6 +445,7 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 **** TODO Use counsel-company
 *** Error checking
+TODO: Fix for elisp
 #+begin_src emacs-lisp
   (use-package flycheck
     :init
@@ -472,7 +477,11 @@ View a file in a read-only window with syntax highlighting
     (global-set-key (kbd "C-x g") 'magit-status))
 #+end_src
 * Text editing
+** TODO multiple-cursors
+Add it and make it compatible with Evil
 ** Olivetti
+TODO: make it wider
+TODO: disable line numbers
 #+begin_src emacs-lisp
   (use-package olivetti)
 #+end_src
