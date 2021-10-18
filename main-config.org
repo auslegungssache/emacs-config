@@ -118,6 +118,11 @@ TODO: extend this to all kinds of blocks
 ** Prettify symbols
 TODO: add more characters
 TODO: add ligatures
+#+begin_src emacs-lisp
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
+  (setq inhibit-compacting-font-caches t)
+  (prettify-symbols-mode t)
+#+end_src
 ** Tooltips
 #+begin_src emacs-lisp
   (setq x-gtk-use-system-tooltips nil)
