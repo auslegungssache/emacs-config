@@ -492,6 +492,17 @@ TODO: Fix for elisp
     :config
     (global-set-key (kbd "C-x g") 'magit-status))
 #+end_src
+** git gutter
+TODO: fix showing modified lines
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :diminish
+    :config
+    (global-git-gutter-mode t)
+    (set-face-background 'git-gutter:modified 'nil)
+    (set-face-foreground 'git-gutter:added "green4")
+    (set-face-foreground 'git-gutter:deleted "red"))
+#+end_src
 * Text editing
 ** TODO multiple-cursors
 Add it and make it compatible with Evil
