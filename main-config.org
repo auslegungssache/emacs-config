@@ -40,7 +40,7 @@ Inherit PATH from the shell
 ** Startup
 Resume the previous session
 #+begin_src emacs-lisp
-  (desktop-save-mode 0)
+  (desktop-save-mode t)
 #+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
@@ -98,7 +98,7 @@ Clean up the whitespace when saving
 #+end_src
 ** Recent
 #+begin_src emacs-lisp
-  (recentf-mode 0)
+  (recentf-mode 1)
 #+end_src
 ** Text replacing
 Replace selection when you start typing
