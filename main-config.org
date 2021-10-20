@@ -161,6 +161,12 @@ TODO: Add color variety
   :config
   (global-set-key (kbd "C-=") #'er/expand-region))
 #+end_src
+** TODO smartparens
+#+begin_src emacs-lisp
+(use-package smartparens
+  :config
+  (smartparens-global-mode t))
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
