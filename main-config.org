@@ -399,7 +399,7 @@ Go to the last line of the window
 #+end_src
 *** TODO Backspace
 Pressing backspace on an empty prompt should send the user to the previous prompt
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle nil
   (defun eshell--backspace ()
     (interactive)
     (if (get-char-property (- (point) 1) 'read-only)
