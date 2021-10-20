@@ -155,6 +155,12 @@ TODO: Add color variety
     :config
     (add-hook 'prog-mode-hook #'hl-todo-mode))
 #+end_src
+** expand-region
+#+begin_src emacs-lisp
+(use-package expand-region
+  :config
+  (global-set-key (kbd "C-=") #'er/expand-region))
+#+end_src
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
