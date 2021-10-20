@@ -294,18 +294,26 @@ FIXME: doesn't show up
     (display-time-mode t))
 #+end_src
 * Org
+TODO: fix speed commands
+TODO: configure maintaining the ~/org/ directory
+TODO: uncomment and test org-log logging
+#+begin_src emacs-lisp
+  ;; (setq org-use-speed-commands t)
+  (setq org-startup-indented t)
+  ;; (setq org-log-into-drawer t)
+  ;; (setq org-log-done 'time)
+  (setq org-support-shift-select t)
+  ;; (setq org-directory "~/org/")
+  ;; (setq org-agenda-files '("~/org/"))
+#+end_src
 ** Evil
 #+begin_src emacs-lisp
   ;; TODO: add make blocks cycleable from evil normal mode
 #+end_src
-** Formatting
-Make org buffers look better
-#+begin_src emacs-lisp
-  (setq org-startup-indented t)
-#+end_src
 ** Babel
 #+begin_src emacs-lisp
   (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation t)
 #+end_src
 *** Source blocks
 #+begin_src emacs-lisp
