@@ -607,6 +607,11 @@ Easy access to pastebins
 #+end_src
 ** Scripts
 No hydras yet
+* Useful tools
+** TODO Crux
+#+begin_src emacs-lisp
+(use-package crux)
+#+end_src
 ** Devdocs
 TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
