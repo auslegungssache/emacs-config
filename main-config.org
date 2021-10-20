@@ -590,3 +590,8 @@ Easy access to pastebins
 #+end_src
 ** Scripts
 No hydras yet
+** Devdocs
+TODO: consider using devdocs-browser instead
+#+begin_src emacs-lisp
+(use-package devdocs)
+#+end_src
