@@ -50,7 +50,7 @@ Automatically revert a buffer when it changes on disk
 #+begin_src emacs-lisp
   (global-auto-revert-mode 0)
 #+end_src
-** Scrolling
+** TODO Scrolling
 Smoother scrolling
 #+begin_src emacs-lisp
   (setq scroll-margin 10)
@@ -167,6 +167,8 @@ TODO: Add color variety
   :config
   (smartparens-global-mode t))
 #+end_src
+* TODO Spelling and text autocompletion
+Use flyspell
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
@@ -553,6 +555,7 @@ TODO: Fix for elisp
     (add-hook 'typescript-mode-hook (lambda () (tide-mode 1))))
 #+end_src
 * Git
+TODO: add magit-forge
 #+begin_src emacs-lisp
   (use-package magit
     :config
