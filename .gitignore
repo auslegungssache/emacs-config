@@ -21,3 +21,5 @@ main-config.el
 
 # desktop
 .emacs.desktop*
+/.cache/
+/.lsp-session-v1
