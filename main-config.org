@@ -53,12 +53,12 @@ Automatically revert a buffer when it changes on disk
 ** TODO Scrolling
 Smoother scrolling
 #+begin_src emacs-lisp
-  (setq scroll-margin 10)
-  (setq scroll-step 1)
-  (setq scroll-conservatively 100000)
-  (setq next-line-add-newlines t) ; automatically add newlines when scrolling
-                                  ; past end of buffer
-  (setq scroll-preserve-screen-position t)
+(setq scroll-margin 10)
+(setq scroll-step 1)
+(setq scroll-conservatively 100000)
+(setq next-line-add-newlines t) ; automatically add newlines when scrolling
+                                        ; past end of buffer
+(setq scroll-preserve-screen-position t)
 #+end_src
 *** Mouse
 #+begin_src emacs-lisp
@@ -338,13 +338,13 @@ TODO: fix speed commands
 TODO: configure maintaining the ~/org/ directory
 TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
-  ;; (setq org-use-speed-commands t)
-  (setq org-startup-indented t)
-  ;; (setq org-log-into-drawer t)
-  ;; (setq org-log-done 'time)
-  (setq org-support-shift-select t)
-  ;; (setq org-directory "~/org/")
-  ;; (setq org-agenda-files '("~/org/"))
+;; (setq org-use-speed-commands t)
+(setq org-startup-indented t)
+;; (setq org-log-into-drawer t)
+;; (setq org-log-done 'time)
+(setq org-support-shift-select t)
+;; (setq org-directory "~/org/")
+;; (setq org-agenda-files '("~/org/"))
 #+end_src
 ** Evil
 #+begin_src emacs-lisp
