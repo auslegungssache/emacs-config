@@ -167,7 +167,23 @@ These keys get captured in Xorg with WSL
 (global-set-key (kbd "<XF86AudioMute>") #'ignore)
 #+end_src
 * TODO Spelling and text autocompletion
+** Ispell
+#+begin_src emacs-lisp
+(use-package ispell
+  :straight nil)
+#+end_src
+** Flyspell
+TODO: disable when changing modes to a programming mode
+#+begin_src emacs-lisp
+(use-package flyspell
+  :straight nil
+  :config
+  (add-hook 'prog-mode-hook flyspell-mode))
+#+end_src
 Use flyspell
+** TODO Autocompletion of words
+** TODO Automatic checking and fixing
+** TODO Automatic selecting of language
 * Help
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
