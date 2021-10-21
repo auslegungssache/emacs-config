@@ -229,12 +229,15 @@ Manipulate windows with ace
 * Completion
 ** Selectrum
 #+begin_src emacs-lisp
-(use-package selectrum
-  :config
-  (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
-  (global-set-key (kbd "C-c r") #'selectrum-repeat)
-  (selectrum-mode t))
+  (use-package selectrum
+    :config
+    (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
+    (global-set-key (kbd "C-c r") #'selectrum-repeat)
+    (bind-key "<escape>" #'abort-recursive-edit selectrum-minibuffer-map)
+    (set-face-attribute 'selectrum-current-candidate nil :foreground "#68f3ca")
+    (selectrum-mode t))
 #+end_src
+*** TODO Fix the theme
 *** Marginalia
 #+begin_src emacs-lisp
 (use-package marginalia
