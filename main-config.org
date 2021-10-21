@@ -5,18 +5,19 @@
 ** Straight
 *** TODO Load
 This contains legacy code; fix it.
+
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
-   (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-  (bootstrap-version 5))
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
     (unless (file-exists-p bootstrap-file)
       (with-current-buffer
-    (url-retrieve-synchronously
-     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-     'silent 'inhibit-cookies)
-  (goto-char (point-max))
-  (eval-print-last-sexp)))
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 #+end_src
 ** use-package
@@ -32,13 +33,13 @@ Load use-package and make it install all packages by default
 Inherit PATH from the shell
 ** Initial buffer
 #+begin_src emacs-lisp
-(setq inhibit-startup-screen t) ; don't show the info startup screen
-(setq inhibit-startup-message t) ; ... and the message
-(setq initial-scratch-message nil) ; remove all text from the scratch buffer
-(defun display-startup-echo-area-message ()
-  (message "Welcome."))
-(setq inhibit-startup-message t)
-(setq initial-major-mode 'org-mode) ; create scratch buffer with org mode
+  (setq inhibit-startup-screen t) ; don't show the info startup screen
+  (setq inhibit-startup-message t) ; ... and the message
+  (setq initial-scratch-message nil) ; remove all text from the scratch buffer
+  (defun display-startup-echo-area-message ()
+    (message "Welcome."))
+  (setq inhibit-startup-message t)
+  (setq initial-major-mode 'org-mode) ; create scratch buffer with org mode
 #+end_src
 ** Startup
 Resume the previous session
@@ -53,12 +54,12 @@ Automatically revert a buffer when it changes on disk
 ** TODO Scrolling
 Smoother scrolling
 #+begin_src emacs-lisp
-(setq scroll-margin 10)
-(setq scroll-step 1)
-(setq scroll-conservatively 100000)
-(setq next-line-add-newlines t) ; automatically add newlines when scrolling
-                                        ; past end of buffer
-(setq scroll-preserve-screen-position t)
+  (setq scroll-margin 10)
+  (setq scroll-step 1)
+  (setq scroll-conservatively 100000)
+  (setq next-line-add-newlines t) ; automatically add newlines when scrolling
+                                          ; past end of buffer
+  (setq scroll-preserve-screen-position t)
 #+end_src
 *** Mouse
 #+begin_src emacs-lisp
@@ -353,7 +354,7 @@ TODO: uncomment and test org-log logging
 ** Babel
 #+begin_src emacs-lisp
 (setq org-src-tab-acts-natively t)
-(setq org-src-preserve-indentation t)
+(setq org-src-preserve-indentation nil)
 (setq org-src-window-setup 'current-window)
 #+end_src
 *** Source blocks
@@ -506,12 +507,12 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 *** Completion
 #+begin_src emacs-lisp
-(use-package company
-  :config
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0)
-  (global-set-key (kbd "M-SPC") #'company-complete)
-  (add-hook 'prog-mode-hook #'company-mode))
+  (use-package company
+    :config
+    (setq company-dabbrev-downcase 0)
+    (setq company-idle-delay 0)
+    (global-set-key (kbd "M-SPC") #'company-complete)
+    (add-hook 'prog-mode-hook #'company-mode))
 #+end_src
 **** TODO Use counsel-company
 *** Error checking
@@ -599,10 +600,10 @@ No hydras yet
 * Useful tools
 ** TODO Crux
 #+begin_src emacs-lisp
-(use-package crux)
+  (use-package crux)
 #+end_src
 ** Devdocs
 TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
-(use-package devdocs)
+  (use-package devdocs)
 #+end_src
