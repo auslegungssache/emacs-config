@@ -538,9 +538,12 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 *** Completion
 #+begin_src emacs-lisp
-  (use-package company
-    :config
-    (add-hook 'prog-mode-hook (lambda () (company-mode 1))))
+(use-package company
+  :config
+  (setq company-dabbrev-downcase 0)
+  (setq company-idle-delay 0)
+  (global-set-key (kbd "M-SPC") #'company-complete)
+  (add-hook 'prog-mode-hook #'company-mode))
 #+end_src
 **** TODO Use counsel-company
 *** Error checking
