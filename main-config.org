@@ -229,11 +229,12 @@ Manipulate windows with ace
     :after counsel projectile)
 #+end_src
 * Completion
-** Vertico
+** Selectrum
 #+begin_src emacs-lisp
 (use-package selectrum
   :config
   (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
+  (global-set-key (kbd "C-c r") #'selectrum-repeat)
   (selectrum-mode t))
 #+end_src
 *** Marginalia
