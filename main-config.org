@@ -224,9 +224,6 @@ Manipulate windows with ace
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode 1))
-
-  (use-package counsel-projectile
-    :after counsel projectile)
 #+end_src
 * Completion
 ** Selectrum
@@ -270,37 +267,6 @@ Manipulate windows with ace
 (use-package embark-consult
   :after (embark consult))
 #+end_src
-* Ivy
-*** Ivy
-TODO: quit minibuffer on ESC
-Ivy provides vertical completion for prompts
-#+begin_src emacs-lisp
-  (use-package ivy
-    :disabled t
-    :diminish
-    :config
-    (ivy-mode 1)
-    (global-set-key (kbd "C-c r") 'ivy-resume))
-#+end_src
-*** Counsel
-#+begin_src emacs-lisp
-  (use-package counsel
-    :disabled t
-    :diminish
-    :after ivy
-    :config
-    (counsel-mode 1)
-
-    (global-set-key (kbd "M-x") #'counsel-M-x)
-    (global-set-key (kbd "C-x b") #'counsel-switch-buffer)
-    (global-set-key (kbd "C-c h") #'counsel-command-history)
-    (global-set-key (kbd "C-c m") #'counsel-imenu)
-    (global-set-key (kbd "C-c x") #'counsel-linux-app)
-    (global-set-key (kbd "C-c g") #'counsel-recentf)
-    (global-set-key (kbd "<f10>") #'counsel-tmm)
-    (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-c h") #'counsel-esh-history))))
-#+end_src
-*** TODO Swiper
 * Aesthetics
 ** Font
 Use system font
