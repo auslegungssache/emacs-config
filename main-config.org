@@ -309,9 +309,9 @@ Use system font
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
-  (use-package leuven-theme
-    :config
-    (load-theme 'leuven-dark t))
+(use-package kaolin-themes
+  :config
+  (load-theme 'kaolin-galaxy t))
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
