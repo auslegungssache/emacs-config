@@ -386,8 +386,9 @@ TODO: uncomment and test org-log logging
 #+end_src
 ** Babel
 #+begin_src emacs-lisp
-  (setq org-src-tab-acts-natively t)
-  (setq org-src-preserve-indentation t)
+(setq org-src-tab-acts-natively t)
+(setq org-src-preserve-indentation t)
+(setq org-src-window-setup 'current-window)
 #+end_src
 *** Source blocks
 #+begin_src emacs-lisp
