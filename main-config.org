@@ -234,6 +234,7 @@ Manipulate windows with ace
 #+begin_src emacs-lisp
 (use-package selectrum
   :config
+  (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
   (selectrum-mode t))
 #+end_src
 *** Marginalia
