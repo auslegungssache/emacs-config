@@ -222,7 +222,6 @@ Manipulate windows with ace
   (use-package projectile
     :diminish
     :config
-    (setq projectile-completion-system 'ivy)
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode 1))
 
