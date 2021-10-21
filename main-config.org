@@ -145,16 +145,6 @@ Add support for undo-tree with evil integration
     :config
     (beacon-mode t)) ; show cursor when it jumps
 #+end_src
-** Highlight TODOs
-TODO: make it startup on start of a programming file
-TODO: Make it look better
-TODO: Add FIXME and so too
-TODO: Add color variety
-#+begin_src emacs-lisp
-  (use-package hl-todo
-    :config
-    (add-hook 'prog-mode-hook #'hl-todo-mode))
-#+end_src
 ** expand-region
 #+begin_src emacs-lisp
 (use-package expand-region
