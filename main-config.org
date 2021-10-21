@@ -155,6 +155,7 @@ Add support for undo-tree with evil integration
 #+begin_src emacs-lisp
 (use-package smartparens
   :config
+  (require 'smartparens-config)
   (smartparens-global-mode t))
 #+end_src
 * TODO Spelling and text autocompletion
