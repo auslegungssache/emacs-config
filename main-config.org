@@ -180,7 +180,7 @@ These keys get captured in Xorg with WSL
 #+end_src
 ** Flyspell
 TODO: disable when changing modes to a programming mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package flyspell
   :straight nil
   :config
