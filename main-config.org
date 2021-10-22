@@ -407,13 +407,23 @@ Allow exporting to HTML
 ** Vterm
 #+begin_src emacs-lisp
   (use-package vterm
-    :disabled t
+    :when (eq system-type 'gnu/linux)
     :config
-    (add-to-list 'vterm-exit-functions #'kill-buffer)
+    (setq-default vterm-exit-functions #'kill-buffer)
+    (setq vterm-kill-buffer-on-exit t)
+    (evil-set-initial-state 'vterm-mode 'emacs)
 
     (add-hook 'vterm-mode-hook (lambda ()
                                  (display-line-numbers-mode 0))))
 #+end_src
+*** eshell-vterm
+#+begin_src emacs-lisp
+  (use-package eshell-vterm
+    :config
+    (eshell-vterm-mode)
+    (defalias 'eshell/v 'eshell-exec-visual))
+#+end_src
+**** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
   (require 'eshell)
