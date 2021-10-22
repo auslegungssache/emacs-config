@@ -124,7 +124,7 @@ TODO: extend this to all kinds of blocks
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :config
-    (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t))))
+    (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode))
 #+end_src
 ** Prettify symbols
 TODO: add more characters
