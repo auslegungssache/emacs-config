@@ -1,6 +1,11 @@
 #+TITLE: aeggy's emacs config
 #+AUTHOR: aeggy
 
+TODO: use use-package :bind instead of (global-set-key)
+TODO: use use-package :hook instead of (add-hook)
+TODO: use use-package :custom instead of (setq), or make an alternative (:set)
+TODO: untangle without loading org
+TODO: add uniquify
 * Package management
 ** Straight
 *** TODO Load
