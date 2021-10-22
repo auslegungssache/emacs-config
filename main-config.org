@@ -625,3 +625,43 @@ TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
   (use-package devdocs)
 #+end_src
+** Playground
+#+begin_src emacs-lisp
+  ;; TODO: add a playground minor mode with various features like in smalltalk's playground
+
+  (defvar playground-default-name "playground"
+    "Name that will be used for a playground buffer, if no name is
+  specified in the function call.")
+  (defvar playground-default-separator ":"
+    "Character(s) that will be used adding an index to a playground buffer name.")
+  (defvar playground-reuse-playgrounds nil
+    "Non-nil if playgrounds should reuse names of closed playgrouds, otherwise a counter of previously opened playgrounds will be used.")
+  (defvar playground--count 0
+    "Count of playgrounds that have already been opened.")
+
+  (defun playground-uniquify-name (name &optional separator)
+    (when (not separator)
+      (setq separator playground-default-separator))
+    (if playground-reuse-playgrounds
+        (progn
+          (let ((i 1)
+                (buffer-name))
+            (while (get-buffer (setq buffer-name (concat name separator (number-to-string i))))
+              (setq i (1+ i)))
+            buffer-name))
+      (let ((buffer-name (concat name separator (number-to-string playground--count))))
+        (if (get-buffer buffer-name)
+            (playground-uniquify-name name (concat separator separator))
+          (setq playground--count (1+ playground--count))
+          buffer-name))))
+
+  (defun playground (&optional name)
+    (interactive)
+
+    (when (not name)
+      (setq name playground-default-name))
+    (let* ((buffer-name (playground-uniquify-name name))
+           (buffer (get-buffer-create buffer-name)))
+      (with-current-buffer buffer (emacs-lisp-mode))
+      (pop-to-buffer buffer)))
+#+end_src
