@@ -49,7 +49,7 @@ Inherit PATH from the shell
 ** Startup
 Resume the previous session
 #+begin_src emacs-lisp
-  (desktop-save-mode 0)
+  (desktop-save-mode 1)
 #+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
