@@ -509,7 +509,16 @@ View a file in a read-only window with syntax highlighting
       (local-set-key (kbd "q") #'kill-buffer-and-window)
       ()))
 #+end_src
-* Programming languages
+* Programming
+** Lisp
+*** Sly
+#+begin_src emacs-lisp
+  (setq inferior-lisp-program "sbcl")
+  (use-package sly
+    :config
+    (bind-key sly-mode-map)
+    (add-hook 'sly-db-hook #'evil-emacs-state))
+#+end_src
 ** Universal
 *** Indentation
 #+begin_src emacs-lisp
