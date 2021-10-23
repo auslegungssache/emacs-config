@@ -250,9 +250,12 @@ Manipulate windows with ace
 #+end_src
 *** Prescient
 #+begin_src emacs-lisp
-(use-package selectrum-prescient
-  :config
-  (selectrum-prescient-mode t))
+  (use-package prescient
+    :config
+    (prescient-persist-mode t))
+  (use-package selectrum-prescient
+    :config
+    (selectrum-prescient-mode t))
 #+end_src
 ** Consult
 #+begin_src emacs-lisp
