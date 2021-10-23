@@ -62,8 +62,7 @@ Smoother scrolling
   (setq scroll-margin 10)
   (setq scroll-step 1)
   (setq scroll-conservatively 100000)
-  (setq next-line-add-newlines t) ; automatically add newlines when scrolling
-                                          ; past end of buffer
+  (setq next-line-add-newlines nil)
   (setq scroll-preserve-screen-position t)
 #+end_src
 *** Mouse
