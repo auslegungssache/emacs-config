@@ -542,6 +542,9 @@ View a file in a read-only window with syntax highlighting
     (setq company-idle-delay 0)
     (global-set-key (kbd "M-SPC") #'company-complete)
     (add-hook 'prog-mode-hook #'company-mode))
+  (use-package company-prescient
+    :config
+    (company-prescient-mode t))
 #+end_src
 **** TODO Use counsel-company
 *** Error checking
