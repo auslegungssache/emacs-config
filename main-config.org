@@ -533,6 +533,7 @@ Allow exporting to HTML
                 ("O" . #'dired-omit-mode))
     :config
     (setq dired-omit-files "^\\...+$")
+    (add-to-list 'dired-omit-extensions ".eld")
     (add-hook 'dired-mode-hook #'dired-omit-mode))
 #+end_src
 ** DWIM
