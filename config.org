@@ -574,6 +574,11 @@ Allow exporting to HTML
     :config
     (evil-mode t))
 #+end_src
+** Lispy
+#+begin_src emacs-lisp
+  (use-package evil-lispy
+    :hook (emacs-lisp-mode . evil-lispy-mode))
+#+end_src
 * Dired
 #+begin_src emacs-lisp
   (use-package dired
