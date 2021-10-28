@@ -229,7 +229,6 @@ These keys get captured in Xorg with WSL
 Add emojify https://github.com/iqbalansari/emacs-emojify
 ** TODO Search engines
 #+begin_src emacs-lisp
-  (setq engine/browser-function #'eww-browse-url)
   (use-package engine-mode
     :config
     (defengine github
@@ -240,8 +239,10 @@ Add emojify https://github.com/iqbalansari/emacs-emojify
       :keybinding "d")
     (defengine google
       "https://google.com/search?q=%s"
-      :keybinding "go"))
-  (engine/set-keymap-prefix (kbd "C-c e"))
+      :keybinding "go")
+
+    (setq engine/browser-function #'eww-browse-url)
+    (engine/set-keymap-prefix (kbd "C-c e")))
 #+end_src
 *** TODO Make it use the browser outside of WSL
 * TODO Spelling and text autocompletion
