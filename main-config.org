@@ -397,7 +397,7 @@ Use system font
 #+begin_src emacs-lisp
 (use-package kaolin-themes
   :config
-  (load-theme 'kaolin-galaxy t))
+  (load-theme 'kaolin-shiva t))
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
