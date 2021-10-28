@@ -225,6 +225,8 @@ These keys get captured in Xorg with WSL
     (all-the-icons-ibuffer-mode t))
 #+end_src
 *** TODO Add icons to more files
+** TODO Emotes
+Add emojify https://github.com/iqbalansari/emacs-emojify
 * TODO Spelling and text autocompletion
 ** Ispell
 #+begin_src emacs-lisp
