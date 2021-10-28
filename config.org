@@ -362,9 +362,10 @@ something simpler
     (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
     (global-set-key (kbd "C-c r") #'selectrum-repeat)
     (bind-key "<escape>" #'abort-recursive-edit selectrum-minibuffer-map)
-    (set-face-attribute 'selectrum-current-candidate nil :foreground "#68f3ca")
-    (selectrum-mode t))
+    (selectrum-mode t)
+    (set-face-attribute 'selectrum-current-candidate nil :foreground "#68f3ca"))
 #+end_src
+*** TODO Make functions like find-file work like in Ivy (backspaces goes to parent)
 *** TODO Fix the theme
 *** Marginalia
 #+begin_src emacs-lisp
@@ -519,6 +520,11 @@ Allow exporting to HTML
     (evil-mode t))
 #+end_src
 * Dired
+#+begin_src emacs-lisp
+  (use-package dired
+    :straight nil
+    :no-require t)
+#+end_src
 ** Narrowing
 #+begin_src emacs-lisp
   (use-package dired-narrow
