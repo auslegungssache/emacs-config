@@ -648,6 +648,12 @@ View a file in a read-only window with syntax highlighting
       ()))
 #+end_src
 * Programming
+** LSP
+#+begin_src emacs-lisp
+  (use-package lsp-mode)
+  (use-package lsp-ui
+    :after lsp-mode)
+#+end_src
 ** Lisp
 *** Sly
 #+begin_src emacs-lisp
