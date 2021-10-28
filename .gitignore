@@ -23,3 +23,5 @@ main-config.el
 .emacs.desktop*
 /.cache/
 /.lsp-session-v1
+tmp/
+/var
