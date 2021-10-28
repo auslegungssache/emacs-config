@@ -529,7 +529,6 @@ View a file in a read-only window with syntax highlighting
   (setq inferior-lisp-program "sbcl")
   (use-package sly
     :config
-    (bind-key sly-mode-map)
     (add-hook 'sly-db-hook #'evil-emacs-state))
 #+end_src
 ** Universal
