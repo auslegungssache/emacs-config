@@ -695,6 +695,22 @@ Go to the last line of the window
 
   (eshell-bind "C-l" #'eshell/last)
 #+end_src
+*** TODO img
+This shows an extra shell prompt
+#+begin_src emacs-lisp
+  (defun eshell/img (img-path)
+    (let ((path (expand-file-name img-path))
+          img)
+      (setq img (create-image path))
+      (setf (image-property img :scale) .25)
+      (save-excursion
+        (insert-image img))
+      (eshell-send-input))
+    nil)
+#+end_src
+**** TODO Fix sizing of images
+Currently only big images look normal
+**** TODO Disable showing two prompts after image
 *** TODO Backspace
 Pressing backspace on an empty prompt should send the user to the previous prompt
 #+begin_src emacs-lisp :tangle no
