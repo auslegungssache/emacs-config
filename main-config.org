@@ -131,7 +131,7 @@ TODO: add ligatures
 #+begin_src emacs-lisp
   (setq prettify-symbols-unprettify-at-point 'right-edge)
   (setq inhibit-compacting-font-caches t)
-  (prettify-symbols-mode t)
+  (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 #+end_src
 ** TODO Undo
 Add support for undo-tree with evil integration
