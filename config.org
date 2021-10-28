@@ -270,7 +270,7 @@ These keys get captured in Xorg with WSL
           nil)))
   (when (wsl-p)
     (setq wsl-user
-          (s-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
+          (string-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
   (defun wsl-insert-home ()
     (interactive)
     (if (wsl-p)
