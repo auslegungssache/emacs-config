@@ -201,6 +201,16 @@ These keys get captured in Xorg with WSL
   (global-set-key (kbd "M-l") #'downcase-dwim)
   (global-set-key (kbd "M-c") #'capitalize-dwim)
 #+end_src
+** Uniquify
+#+begin_src emacs-lisp
+  (use-package uniquify
+    :straight nil
+    :config
+    (setq uniquify-buffer-name-style 'forward)
+    (setq uniquify-separator "/")
+    (setq uniquify-after-kill-buffer-p t)
+    (setq uniquify-ignore-buffers-re "^\\*"))
+#+end_src
 ** Icons
 #+begin_src emacs-lisp
   (use-package all-the-icons)
