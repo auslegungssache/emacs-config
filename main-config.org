@@ -310,11 +310,8 @@ Add some widgets
   (set-fringe-mode 8)
 #+end_src
 *** EOF
-FIXME: doesn't show up
 #+begin_src emacs-lisp
-  (use-package vi-tilde-fringe
-    :config
-    (global-visual-line-mode t))
+  (setq-default indicate-empty-lines t)
 #+end_src
 *** TODO git gutter
 ** Frame title
