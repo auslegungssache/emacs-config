@@ -254,10 +254,9 @@ Add emojify https://github.com/iqbalansari/emacs-emojify
 ** Flyspell
 TODO: disable when changing modes to a programming mode
 #+begin_src emacs-lisp :tangle no
-(use-package flyspell
-  :straight nil
-  :config
-  (add-hook 'prog-mode-hook flyspell-mode))
+  (use-package flyspell
+    :straight nil
+    :hook (prog-mode . flyspell-mode))
 #+end_src
 Use flyspell
 ** TODO Autocompletion of words
@@ -337,9 +336,8 @@ Adds workspaces
 Manipulate windows with ace
 #+begin_src emacs-lisp
   (use-package ace-window
-    :config
-    (global-set-key (kbd "M-o") 'ace-window)
-    (global-set-key (kbd "C-c w") 'ace-window))
+    :bind (("M-o" . ace-window)
+           ("C-c w" . ace-window)))
 #+end_src
 ** winner
 #+begin_src emacs-lisp
@@ -378,12 +376,14 @@ something simpler
 ** Selectrum
 #+begin_src emacs-lisp
   (use-package selectrum
+    :bind (("C-c ," . #'selectrum-quick-select)
+           ("C-c r" . #'selectrum-repeat)
+           :map selectrum-minibuffer-map
+           ("<escape>" . #'abort-recursive-edit))
+    :custom-face
+    (selectrum-current-candidate ((t (:foreground "#68f3ca"))))
     :config
-    (global-set-key (kbd "C-c ,") #'selectrum-quick-select) ;; add avy-like selection by key annotations
-    (global-set-key (kbd "C-c r") #'selectrum-repeat)
-    (bind-key "<escape>" #'abort-recursive-edit selectrum-minibuffer-map)
-    (selectrum-mode t)
-    (set-face-attribute 'selectrum-current-candidate nil :foreground "#68f3ca"))
+    (selectrum-mode t))
 #+end_src
 *** TODO Make functions like find-file work like in Ivy (backspaces goes to parent)
 *** TODO Fix the theme
@@ -417,12 +417,11 @@ something simpler
 #+end_src
 * Embark
 #+begin_src emacs-lisp
-(use-package embark
-  :config
-  (global-set-key (kbd "C-c .") #'embark-act)
-  (global-set-key (kbd "C-h B") #'embark-bindings))
-(use-package embark-consult
-  :after embark consult)
+  (use-package embark
+    :bind (("C-c ." . #'embark-act)
+           ("C-h B" . #'embark-bindings)))
+  (use-package embark-consult
+    :after embark consult)
 #+end_src
 * Aesthetics
 ** Font
@@ -570,8 +569,7 @@ Allow exporting to HTML
 #+begin_src emacs-lisp
   (add-hook 'dired-mode-hook #'dired-hide-details-mode)
   (use-package dired-collapse
-    :config
-    (add-hook 'dired-mode-hook #'dired-collapse-mode))
+    :hook (dired-mode . dired-collapse))
   (use-package dired-subtree
     :bind (:map dired-mode-map
                 (("i" . 'dired-subtree-insert)
@@ -718,12 +716,12 @@ View a file in a read-only window with syntax highlighting
 *** Completion
 #+begin_src emacs-lisp
   (use-package company
+    :bind (("M-SPC" . #'company-complete))
+    :hook (prog-mode . company-mode)
     :config
     (setq company-dabbrev-downcase 0)
     (setq company-idle-delay .3)
-    (setq company-minimum-prefix-length 1)
-    (global-set-key (kbd "M-SPC") #'company-complete)
-    (add-hook 'prog-mode-hook #'company-mode))
+    (setq company-minimum-prefix-length 1))
   (use-package company-prescient
     :config
     (company-prescient-mode t))
@@ -785,14 +783,12 @@ TODO: disable line numbers
 ** avy
 #+begin_src emacs-lisp
   (use-package avy
-    :config
-    (global-set-key (kbd "C-:") 'avy-goto-char-timer))
+    :bind ("C-:" . #'avy-goto-char-timer))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
   (use-package ace-link
-    :config
-    (global-set-key (kbd "C-c l") #'ace-link))
+    :bind ("C-c l" . #'ace-link))
 #+end_src
 ** move-text
 #+begin_src emacs-lisp
@@ -871,13 +867,13 @@ TODO: consider using devdocs-browser instead
 #+end_src
 * no-littering
 #+begin_src emacs-lisp
-  (use-package no-littering)
+  (use-package no-littering
+    :config
+    (add-to-list 'recentf-exclude no-littering-var-directory)
+    (add-to-list 'recentf-exclude no-littering-etc-directory)
 
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory)
-
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-  (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups"))))
+    (setq auto-save-file-name-transforms
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+    (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+    (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
 #+end_src
