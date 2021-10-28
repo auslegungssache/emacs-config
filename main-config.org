@@ -36,6 +36,11 @@ Load use-package and make it install all packages by default
 * Behavior
 ** TODO Path
 Inherit PATH from the shell
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :config
+    (exec-path-from-shell-initialize))
+#+end_src
 ** Initial buffer
 #+begin_src emacs-lisp
   (setq inhibit-startup-screen t) ; don't show the info startup screen
