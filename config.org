@@ -227,6 +227,23 @@ These keys get captured in Xorg with WSL
 *** TODO Add icons to more files
 ** TODO Emotes
 Add emojify https://github.com/iqbalansari/emacs-emojify
+** TODO Search engines
+#+begin_src emacs-lisp
+  (setq engine/browser-function #'eww-browse-url)
+  (use-package engine-mode
+    :config
+    (defengine github
+      "https://github.com/search?ref=simplesearch&q=%s"
+      :keybinding "gh")
+    (defengine duckduckgo
+      "https://duckduckgo.com/?q=%s"
+      :keybinding "d")
+    (defengine google
+      "https://google.com/search?q=%s"
+      :keybinding "go"))
+  (engine/set-keymap-prefix (kbd "C-c e"))
+#+end_src
+*** TODO Make it use the browser outside of WSL
 * TODO Spelling and text autocompletion
 ** Ispell
 #+begin_src emacs-lisp
