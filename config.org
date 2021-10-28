@@ -253,6 +253,30 @@ These keys get captured in Xorg with WSL
     (all-the-icons-ibuffer-mode t))
 #+end_src
 *** TODO Add icons to more files
+** TODO WSL
+#+begin_src emacs-lisp
+  (defvar wsl-user nil)
+
+  (defun wsl-p ()
+    (not (eq
+          (or (string-match-p "Windows" (getenv "PATH"))
+              (string-match-p "Microsoft" (shell-command-to-string "uname -a")))
+          nil)))
+  (when (wsl-p)
+    (setq wsl-user
+          (s-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
+  (defun wsl-insert-home ()
+    (interactive)
+    (if (wsl-p)
+        (insert (format "/mnt/c/Users/%s/" wsl-user))
+      (message "you're not on wsl")))
+  (global-set-key (kbd "C-c i w") #'wsl-insert-home)
+
+  (when (wsl-p)
+    (setq browse-url-browser-function #'browse-url-generic
+          browse-url-generic-program "explorer.exe"))
+#+end_src
+*** TODO explorer.exe sometimes opens incorrectly
 ** TODO Emotes
 Add emojify https://github.com/iqbalansari/emacs-emojify
 ** TODO Search engines
