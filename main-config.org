@@ -624,6 +624,12 @@ TODO: disable line numbers
     :config
     (global-set-key (kbd "C-c l") #'ace-link))
 #+end_src
+** move-text
+#+begin_src emacs-lisp
+  (use-package move-text
+    :config
+    (move-text-default-bindings))
+#+end_src
 ** TODO snippets
 #+begin_src emacs-lisp
   (use-package yasnippet)
