@@ -194,6 +194,13 @@ These keys get captured in Xorg with WSL
 ** read-only
 #+begin_src emacs-lisp
   (setq view-read-only t)
+#+end_src
+** upcase / downcase / capitalize
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-u") #'upcase-dwim)
+  (global-set-key (kbd "M-l") #'downcase-dwim)
+  (global-set-key (kbd "M-c") #'capitalize-dwim)
+#+end_src
 * TODO Spelling and text autocompletion
 ** Ispell
 #+begin_src emacs-lisp
