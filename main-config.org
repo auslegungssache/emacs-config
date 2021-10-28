@@ -221,6 +221,13 @@ Manipulate windows with ace
     (global-set-key (kbd "M-o") 'ace-window)
     (global-set-key (kbd "C-c w") 'ace-window))
 #+end_src
+** winner
+#+begin_src emacs-lisp
+  (use-package winner
+    :straight nil
+    :config
+    (winner-mode t))
+#+end_src
 * Project navigation
 ** TODO counsel-rg
 ** Projectile
