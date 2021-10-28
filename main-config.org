@@ -159,6 +159,7 @@ TODO: add ligatures
 ** Jump highlighting
 Alternative to beacon
 #+begin_src emacs-lisp
+  (require 'pulse)
   (defun pulse-line (&rest _)
     "Pulse the current line."
     (pulse-momentary-highlight-one-line (point)))
