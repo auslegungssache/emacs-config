@@ -190,6 +190,13 @@ Use flyspell
 ** TODO Automatic checking and fixing
 ** TODO Automatic selecting of language
 * Help
+** Show keys
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 0.5))
+#+end_src
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
 #+begin_src emacs-lisp
