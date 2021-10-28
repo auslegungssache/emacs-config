@@ -260,6 +260,10 @@ Automatically select the help buffer, so that it'd be easier to close after read
 #+begin_src emacs-lisp
   (use-package helpful)
 #+end_src
+** Function discovery
+#+begin_src emacs-lisp
+  (use-package suggest)
+#+end_src
 * Compiling
 ** RMSBolt
 #+begin_src emacs-lisp
