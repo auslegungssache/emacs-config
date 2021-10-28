@@ -204,6 +204,19 @@ Automatically select the help buffer, so that it'd be easier to close after read
 #+begin_src emacs-lisp
   (use-package rmsbolt)
 #+end_src
+* Reading
+** PDF
+#+begin_src emacs-lisp
+  (use-package pdf-tools ;; This package causes issues
+    :magic ("%PDF" . (lambda () (pdf-view-mode) (display-line-numbers-mode 0)))
+    :config
+    (add-hook 'pdf-tools-enabled-hook 'auto-revert-mode))
+#+end_src
+** Books
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode))
+#+end_src
 * Buffer / window navigation
 ** Ibuffer
 Ibuffer provides a dired-like interface for working with buffers
