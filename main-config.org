@@ -439,6 +439,11 @@ Add some widgets
   (global-display-line-numbers-mode 1)
 #+end_src
 ** Modeline
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :config
+    (doom-modeline-mode t))
+#+end_src
 *** clock
 #+begin_src emacs-lisp
   (use-package display-time
