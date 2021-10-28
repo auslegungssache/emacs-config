@@ -53,6 +53,12 @@ Load use-package and make it install all packages by default
         (message "not hosted on github"))))
 #+end_src
 * Behavior
+** Libraries
+#+begin_example
+  (use-package s)
+  (use-package f)
+  (use-package dash)
+#+end_example
 ** Path
 Inherit PATH from the shell
 #+begin_src emacs-lisp
