@@ -640,13 +640,34 @@ Allow exporting to HTML
 **** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
-  (use-package eshell
-    :straight nil)
+    ;;; -*- legical-binding: t; -*-
 
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (define-key eshell-mode-map (kbd "<tab>") #'completion-at-point)
-              (define-key eshell-mode-map (kbd "C-M-i") #'completion-at-point)))
+  (use-package eshell
+    :straight nil
+    :config
+    (setq eshell-scroll-to-bottom-on-input t))
+
+  (defun eshell-current-p ()
+    (eq major-mode 'eshell-mode))
+
+  (defvar eshell-binds ()
+    "Contains pairs of keys and functions")
+
+  (defun eshell-bind-initialize ()
+    (dolist (bind eshell-binds)
+      (define-key eshell-mode-map (kbd (car bind)) (cadr bind)))
+    ())
+
+  (defun eshell-bind (key function)
+    (add-to-list 'eshell-binds (list key function))
+    (when (eq major-mode 'eshell-mode)
+      (eshell-bind-initialize))
+    nil)
+
+  (add-hook 'eshell-mode-hook #'eshell-bind-initialize)
+
+  (eshell-bind "<tab>" #'completion-at-point)
+  (eshell-bind "C-M-i" #'completion-at-point)
 #+end_src
 *** Clear
 Clear the eshell buffer
@@ -654,14 +675,13 @@ Clear the eshell buffer
   (defun eshell/nuke ()
     "Clear the eshell buffer."
     (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (eshell-send-input)
-      (delete-region 1 2)))
+    (when (eshell-current-p)
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (eshell-send-input)
+        (delete-region 1 2))))
 
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (define-key eshell-mode-map (kbd "M-l") #'eshell/nuke)))
+  (eshell-bind "M-l" #'eshell/nuke)
 #+end_src
 *** Last
 Go to the last line of the window
@@ -670,11 +690,10 @@ Go to the last line of the window
     "Clear the window"
     (interactive)
     (goto-char (point-max))
+    (deactivate-mark)
     (recenter 0))
 
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (define-key eshell-mode-map (kbd "C-l") #'eshell/last)))
+  (eshell-bind "C-l" #'eshell/last)
 #+end_src
 *** TODO Backspace
 Pressing backspace on an empty prompt should send the user to the previous prompt
@@ -685,11 +704,8 @@ Pressing backspace on an empty prompt should send the user to the previous promp
         (eshell-previous-prompt 1)
       (backward-delete-char-untabify 'untabify)))
 
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (define-key eshell-mode-map (kbd "DEL") #'eshell--backspace)
-              (define-key eshell-mode-map (kbd "<M-left>") #'eshell-previous-prompt)
-              (define-key eshell-mode-map (kbd "<M-right>") #'eshell-next-prompt)))
+  (eshell-bind "M-<left>" #'eshell-previous-prompt)
+  (eshell-bind "M-<right>" #'eshell-next-prompt)
 #+end_src
 *** M-x
 Run emacs commands from eshell
