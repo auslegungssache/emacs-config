@@ -386,6 +386,22 @@ Allow exporting to HTML
     (evil-mode t))
 #+end_src
 * Dired
+** Narrowing
+#+begin_src emacs-lisp
+  (use-package dired-narrow
+    :bind (:map dired-mode-map
+                (")" . #'dired-narrow)))
+#+end_src
+** Omit
+#+begin_src emacs-lisp
+  (use-package dired-x
+    :straight nil
+    :bind (:map dired-mode-map
+                ("O" . #'dired-omit-mode))
+    :config
+    (setq dired-omit-files "^\\...+$")
+    (add-hook 'dired-mode-hook #'dired-omit-mode))
+#+end_src
 ** DWIM
 #+begin_src emacs-lisp
   (setq dired-dwim-target t)
