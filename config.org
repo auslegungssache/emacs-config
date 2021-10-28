@@ -736,14 +736,6 @@ TODO: Fix for elisp
     (global-flycheck-mode 0)
     (setq-default flycheck-disabled-checkers '(emacs-list-checkdoc)))
 #+end_src
-** Go
-#+begin_src emacs-lisp
-  (use-package go-mode
-    :config
-    (add-hook 'before-save-hook 'gofmt-before-save))
-  (use-package company-go
-    :after company)
-#+end_src
 ** Web
 *** TypeScript
 #+begin_src emacs-lisp
