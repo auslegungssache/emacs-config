@@ -682,7 +682,8 @@ View a file in a read-only window with syntax highlighting
   (use-package company
     :config
     (setq company-dabbrev-downcase 0)
-    (setq company-idle-delay 0)
+    (setq company-idle-delay .3)
+    (setq company-minimum-prefix-length 1)
     (global-set-key (kbd "M-SPC") #'company-complete)
     (add-hook 'prog-mode-hook #'company-mode))
   (use-package company-prescient
