@@ -228,6 +228,14 @@ Manipulate windows with ace
     :config
     (winner-mode t))
 #+end_src
+** TODO Ediff
+#+begin_src emacs-lisp
+  (use-package ediff
+    :straight nil
+    :config
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+    (setq ediff-split-window-function 'split-window-horizontally))
+#+end_src
 * Project navigation
 ** TODO counsel-rg
 ** Projectile
