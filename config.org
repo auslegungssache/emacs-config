@@ -29,6 +29,29 @@ Load use-package and make it install all packages by default
 
   (use-package diminish)
 #+end_src
+*** repo finder
+#+begin_src emacs-lisp
+  (defun my-straight-get-repo (package insert)
+    "Echo repo to the inputted package if it exists."
+    (interactive
+     (list
+      (intern
+       (completing-read "Package: "
+                        (straight-recipes-list)
+                        (lambda (_) t)
+                        'require-match))
+      current-prefix-arg))
+
+
+    (let ((recipe (cdr (straight-recipes-retrieve package)))
+          (url))
+      (if (eq (plist-get recipe :host) 'github)
+          (progn
+            (setq url (concat "https://github.com/" (plist-get recipe :repo)))
+            (message url)
+            (when insert (insert url)))
+        (message "not hosted on github"))))
+#+end_src
 * Behavior
 ** Path
 Inherit PATH from the shell
