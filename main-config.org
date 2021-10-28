@@ -436,7 +436,11 @@ Add some widgets
 ** Line numbers
 #+begin_src emacs-lisp
   (setq-default display-line-numbers-type 'relative)
-  (global-display-line-numbers-mode 1)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+#+end_src
+** Save place
+#+begin_src emacs-lisp
+  (save-place-mode t)
 #+end_src
 ** Modeline
 #+begin_src emacs-lisp
