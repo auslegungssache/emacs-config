@@ -195,6 +195,10 @@ Automatically select the help buffer, so that it'd be easier to close after read
 #+begin_src emacs-lisp
   (setq help-window-select t)
 #+end_src
+** TODO Helpful
+#+begin_src emacs-lisp
+  (use-package helpful)
+#+end_src
 * Buffer / window navigation
 ** Ibuffer
 Ibuffer provides a dired-like interface for working with buffers
