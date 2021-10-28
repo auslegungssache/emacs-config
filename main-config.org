@@ -367,15 +367,16 @@ Manipulate windows with ace
 #+end_src
 ** Consult
 #+begin_src emacs-lisp
-(use-package consult
-  :bind (("C-x b" . consult-buffer)
-         ("C-c m" . consult-imenu)
-         ("C-x M-:" . consult-complex-command)))
-(use-package consult-dir
-  :bind (("C-c d" . #'consult-dir)))
-(use-package consult-company
-  :after (consult company))
-(use-package consult-flycheck)
+  (use-package consult
+    :bind (("C-x b" . consult-buffer)
+           ("C-c m" . consult-imenu)
+           ("C-c s" . consult-line)
+           ("C-x M-:" . consult-complex-command)))
+  (use-package consult-dir
+    :bind (("C-c d" . #'consult-dir)))
+  (use-package consult-company
+    :after (consult company))
+  (use-package consult-flycheck)
 #+end_src
 * Embark
 #+begin_src emacs-lisp
@@ -384,7 +385,7 @@ Manipulate windows with ace
   (global-set-key (kbd "C-c .") #'embark-act)
   (global-set-key (kbd "C-h B") #'embark-bindings))
 (use-package embark-consult
-  :after (embark consult))
+  :after embark consult)
 #+end_src
 * Aesthetics
 ** Font
