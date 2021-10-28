@@ -218,7 +218,8 @@ Manipulate windows with ace
 #+begin_src emacs-lisp
   (use-package ace-window
     :config
-    (global-set-key (kbd "M-o") 'ace-window))
+    (global-set-key (kbd "M-o") 'ace-window)
+    (global-set-key (kbd "C-c w") 'ace-window))
 #+end_src
 * Project navigation
 ** TODO counsel-rg
