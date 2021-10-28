@@ -334,6 +334,11 @@ Manipulate windows with ace
     (projectile-mode 1))
 #+end_src
 * Completion
+** Recursive
+#+begin_src emacs-lisp
+  (setq enable-recursive-minibuffers t)
+  (setq minibuffer-depth-indicate-mode t)
+#+end_src
 ** Selectrum
 #+begin_src emacs-lisp
   (use-package selectrum
