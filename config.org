@@ -587,10 +587,7 @@ Allow exporting to HTML
     :config
     (setq-default vterm-exit-functions #'kill-buffer)
     (setq vterm-kill-buffer-on-exit t)
-    (evil-set-initial-state 'vterm-mode 'emacs)
-
-    (add-hook 'vterm-mode-hook (lambda ()
-                                 (display-line-numbers-mode 0))))
+    (evil-set-initial-state 'vterm-mode 'emacs))
 #+end_src
 *** eshell-vterm
 #+begin_src emacs-lisp
@@ -602,14 +599,9 @@ Allow exporting to HTML
 **** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
-  (require 'eshell)
-#+end_src
-*** Decoration
-#+begin_src emacs-lisp
-  (add-hook 'eshell-mode-hook (lambda () (display-line-numbers-mode 0)))
-#+end_src
-*** Completion
-#+begin_src emacs-lisp
+  (use-package eshell
+    :straight nil)
+
   (add-hook 'eshell-mode-hook
             (lambda ()
               (define-key eshell-mode-map (kbd "<tab>") #'completion-at-point)
