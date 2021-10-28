@@ -67,6 +67,7 @@ Smoother scrolling
 #+end_src
 *** Mouse
 #+begin_src emacs-lisp
+  (set-mouse-color "yellow")
   (setq mouse-wheel-follow-mouse t) ; scroll buffer over which the mouse is
   (setq mouse-wheel-scroll-amount '(1
                                     ((shift)
