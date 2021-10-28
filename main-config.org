@@ -160,6 +160,7 @@ TODO: add ligatures
   (blink-cursor-mode 0) ; disable cursor blinking
   (use-package beacon
     :config
+    ;;(setq beacon-color "SeaGreen3")
     (beacon-mode t)) ; show cursor when it jumps
 #+end_src
 ** expand-region
