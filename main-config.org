@@ -269,6 +269,19 @@ Automatically select the help buffer, so that it'd be easier to close after read
 #+begin_src emacs-lisp
   (use-package suggest)
 #+end_src
+* TODO Impatient
+This mode provides basic live reload support.
+#+begin_src emacs-lisp
+  (use-package impatient-mode
+    :disabled t)
+#+end_src
+* C
+** TODO Uncrustify
+Disabled because it needs the uncrustify binary
+#+begin_src emacs-lisp
+  (use-package uncrustify
+    :disabled t)
+#+end_src
 * Compiling
 ** RMSBolt
 #+begin_src emacs-lisp
@@ -338,6 +351,9 @@ Manipulate windows with ace
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode 1))
 #+end_src
+*** TODO Remove projectile
+Projectile doesn't behave properly and it should be replaced with
+something simpler
 * Completion
 ** Recursive
 #+begin_src emacs-lisp
@@ -779,6 +795,8 @@ Easy access to pastebins
 #+end_src
 ** Scripts
 No hydras yet
+** TODO Find an alternative
+Is this even necessary?
 * Useful tools
 ** TODO Crux
 #+begin_src emacs-lisp
