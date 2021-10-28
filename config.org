@@ -267,6 +267,14 @@ Use flyspell
 ** TODO Autocompletion of words
 ** TODO Automatic checking and fixing
 ** TODO Automatic selecting of language
+* Emacs development
+** TODO Refine
+Broken
+#+begin_src emacs-lisp :tangle no
+  (use-package refine
+    :config
+    (add-hook 'refine-mode-hook #'evil-emacs-state))
+#+end_src
 * Help
 ** Show keys
 #+begin_src emacs-lisp
