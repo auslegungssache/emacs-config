@@ -93,11 +93,6 @@ Show lines that highlight the indentation levels
     (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
     (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 #+end_src
-** Backups
-Put all backups in a single directory
-#+begin_src emacs-lisp
-  (setq backup-directory-alist `(("." . ,(expand-file-name "backups" user-emacs-directory))))
-#+end_src
 ** Quitting
 TODO: add support for quitting any minibuffer dialogue with ESC
 ** Dialogs
@@ -846,4 +841,16 @@ TODO: consider using devdocs-browser instead
            (buffer (get-buffer-create buffer-name)))
       (with-current-buffer buffer (emacs-lisp-mode))
       (pop-to-buffer buffer)))
+#+end_src
+* no-littering
+#+begin_src emacs-lisp
+  (use-package no-littering)
+
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+  (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups"))))
 #+end_src
