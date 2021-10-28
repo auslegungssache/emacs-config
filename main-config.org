@@ -134,7 +134,19 @@ TODO: add ligatures
   (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 #+end_src
 ** TODO Undo
-Add support for undo-tree with evil integration
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :after evil
+    :diminish undo-tree-mode
+    :config
+    (setq undo-tree-history-directory-alist `(("." . ,(expand-file-name "tmp/undo" user-emacs-directory))))
+    (setq undo-tree-auto-save-history t)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)
+    (global-undo-tree-mode)
+    (setq evil-undo-system 'undo-tree))
+#+end_src
+*** TODO Remove undo-tree eventually
 ** Tooltips
 #+begin_src emacs-lisp
   (setq x-gtk-use-system-tooltips nil)
