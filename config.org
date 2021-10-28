@@ -645,7 +645,8 @@ Allow exporting to HTML
   (use-package eshell
     :straight nil
     :config
-    (setq eshell-scroll-to-bottom-on-input t))
+    (setq eshell-scroll-to-bottom-on-input t)
+    (setq eshell-banner-message ""))
 
   (defun eshell-current-p ()
     (eq major-mode 'eshell-mode))
@@ -668,6 +669,12 @@ Allow exporting to HTML
 
   (eshell-bind "<tab>" #'completion-at-point)
   (eshell-bind "C-M-i" #'completion-at-point)
+#+end_src
+*** Up
+#+begin_src emacs-lisp
+  (use-package eshell-up
+    :config
+    (defalias 'eshell/up #'eshell-up))
 #+end_src
 *** Clear
 Clear the eshell buffer
