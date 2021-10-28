@@ -191,6 +191,9 @@ These keys get captured in Xorg with WSL
 (global-set-key (kbd "<XF86AudioRaiseVolume>") #'ignore)
 (global-set-key (kbd "<XF86AudioMute>") #'ignore)
 #+end_src
+** read-only
+#+begin_src emacs-lisp
+  (setq view-read-only t)
 * TODO Spelling and text autocompletion
 ** Ispell
 #+begin_src emacs-lisp
