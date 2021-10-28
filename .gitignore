@@ -1,27 +1,6 @@
 straight/
 elpa/
-auto-save-list/
-backups/
-transient/
-request/
-recentf
 projectile-bookmarks.eld
-.mc-lists.el
-devdocs
-
-# Eshell
-eshell/history
-eshell/lastdir
-
-# http
-url/
-
-# org-babel
 main-config.el
-
-# desktop
-.emacs.desktop*
-/.cache/
-/.lsp-session-v1
-tmp/
-/var
+var/
+etc/
