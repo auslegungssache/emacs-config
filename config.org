@@ -1,11 +1,7 @@
 #+TITLE: aeggy's emacs config
 #+AUTHOR: aeggy
 
-TODO: use use-package :bind instead of (global-set-key)
-TODO: use use-package :hook instead of (add-hook)
 TODO: use use-package :custom instead of (setq), or make an alternative (:set)
-TODO: untangle without loading org
-TODO: add uniquify
 * Package management
 ** Straight
 *** TODO Load
@@ -34,7 +30,7 @@ Load use-package and make it install all packages by default
   (use-package diminish)
 #+end_src
 * Behavior
-** TODO Path
+** Path
 Inherit PATH from the shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
@@ -120,7 +116,6 @@ Replace selection when you start typing
   (setq echo-keystrokes 0.1) ; show keystrokes right away
 #+end_src
 ** Parenthesis highlighting
-TODO: extend this to all kinds of blocks
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :config
