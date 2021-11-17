@@ -2,6 +2,10 @@
 #+AUTHOR: aeggy
 
 TODO: use use-package :custom instead of (setq), or make an alternative (:set)
+TODO: add some sort of a dashboard
+TODO: add a tab bar (centaur-tabs?)
+TODO: add quickrun https://github.com/emacsorphanage/quickrun
+TODO: add a translator tool (https://github.com/lorniu/go-translate perhaps)
 * Package management
 ** Straight
 *** TODO Load
