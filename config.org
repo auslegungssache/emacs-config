@@ -10,7 +10,6 @@ TODO: add a translator tool (https://github.com/lorniu/go-translate perhaps)
 ** Straight
 *** TODO Load
 This contains legacy code; fix it.
-
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
