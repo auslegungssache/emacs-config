@@ -796,7 +796,11 @@ View a file in a read-only window with syntax highlighting
   (use-package lsp-ui
     :after lsp-mode)
 #+end_src
-** Lisp
+** Clojure
+#+begin_src emacs-lisp
+  (use-package cider)
+#+end_src
+** Common Lisp
 *** Sly
 #+begin_src emacs-lisp
   (setq inferior-lisp-program "sbcl")
