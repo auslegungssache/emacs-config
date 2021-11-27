@@ -57,6 +57,15 @@ Load use-package and make it install all packages by default
         (message "not hosted on github"))))
 #+end_src
 * Behavior
+** General.el
+#+begin_src emacs-lisp
+  (use-package general
+    :config
+    (general-auto-unbind-keys)
+    (general-create-definer leader-def
+      :states 'normal
+      :prefix "SPC"))
+#+end_src
 ** Libraries
 #+begin_example
   (use-package s)
@@ -407,7 +416,9 @@ Manipulate windows with ace
 #+begin_src emacs-lisp
   (use-package ace-window
     :bind (("M-o" . ace-window)
-           ("C-c w" . ace-window)))
+           ("C-c w" . ace-window))
+    :config
+    (leader-def "w" #'ace-window))
 #+end_src
 ** winner
 #+begin_src emacs-lisp
@@ -432,6 +443,9 @@ Manipulate windows with ace
     :diminish
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (leader-def
+      "p p" #'projectile-commander
+      "p f" #'projectile-find-file)
     (projectile-mode 1))
 #+end_src
 *** TODO Remove projectile
@@ -478,7 +492,9 @@ something simpler
     :bind (("C-x b" . consult-buffer)
            ("C-c m" . consult-imenu)
            ("C-c s" . consult-line)
-           ("C-x M-:" . consult-complex-command)))
+           ("C-x M-:" . consult-complex-command))
+    :config
+    (leader-def "s" #'consult-line))
   (use-package consult-dir
     :bind (("C-c d" . #'consult-dir)))
   (use-package consult-company
@@ -662,7 +678,8 @@ Allow exporting to HTML
     :config
     (setq-default vterm-exit-functions #'kill-buffer)
     (setq vterm-kill-buffer-on-exit t)
-    (evil-set-initial-state 'vterm-mode 'emacs))
+    (evil-set-initial-state 'vterm-mode 'emacs)
+    (leader-def "v" #'vterm))
 #+end_src
 *** eshell-vterm
 #+begin_src emacs-lisp
@@ -680,7 +697,8 @@ Allow exporting to HTML
     :straight nil
     :config
     (setq eshell-scroll-to-bottom-on-input t)
-    (setq eshell-banner-message ""))
+    (setq eshell-banner-message "")
+    (leader-def "e" #'eshell))
 
   (defun eshell-current-p ()
     (eq major-mode 'eshell-mode))
@@ -885,12 +903,16 @@ TODO: disable line numbers
 ** avy
 #+begin_src emacs-lisp
   (use-package avy
-    :bind ("C-:" . #'avy-goto-char-timer))
+    :bind (("C-:" . #'avy-goto-char-timer))
+    :config
+    (leader-def "SPC" #'avy-goto-char-timer))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
   (use-package ace-link
-    :bind ("C-c l" . #'ace-link))
+    :bind ("C-c l" . #'ace-link)
+    :config
+    (leader-def "l" #'ace-link))
 #+end_src
 ** move-text
 #+begin_src emacs-lisp
