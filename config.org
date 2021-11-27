@@ -294,6 +294,9 @@ These keys get captured in Xorg with WSL
   (when (wsl-p)
     (setq browse-url-browser-function #'browse-url-generic
           browse-url-generic-program "explorer.exe"))
+
+  (when (wsl-p)
+    (global-set-key (kbd "<Scroll_Lock>") #'ignore))
 #+end_src
 *** TODO explorer.exe sometimes opens incorrectly
 ** TODO Emotes
