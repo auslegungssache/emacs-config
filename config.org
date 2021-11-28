@@ -63,7 +63,8 @@ Load use-package and make it install all packages by default
     (general-auto-unbind-keys)
     (general-create-definer leader-def
       :states 'normal
-      :prefix "SPC"))
+      :prefix "SPC")
+    (leader-def "SPC" #'execute-extended-command))
 #+end_src
 ** Libraries
 #+begin_example
