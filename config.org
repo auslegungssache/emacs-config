@@ -833,6 +833,10 @@ View a file in a read-only window with syntax highlighting
 #+begin_src emacs-lisp
   (use-package cider)
 #+end_src
+*** Hiccup
+#+begin_src emacs-lisp
+  (use-package html-to-hiccup)
+#+end_src
 ** Common Lisp
 *** Sly
 #+begin_src emacs-lisp
