@@ -139,6 +139,10 @@ Make all prompts y-or-n
   (fset 'yes-or-no-p 'y-or-n-p)
 #+end_src
 ** Saving
+#+begin_src emacs-lisp
+  (setq auto-save-no-message t)
+#+end_src
+** Saving
 Clean up the whitespace when saving
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
