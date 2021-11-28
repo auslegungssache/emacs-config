@@ -646,6 +646,10 @@ Allow exporting to HTML
     :straight nil
     :no-require t)
 #+end_src
+** Keys
+#+begin_src emacs-lisp
+  (define-key dired-mode-map (kbd "SPC") nil)
+#+end_src
 ** Narrowing
 #+begin_src emacs-lisp
   (use-package dired-narrow
