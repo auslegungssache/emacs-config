@@ -924,7 +924,7 @@ TODO: disable line numbers
   (use-package avy
     :bind (("C-:" . #'avy-goto-char-timer))
     :config
-    (leader-def "SPC" #'avy-goto-char-timer))
+    (leader-def "j" #'avy-goto-char-timer))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
