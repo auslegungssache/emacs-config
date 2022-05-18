@@ -553,10 +553,6 @@ Add some widgets
   (size-indication-mode 1)
 #+end_src
 ** Fringe
-*** Size
-#+begin_src emacs-lisp
-  (set-fringe-mode 8)
-#+end_src
 *** EOF
 #+begin_src emacs-lisp
   (setq-default indicate-empty-lines t)
@@ -904,14 +900,43 @@ TODO: add magit-forge
     (global-set-key (kbd "C-x g") 'magit-status))
 #+end_src
 ** git gutter
-TODO: fix showing modified lines
 #+begin_src emacs-lisp
   (use-package git-gutter
     :diminish
+    :init
+    (setq git-gutter:hide-gutter t)
+    (setq git-gutter:verbosity 0)
     :config
-    (custom-set-variables
-     '(git-gutter:update-interval 2))
     (global-git-gutter-mode t))
+
+  (use-package fringe-helper)
+  (use-package git-gutter-fringe
+    :diminish
+    :after git-gutter fringe-helper
+    :config
+    (fringe-helper-define 'git-gutter-fr:deleted 'bottom
+      "X......."
+      "XX......"
+      "XXX....."
+      "XXXX...."
+      "XXXXX..."
+      "XXXXXX.."
+      "XXXXXXX."
+      "XXXXXXXX")
+    (set-face-foreground 'git-gutter-fr:deleted "red")
+    (set-face-background 'git-gutter-fr:deleted "transparent"))
+
+  (defhydra git-gutter-hydra ()
+    "git-gutter"
+    ("j" #'git-gutter:next-hunk "Next hunk" :column "Navigation")
+    ("k" #'git-gutter:previous-hunk "Previous hunk")
+    ("p" #'git-gutter:popup-hunk "Popup hunk")
+    ("m" #'git-gutter:mark-hunk "Mark hunk")
+    ("%" #'git-gutter:end-of-hunk "End of hunk")
+    ("s" #'git-gutter:statistic "Statistic" :column "Operations")
+    ("S" #'git-gutter:stage-hunk "Stage hunk")
+    ("r" #'git-gutter:revert-hunk "Revert hunk"))
+  (leader-def "g g" #'git-gutter-hydra/body)
 #+end_src
 * Text editing
 ** TODO multiple-cursors
