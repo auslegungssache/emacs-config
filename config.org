@@ -983,9 +983,14 @@ TODO: disable line numbers
 ** avy
 #+begin_src emacs-lisp
   (use-package avy
-    :bind (("C-:" . #'avy-goto-char-timer))
     :config
-    (leader-def "j" #'avy-goto-char-timer))
+    (leader-def
+      "a a" #'avy-goto-char-timer
+      "a l" #'avy-goto-line
+
+      "a r c" #'avy-copy-region
+      "a r m" #'avy-move-region
+      "a r k" #'avy-kill-region))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
