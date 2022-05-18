@@ -832,9 +832,36 @@ View a file in a read-only window with syntax highlighting
 * Programming
 ** LSP
 #+begin_src emacs-lisp
-  (use-package lsp-mode)
+  (use-package lsp-mode
+    :config
+    (setq lsp-keymap-prefix "C-c l")
+
+    :hook ((python-mode . lsp)
+           (typescript-mode . lsp)
+           (web-mode . lsp)))
+
   (use-package lsp-ui
     :after lsp-mode)
+#+end_src
+** Web
+#+begin_src emacs-lisp
+  (use-package web-mode
+    :mode (("\\.html" . web-mode)
+           ("\\.svelte" . web-mode))
+    :config
+    (setq web-mode-markup-indent-offset 4)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-part-padding 4)
+    (setq web-mode-block-padding 4)
+    (setq web-mode-style-padding 2)
+    (setq web-mode-script-padding 4)
+
+    (setq web-mode-enable-auto-pairing t))
+#+end_src
+** Typescript
+#+begin_src emacs-lisp
+  (use-package typescript-mode)
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
@@ -889,15 +916,6 @@ TODO: Fix for elisp
     :config
     (global-flycheck-mode 0)
     (setq-default flycheck-disabled-checkers '(emacs-list-checkdoc)))
-#+end_src
-** Web
-*** TypeScript
-#+begin_src emacs-lisp
-  (use-package tide
-    :init
-    (setq typescript-indent-level 4)
-    :config
-    (add-hook 'typescript-mode-hook (lambda () (tide-mode 1))))
 #+end_src
 * Git
 TODO: add magit-forge
@@ -964,7 +982,6 @@ TODO: disable line numbers
 ** ace-link
 #+begin_src emacs-lisp
   (use-package ace-link
-    :bind ("C-c l" . #'ace-link)
     :config
     (leader-def "l" #'ace-link))
 #+end_src
