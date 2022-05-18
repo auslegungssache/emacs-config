@@ -948,6 +948,9 @@ TODO: add magit-forge
       "XXXXXX.."
       "XXXXXXX."
       "XXXXXXXX")
+    (set-face-background 'git-gutter-fr:modified "#d19a66")
+    (fringe-helper-define 'git-gutter-fr:modified nil "")
+
     (set-face-foreground 'git-gutter-fr:deleted "red")
     (set-face-background 'git-gutter-fr:deleted "transparent"))
 
@@ -960,7 +963,8 @@ TODO: add magit-forge
     ("%" #'git-gutter:end-of-hunk "End of hunk")
     ("s" #'git-gutter:statistic "Statistic" :column "Operations")
     ("S" #'git-gutter:stage-hunk "Stage hunk")
-    ("r" #'git-gutter:revert-hunk "Revert hunk"))
+    ("r" #'git-gutter:revert-hunk "Revert hunk")
+    ("q" (message "Abort") "Quit" :exit t))
   (leader-def "g g" #'git-gutter-hydra/body)
 #+end_src
 * Text editing
