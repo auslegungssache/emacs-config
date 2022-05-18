@@ -586,12 +586,16 @@ Add some widgets
   (save-place-mode t)
 #+end_src
 ** Modeline
+Use doom-modeline for more functionality
+
 #+begin_src emacs-lisp
   (use-package doom-modeline
+    :init
+    (setq doom-modeline-indent-info t)
     :config
     (doom-modeline-mode t))
 #+end_src
-*** clock
+*** Clock
 #+begin_src emacs-lisp
   (use-package display-time
     :no-require t
@@ -602,6 +606,10 @@ Add some widgets
     (setq display-time-default-load-average nil)
     :config
     (display-time-mode t))
+#+end_src
+*** Modeline hiding
+#+begin_src emacs-lisp
+  (use-package hide-mode-line)
 #+end_src
 * Org
 TODO: fix speed commands
