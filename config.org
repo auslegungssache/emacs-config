@@ -107,17 +107,24 @@ Smoother scrolling
   (setq scroll-conservatively 100000)
   (setq next-line-add-newlines nil)
   (setq scroll-preserve-screen-position t)
+
+  (use-package good-scroll
+    :config
+    (good-scroll-mode t))
+  ;; TODO: Fix weird jumping
 #+end_src
 *** Mouse
 #+begin_src emacs-lisp
-  (set-mouse-color "white")
+  (add-hook 'after-init-hook
+            (lambda () (set-mouse-color "white")))
   (setq mouse-wheel-follow-mouse t) ; scroll buffer over which the mouse is
-  (setq mouse-wheel-scroll-amount '(1
-                                    ((shift)
-                                     . hscroll)
-                                    ((meta))
-                                    ((control)
-                                     . text-scale))) ; add various modifiers to scrolling
+  (setq mouse-wheel-scroll-amount
+        '(1
+          ((shift)
+           . hscroll)
+          ((meta))
+          ((control)
+           . text-scale))) ; add various modifiers to scrolling
 #+end_src
 ** Indent guides
 Show lines that highlight the indentation levels
