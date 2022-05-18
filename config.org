@@ -193,11 +193,7 @@ TODO: add ligatures
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)
     (global-undo-tree-mode)
-    (setq evil-undo-system 'undo-tree)
-
-    ;; disable mouse drag
-    (advice-add #'evil-mouse-drag-region :override #'ignore)
-    (advice-add #'mouse-set-region :override #'ignore))
+    (setq evil-undo-system 'undo-tree))
 #+end_src
 *** TODO Remove undo-tree eventually
 ** Tooltips
