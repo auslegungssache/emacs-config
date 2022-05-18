@@ -528,9 +528,14 @@ Use system font
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
-(use-package kaolin-themes
-  :config
-  (load-theme 'kaolin-shiva t))
+  (use-package kaolin-themes
+    :disabled
+    :config
+    (load-theme 'kaolin-aurora t))
+
+  (use-package gruvbox-theme
+    :config
+    (load-theme 'gruvbox t))
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
@@ -556,7 +561,6 @@ Add some widgets
 #+begin_src emacs-lisp
   (setq-default indicate-empty-lines t)
 #+end_src
-*** TODO git gutter
 ** Frame title
 #+begin_src emacs-lisp
   (setq-default frame-title-format "%b (%f)") ; add a bit better frame title
@@ -905,10 +909,9 @@ TODO: fix showing modified lines
   (use-package git-gutter
     :diminish
     :config
-    (global-git-gutter-mode t)
-    (set-face-background 'git-gutter:modified 'nil)
-    (set-face-foreground 'git-gutter:added "green4")
-    (set-face-foreground 'git-gutter:deleted "red"))
+    (custom-set-variables
+     '(git-gutter:update-interval 2))
+    (global-git-gutter-mode t))
 #+end_src
 * Text editing
 ** TODO multiple-cursors
