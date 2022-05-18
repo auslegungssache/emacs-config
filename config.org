@@ -531,14 +531,21 @@ Use system font
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
-  (use-package kaolin-themes
-    :disabled
-    :config
-    (load-theme 'kaolin-aurora t))
+  ;;; Good themes:
+  ;; kaolin-themes
+  ;; gruvbox-theme
 
-  (use-package gruvbox-theme
+  (use-package doom-themes
     :config
-    (load-theme 'gruvbox t))
+    (load-theme 'doom-one t))
+#+end_src
+** Solaire
+Color popout modes differently
+
+#+begin_src emacs-lisp
+  (use-package solaire-mode
+    :config
+    (solaire-global-mode t))
 #+end_src
 ** Editor frame
 Make Emacs more minimalist
