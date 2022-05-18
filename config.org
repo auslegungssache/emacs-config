@@ -703,6 +703,29 @@ Allow exporting to HTML
 #+begin_src emacs-lisp
   (setq dired-auto-revert-buffer t)
 #+end_src
+* Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :config
+    (leader-def "t" #'treemacs-select-window))
+
+  (use-package treemacs-evil
+    :after treemacs)
+
+  (use-package treemacs-projectile
+    :after treemacs)
+
+  (use-package treemacs-magit
+    :after treemacs)
+
+  (use-package treemacs-all-the-icons
+    :after treemacs
+    :config
+    (treemacs-load-theme 'all-the-icons))
+
+  (use-package lsp-treemacs
+    :after treemacs lsp-mode)
+#+end_src
 * Terminal
 ** Vterm
 #+begin_src emacs-lisp
