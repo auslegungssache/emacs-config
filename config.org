@@ -927,6 +927,7 @@ TODO: add magit-forge
     :init
     (setq git-gutter:hide-gutter t)
     (setq git-gutter:verbosity 0)
+    (setq git-gutter:update-interval .02)
     :config
     (global-git-gutter-mode t))
 
