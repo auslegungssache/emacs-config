@@ -3,7 +3,6 @@
 
 TODO: use use-package :custom instead of (setq), or make an alternative (:set)
 TODO: add some sort of a dashboard
-TODO: add a tab bar (centaur-tabs?)
 TODO: add quickrun https://github.com/emacsorphanage/quickrun
 TODO: add a translator tool (https://github.com/lorniu/go-translate perhaps)
 * Package management
@@ -86,13 +85,7 @@ Inherit PATH from the shell
   (setq initial-scratch-message nil) ; remove all text from the scratch buffer
   (defun display-startup-echo-area-message ()
     (message "Welcome."))
-  (setq inhibit-startup-message t)
   (setq initial-major-mode 'org-mode) ; create scratch buffer with org mode
-#+end_src
-** Startup
-Resume the previous session
-#+begin_src emacs-lisp
-  (desktop-save-mode 1)
 #+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
@@ -102,12 +95,6 @@ Automatically revert a buffer when it changes on disk
 ** TODO Scrolling
 Smoother scrolling
 #+begin_src emacs-lisp
-  (setq scroll-margin 10)
-  (setq scroll-step 1)
-  (setq scroll-conservatively 100000)
-  (setq next-line-add-newlines nil)
-  (setq scroll-preserve-screen-position t)
-
   (use-package good-scroll
     :config
     (good-scroll-mode t))
@@ -117,14 +104,6 @@ Smoother scrolling
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook
             (lambda () (set-mouse-color "white")))
-  (setq mouse-wheel-follow-mouse t) ; scroll buffer over which the mouse is
-  (setq mouse-wheel-scroll-amount
-        '(1
-          ((shift)
-           . hscroll)
-          ((meta))
-          ((control)
-           . text-scale))) ; add various modifiers to scrolling
 #+end_src
 ** Indent guides
 Show lines that highlight the indentation levels
@@ -220,9 +199,9 @@ Alternative to beacon
 #+end_src
 ** expand-region
 #+begin_src emacs-lisp
-(use-package expand-region
-  :config
-  (global-set-key (kbd "C-=") #'er/expand-region))
+  (use-package expand-region
+    :config
+    (global-set-key (kbd "C-=") #'er/expand-region))
 #+end_src
 ** TODO smartparens
 #+begin_src emacs-lisp
@@ -292,6 +271,16 @@ These keys get captured in Xorg with WSL
           (or (string-match-p "Windows" (getenv "PATH"))
               (string-match-p "Microsoft" (shell-command-to-string "uname -a")))
           nil)))
+
+  (when (wsl-p)
+    (defun wsl-hostname ()
+      "Get the hostname of the host os."
+      (interactive)
+
+      (let ((hostname (s-trim (shell-command-to-string "grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'"))))
+        (message "Address is %s" hostname)
+        (kill-new hostname))))
+
   (when (wsl-p)
     (setq wsl-user
           (string-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
@@ -318,15 +307,15 @@ Add emojify https://github.com/iqbalansari/emacs-emojify
     :config
     (defengine github
       "https://github.com/search?ref=simplesearch&q=%s"
-      :keybinding "gh")
+      :keybinding "g")
     (defengine duckduckgo
       "https://duckduckgo.com/?q=%s"
       :keybinding "d")
     (defengine google
       "https://google.com/search?q=%s"
-      :keybinding "go")
+      :keybinding "g")
 
-    (setq engine/browser-function #'eww-browse-url)
+    (setq engine/browser-function #'browse-url-xdg-open)
     (engine/set-keymap-prefix (kbd "C-c e")))
 #+end_src
 *** TODO Make it use the browser outside of WSL
@@ -394,6 +383,13 @@ Disabled because it needs the uncrustify binary
 #+begin_src emacs-lisp
   (use-package rmsbolt)
 #+end_src
+* explain-pause-mode
+#+begin_src emacs-lisp
+  (use-package explain-pause-mode
+    :disabled
+    :config
+    (explain-pause-mode t))
+#+end_src
 * Reading
 ** PDF
 #+begin_src emacs-lisp
@@ -441,6 +437,13 @@ Manipulate windows with ace
     :config
     (winner-mode t))
 #+end_src
+** zoom
+Automatically resize windows
+#+begin_src emacs-lisp
+  (use-package zoom
+    :config
+    (leader-def "z" #'zoom))
+#+end_src
 ** TODO Ediff
 #+begin_src emacs-lisp
   (use-package ediff
@@ -459,7 +462,8 @@ Manipulate windows with ace
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (leader-def
       "p p" #'projectile-commander
-      "p f" #'projectile-find-file)
+      "p f" #'projectile-find-file
+      "p s" #'projectile-switch-project)
     (projectile-mode 1))
 #+end_src
 *** TODO Remove projectile
@@ -518,11 +522,19 @@ something simpler
 * Embark
 #+begin_src emacs-lisp
   (use-package embark
-    :bind (("C-c ." . #'embark-act)
-           ("C-h B" . #'embark-bindings)))
+    :after evil
+    :config
+    (general-def
+      :keymaps '(global emacs normal emacs)
+      "C-c ." #'embark-act
+      "M-." #'embark-act
+      "C-h B" #'embark-bindings)
+    (leader-def "." #'embark-act))
+
   (use-package embark-consult
     :after embark consult)
 #+end_src
+** TODO Relearn
 * Aesthetics
 ** Font
 Use system font
@@ -616,7 +628,7 @@ TODO: fix speed commands
 TODO: configure maintaining the ~/org/ directory
 TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
-  ;; (setq org-use-speed-commands t)
+  (setq org-use-speed-commands t)
   (setq org-startup-indented t)
   ;; (setq org-log-into-drawer t)
   ;; (setq org-log-done 'time)
@@ -625,15 +637,37 @@ TODO: uncomment and test org-log logging
   ;; (setq org-agenda-files '("~/org/"))
   (setq org-hide-emphasis-markers nil)
 #+end_src
+** Capture
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Tasks")
+           "* TODO %?\nCreated on: %T%i\n")
+          ("r" "Reading list" entry (file+headline org-default-notes-file "Reading list")
+           "* TODO %?\nCreated on: %T%i\n")
+          ("b" "Book list" entry (file+headline org-default-notes-file "Book list")
+           "* TODO %?\nCreated on: %T%i\n")
+          ("e" "Emacs todo" entry (file+headline org-default-notes-file "Emacs todo list")
+           "* TODO %?\nCreated on: %T%i\n")
+
+          ("f" "Favorite page" entry (file+headline org-default-favorites-file "Favorite pages")
+           "* %?\nCreated on: %T%i\n")))
+#+end_src
+** Keys
+#+begin_src emacs-lisp
+  (leader-def
+    "o d" (lambda () (interactive) (dired org-directory))
+    "o n" (lambda () (interactive) (find-file org-default-notes-file))
+    "o c" #'org-capture)
+#+end_src
 ** Evil
 #+begin_src emacs-lisp
   ;; TODO: add make blocks cycleable from evil normal mode
 #+end_src
 ** Babel
 #+begin_src emacs-lisp
-(setq org-src-tab-acts-natively t)
-(setq org-src-preserve-indentation nil)
-(setq org-src-window-setup 'current-window)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation nil)
+  (setq org-src-window-setup 'current-window)
 #+end_src
 *** Source blocks
 #+begin_src emacs-lisp
@@ -641,17 +675,15 @@ TODO: uncomment and test org-log logging
   (add-to-list 'org-structure-template-alist '("e" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("s" . "src sh"))
 #+end_src
-*** Exporting
-**** HTML
-Allow exporting to HTML
-#+begin_src emacs-lisp
-  (use-package htmlize)
-#+end_src
 * Evil
 #+begin_src emacs-lisp
   (use-package evil
     :config
-    (evil-mode t))
+    (evil-mode t)
+
+    (evil-define-key '(normal visual) 'global
+      (kbd "<tab>") #'er/expand-region)
+    (add-hook 'view-mode-hook #'evil-motion-state))
 #+end_src
 ** Lispy
 #+begin_src emacs-lisp
@@ -726,6 +758,18 @@ Allow exporting to HTML
   (use-package lsp-treemacs
     :after treemacs lsp-mode)
 #+end_src
+* Tabs
+#+begin_src emacs-lisp
+  (use-package centaur-tabs
+    :config
+    (setq centaur-tabs-style "bar"
+          centaur-tabs-set-icons t)
+    (centaur-tabs-headline-match)
+
+
+    (centaur-tabs-mode t)
+    (setq uniquify-separator "/"))
+#+end_src
 * Terminal
 ** Vterm
 #+begin_src emacs-lisp
@@ -747,7 +791,7 @@ Allow exporting to HTML
 **** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
-    ;;; -*- legical-binding: t; -*-
+   ;;; -*- legical-binding: t; -*-
 
   (use-package eshell
     :straight nil
@@ -765,7 +809,7 @@ Allow exporting to HTML
   (defun eshell-bind-initialize ()
     (dolist (bind eshell-binds)
       (define-key eshell-mode-map (kbd (car bind)) (cadr bind)))
-    ())
+    nil)
 
   (defun eshell-bind (key function)
     (add-to-list 'eshell-binds (list key function))
@@ -810,50 +854,94 @@ Go to the last line of the window
 
   (eshell-bind "C-l" #'eshell/last)
 #+end_src
+*** WSL
+**** Home
+#+begin_src emacs-lisp
+  (defun eshell/wsl-h ()
+    (interactive)
+
+    (eshell/cd (concat "/mnt/c/Users/" wsl-user)))
+#+end_src
+**** C
+#+begin_src emacs-lisp
+  (defun eshell/wsl-c ()
+    (interactive)
+
+    (eshell/cd "/mnt/c/"))
+#+end_src
 *** TODO img
 This shows an extra shell prompt
 #+begin_src emacs-lisp
   (defun eshell/img (img-path)
-    (let ((path (expand-file-name img-path))
-          img)
-      (setq img (create-image path))
-      (setf (image-property img :scale) .25)
-      (save-excursion
-        (insert-image img))
-      (eshell-send-input))
+    (let* ((path (expand-file-name img-path))
+           (img (create-image path))
+           (inhibit-read-only t))
+      (setf (image-property img :max-width) (/ (window-pixel-height) 3))
+      (let ((current-point (point))
+            (map (make-sparse-keymap)))
+        (define-key map [mouse-1]
+          `(lambda ()
+             (interactive)
+             (find-file ,path)
+             (view-mode)))
+        (insert-image img)
+        (put-text-property current-point (+ current-point 1)
+                           'keymap map))
+      (eshell-send-input)
+      (delete-region (line-beginning-position) (line-end-position)))
     nil)
 #+end_src
-**** TODO Fix sizing of images
-Currently only big images look normal
-**** TODO Disable showing two prompts after image
 *** TODO Backspace
 Pressing backspace on an empty prompt should send the user to the previous prompt
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun eshell--backspace ()
     (interactive)
     (if (get-char-property (- (point) 1) 'read-only)
         (eshell-previous-prompt 1)
-      (backward-delete-char-untabify 'untabify)))
+      (backward-delete-char 1)))
+
+  (eshell-bind "DEL" #'eshell--backspace)
 
   (eshell-bind "M-<left>" #'eshell-previous-prompt)
+  (eshell-bind "M-<up>" #'eshell-previous-prompt)
+
   (eshell-bind "M-<right>" #'eshell-next-prompt)
+  (eshell-bind "M-<down>" #'eshell-next-prompt)
 #+end_src
-*** M-x
+*** Escape
+**** M-x
 Run emacs commands from eshell
 #+begin_src emacs-lisp
-  (defun eshell/run (&optional command)
+  (defun eshell/in-em (&optional command)
     (if command
         (call-interactively (intern command))
       (error "No command")))
 #+end_src
-*** C-d
+**** Bash
+Run in bash
 #+begin_src emacs-lisp
-  (defun eshell-C-d () (interactive) (if (eq (point) (point-max)) (eshell-life-is-too-much) (delete-char 1)))
+  (defun eshell/in-sh (&rest body)
+    (let ((command (s-join " " body))
+          (inhibit-read-only t))
+      (fundamental-mode)
+      (call-process "/bin/sh" nil t nil "-c" command)
+      (eshell-mode)
+      (delete-region (line-beginning-position) (line-end-position))))
+#+end_src
+*** C-d
+Exits if C-d pressed on empty prompt
+#+begin_src emacs-lisp
+  (defun eshell-C-d ()
+    (interactive)
+    (if (eq (point) (point-max))
+        (eshell-life-is-too-much)
+      (delete-char 1)))
+
   (add-hook 'eshell-mode-hook (lambda () (local-set-key (kbd "C-d") 'eshell-C-d)))
 #+end_src
+**** TODO Fix this
 *** View
 View a file in a read-only window with syntax highlighting
-**** TODO Kill buffer and window after pressing q
 #+begin_src emacs-lisp
   (defun eshell/view (filename)
     (let ((opened (get-file-buffer filename))))
@@ -861,7 +949,14 @@ View a file in a read-only window with syntax highlighting
       (view-mode)
       (switch-to-buffer-other-window (current-buffer))
       (local-set-key (kbd "q") #'kill-buffer-and-window)
-      ()))
+      nil))
+#+end_src
+*** Visual cd
+#+begin_src emacs-lisp
+  (defun eshell/vcd ()
+    "Visually cd."
+
+    (eshell/cd (read-directory-name "Cd to: ")))
 #+end_src
 * Programming
 ** LSP
@@ -869,13 +964,16 @@ View a file in a read-only window with syntax highlighting
   (use-package lsp-mode
     :config
     (setq lsp-keymap-prefix "C-c l")
+    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
 
     :hook ((python-mode . lsp)
            (typescript-mode . lsp)
            (web-mode . lsp)))
 
   (use-package lsp-ui
-    :after lsp-mode)
+    :after lsp-mode
+    :config
+    (setq lsp-headerline-breadcrumb-enable nil))
 #+end_src
 ** Web
 #+begin_src emacs-lisp
@@ -900,10 +998,6 @@ View a file in a read-only window with syntax highlighting
 ** Clojure
 #+begin_src emacs-lisp
   (use-package cider)
-#+end_src
-*** Hiccup
-#+begin_src emacs-lisp
-  (use-package html-to-hiccup)
 #+end_src
 ** Common Lisp
 *** Sly
@@ -942,7 +1036,7 @@ View a file in a read-only window with syntax highlighting
     (company-prescient-mode t))
 #+end_src
 **** TODO Use counsel-company
-*** Error checking
+*** TODO Flycheck
 TODO: Fix for elisp
 #+begin_src emacs-lisp
   (use-package flycheck
@@ -952,11 +1046,13 @@ TODO: Fix for elisp
     (setq-default flycheck-disabled-checkers '(emacs-list-checkdoc)))
 #+end_src
 * Git
-TODO: add magit-forge
 #+begin_src emacs-lisp
   (use-package magit
     :config
     (global-set-key (kbd "C-x g") 'magit-status))
+
+  (use-package forge
+    :after magit)
 #+end_src
 ** git gutter
 #+begin_src emacs-lisp
@@ -983,11 +1079,14 @@ TODO: add magit-forge
       "XXXXXX.."
       "XXXXXXX."
       "XXXXXXXX")
-    (set-face-background 'git-gutter-fr:modified "#d19a66")
-    (fringe-helper-define 'git-gutter-fr:modified nil "")
-
     (set-face-foreground 'git-gutter-fr:deleted "red")
-    (set-face-background 'git-gutter-fr:deleted "transparent"))
+    (set-face-background 'git-gutter-fr:deleted "transparent")
+
+    (set-face-background 'git-gutter-fr:added "#98be65")
+    (fringe-helper-define 'git-gutter-fr:added nil "")
+
+    (set-face-background 'git-gutter-fr:modified "#d19a66")
+    (fringe-helper-define 'git-gutter-fr:modified nil ""))
 
   (defhydra git-gutter-hydra ()
     "git-gutter"
@@ -1006,10 +1105,10 @@ TODO: add magit-forge
 ** TODO multiple-cursors
 Add it and make it compatible with Evil
 ** Olivetti
-TODO: make it wider
-TODO: disable line numbers
 #+begin_src emacs-lisp
-  (use-package olivetti)
+  (use-package olivetti
+    :config
+    (setq-default olivetti-body-width 0.8))
 #+end_src
 ** avy
 #+begin_src emacs-lisp
@@ -1052,8 +1151,6 @@ Easy access to pastebins
 #+end_src
 ** Scripts
 No hydras yet
-** TODO Find an alternative
-Is this even necessary?
 * Useful tools
 ** TODO Crux
 #+begin_src emacs-lisp
@@ -1116,3 +1213,12 @@ TODO: consider using devdocs-browser instead
     (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
     (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
 #+end_src
+* Personal config
+#+begin_src emacs-lisp
+  (let ((personal-config (f-join user-emacs-directory "personal-config.el")))
+    (when (f-exists? personal-config)
+      (message "Personal config found! Loading")
+      (load personal-config)))
+#+end_src
+* TODO Calc
+** TODO Learn how to use it
