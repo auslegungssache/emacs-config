@@ -1,3 +1,7 @@
+;; Prevent white flash
+(set-background-color "#21242b")
+(set-foreground-color "#bbc2cf")
+
 (when (< emacs-major-version 27)
   (load-file (concat user-emacs-directory "early-init.el")))
 

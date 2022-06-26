@@ -7,8 +7,8 @@ TODO: add quickrun https://github.com/emacsorphanage/quickrun
 TODO: add a translator tool (https://github.com/lorniu/go-translate perhaps)
 * Package management
 ** Straight
-*** TODO Load
-This contains legacy code; fix it.
+*** Load
+This is a copypasted install script.
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -22,6 +22,7 @@ This contains legacy code; fix it.
         (goto-char (point-max))
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+  (setq straight-vc-git-default-clone-depth 1)
 #+end_src
 ** use-package
 Load use-package and make it install all packages by default
@@ -470,6 +471,7 @@ Automatically resize windows
 Projectile doesn't behave properly and it should be replaced with
 something simpler
 * Completion
+** TODO Consider adding https://github.com/muffinmad/emacs-mini-frame
 ** Recursive
 #+begin_src emacs-lisp
   (setq enable-recursive-minibuffers t)
@@ -477,7 +479,9 @@ something simpler
 #+end_src
 ** Selectrum
 #+begin_src emacs-lisp
+  (use-package orderless)
   (use-package selectrum
+    :after orderless
     :bind (("C-c ," . #'selectrum-quick-select)
            ("C-c r" . #'selectrum-repeat)
            :map selectrum-minibuffer-map
@@ -485,24 +489,21 @@ something simpler
     :custom-face
     (selectrum-current-candidate ((t (:foreground "#68f3ca"))))
     :config
-    (selectrum-mode t))
+    (selectrum-mode t)
+    (setq completion-styles '(orderless)))
+
+  (use-package selectrum-prescient
+    :config
+    (setq selectrum-prescient-enable-filtering nil)
+    (selectrum-prescient-mode t)
+    (prescient-persist-mode t))
 #+end_src
 *** TODO Make functions like find-file work like in Ivy (backspaces goes to parent)
-*** TODO Fix the theme
 *** Marginalia
 #+begin_src emacs-lisp
 (use-package marginalia
   :config
   (marginalia-mode t))
-#+end_src
-*** Prescient
-#+begin_src emacs-lisp
-  (use-package prescient
-    :config
-    (prescient-persist-mode t))
-  (use-package selectrum-prescient
-    :config
-    (selectrum-prescient-mode t))
 #+end_src
 ** Consult
 #+begin_src emacs-lisp
@@ -514,10 +515,59 @@ something simpler
     :config
     (leader-def "s" #'consult-line))
   (use-package consult-dir
-    :bind (("C-c d" . #'consult-dir)))
-  (use-package consult-company
-    :after (consult company))
+    :config
+    (leader-def
+      "d" #'consult-dir
+      "D" #'dired
+      "f" #'find-file))
   (use-package consult-flycheck)
+#+end_src
+** At point
+#+begin_src emacs-lisp
+  (use-package corfu
+    :straight (corfu :includes (corfu-quick corfu-info)
+                     :files (:defaults "extensions/corfu-*.el"))
+
+    :bind
+    (:map corfu-map
+          ("M-m" . corfu-move-to-minibuffer)
+          ("TAB" . corfu-next)
+          ([tab] . corfu-next)
+          ("S-TAB" . corfu-previous)
+          ([backtab] . corfu-previous))
+    :config
+    (setq tab-always-indent 'complete)
+
+    (setq corfu-cycle t)
+    (setq corfu-count 14)
+
+    (defun corfu-move-to-minibuffer ()
+      (interactive)
+      (let ((completion-extra-properties corfu--extra)
+            completion-cycle-threshold completion-cycling)
+        (apply #'consult-completion-in-region completion-in-region--data)))
+
+    (global-corfu-mode 1))
+
+  (use-package corfu-quick
+    :straight nil
+    :bind
+    (:map corfu-map
+          ("C-," . corfu-quick-complete)))
+
+  (use-package corfu-doc
+    :config
+    (corfu-doc-mode t))
+
+  (use-package corfu-info
+    :straight nil
+    :bind
+    (:map corfu-map
+          ("M--" . corfu-info-documentation)
+          ("M-p" . corfu-doc-scroll-down)
+          ("M-n" . corfu-doc-scroll-up)
+          ("M-d" . corfu-doc-toggle)))
+
 #+end_src
 * Embark
 #+begin_src emacs-lisp
@@ -1022,20 +1072,6 @@ View a file in a read-only window with syntax highlighting
   (electric-pair-mode 1)
   (show-paren-mode 1)
 #+end_src
-*** Completion
-#+begin_src emacs-lisp
-  (use-package company
-    :bind (("M-SPC" . #'company-complete))
-    :hook (prog-mode . company-mode)
-    :config
-    (setq company-dabbrev-downcase 0)
-    (setq company-idle-delay .3)
-    (setq company-minimum-prefix-length 1))
-  (use-package company-prescient
-    :config
-    (company-prescient-mode t))
-#+end_src
-**** TODO Use counsel-company
 *** TODO Flycheck
 TODO: Fix for elisp
 #+begin_src emacs-lisp
