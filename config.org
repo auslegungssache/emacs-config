@@ -353,6 +353,8 @@ Broken
     (which-key-mode)
     (setq which-key-idle-delay 0.5))
 #+end_src
+** TODO Shortdoc
+=shortdoc-display-group=
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
 #+begin_src emacs-lisp
@@ -471,7 +473,10 @@ Automatically resize windows
 Projectile doesn't behave properly and it should be replaced with
 something simpler
 * Completion
-** TODO Consider adding https://github.com/muffinmad/emacs-mini-frame
+** Mini frame
+#+begin_src emacs-lisp
+  (use-package mini-frame)
+#+end_src
 ** Recursive
 #+begin_src emacs-lisp
   (setq enable-recursive-minibuffers t)
@@ -705,9 +710,10 @@ TODO: uncomment and test org-log logging
 ** Keys
 #+begin_src emacs-lisp
   (leader-def
-    "o d" (lambda () (interactive) (dired org-directory))
-    "o n" (lambda () (interactive) (find-file org-default-notes-file))
-    "o c" #'org-capture)
+    "o b d" (lambda () (interactive) (dired org-directory))
+    "o b n" (lambda () (interactive) (find-file org-default-notes-file))
+    "o c" #'org-capture
+    "o n" #'org-toggle-narrow-to-subtree)
 #+end_src
 ** Evil
 #+begin_src emacs-lisp
@@ -738,7 +744,8 @@ TODO: uncomment and test org-log logging
 ** Lispy
 #+begin_src emacs-lisp
   (use-package evil-lispy
-    :hook (emacs-lisp-mode . evil-lispy-mode))
+    :hook ((emacs-lisp-mode . evil-lispy-mode)
+           (clojure-mode . evil-lispy-mode)))
 #+end_src
 * Dired
 #+begin_src emacs-lisp
@@ -1047,7 +1054,9 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
-  (use-package cider)
+  (use-package cider
+    :config
+    (evil-set-initial-state 'cider-inspector-mode 'emacs))
 #+end_src
 ** Common Lisp
 *** Sly
@@ -1140,6 +1149,10 @@ TODO: Fix for elisp
 * Text editing
 ** TODO multiple-cursors
 Add it and make it compatible with Evil
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors)
+#+end_src
 ** Olivetti
 #+begin_src emacs-lisp
   (use-package olivetti
@@ -1258,3 +1271,58 @@ TODO: consider using devdocs-browser instead
 #+end_src
 * TODO Calc
 ** TODO Learn how to use it
+* Emenu
+My own dmenu-like function
+** Requirements
+We need mini-frame because it provides child-frame minibuffer
+functionality.
+#+begin_src emacs-lisp
+  (straight-use-package 'mini-frame)
+#+end_src
+** Source
+#+begin_src emacs-lisp
+  (defvar emenu-frame-params
+    '((top . 0.3)
+      (width . 0.5)
+      (left . 0.8))
+    "Parameters used for minibuffer frame.")
+
+  (defmacro emenu (&rest body)
+    "Run body with anything in minibuffer being in a frame centered on the screen."
+
+    ;; TODO: Autofocus
+    `(let ((mini-frame-status (if (eq mini-frame-mode nil) 0 1))
+           (inhibit-quit t)
+           (selectrum-max-window-height 25)
+           (mini-frame-standalone t)
+           (mini-frame-show-parameters emenu-frame-params))
+       (mini-frame-mode 1)
+
+       (unwind-protect
+           (progn
+             ,@body)
+         (mini-frame-mode mini-frame-status))))
+#+end_src
+** Examples
+#+begin_src emacs-lisp :tangle no :results value silent
+  (emenu
+   (let (operation value)
+     (setq operation (completing-read "Operation: " '(("Uppercase") ("Lowercase")) nil t))
+
+     (setq value (with-temp-buffer
+                   (insert (read-string "Enter a string to convert: "))
+                   (cond
+                    ((string= operation "Uppercase") (upcase-region 1 (point-max)))
+                    ((string= operation "Lowercase") (downcase-region 1 (point-max))))
+                   (buffer-string)))
+     (kill-new value)
+     (message "%s" value)))
+#+end_src
+* REPL tools
+#+begin_src emacs-lisp
+  (defun nuke ()
+    (interactive)
+
+    (let ((inhibit-read-only t))
+      (setf (buffer-string) "")))
+#+end_src
