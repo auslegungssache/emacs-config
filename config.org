@@ -368,6 +368,13 @@ Automatically select the help buffer, so that it'd be easier to close after read
 #+begin_src emacs-lisp
   (use-package suggest)
 #+end_src
+** TODO Info
+#+begin_src emacs-lisp
+  (use-package info
+    :straight nil
+    :bind (:map Info-mode-map
+                ("C-c l" . #'ace-link)))
+#+end_src
 * TODO Impatient
 This mode provides basic live reload support.
 #+begin_src emacs-lisp
@@ -467,7 +474,9 @@ Automatically resize windows
       "p p" #'projectile-commander
       "p f" #'projectile-find-file
       "p s" #'projectile-switch-project)
-    (projectile-mode 1))
+    (setq projectile-enable-caching nil)
+
+    (projectile-global-mode t))
 #+end_src
 *** TODO Remove projectile
 Projectile doesn't behave properly and it should be replaced with
@@ -818,14 +827,37 @@ TODO: uncomment and test org-log logging
 * Tabs
 #+begin_src emacs-lisp
   (use-package centaur-tabs
+    :general
+    (:states '(normal)
+             "g t" 'centaur-tabs-forward
+             "g T" 'centaur-tabs-backward)
     :config
-    (setq centaur-tabs-style "bar"
-          centaur-tabs-set-icons t)
+    (setq centaur-tabs-style "slant"
+          centaur-tabs-height 32
+          centaur-tabs-set-icons t
+          centaur-tabs-show-navigation-buttons t
+
+          x-underline-at-descent-line t
+          centaur-tabs-set-bar 'under
+
+          centaur-tabs-cycle-scope 'tabs
+          centaur-tabs-enable-ido-completion nil
+
+          centaur-tabs-modified-marker "●"
+          centaur-tabs-set-modified-marker t
+
+          centaur-tabs-down-tab-text " ▼ "
+          centaur-tabs-forward-tab-text " ▶ "
+          centaur-tabs-backward-tab-text " ◀ "
+
+          uniquify-separator "/")
+
+    (leader-def
+      "g t s" 'centaur-tabs-switch-group)
+
     (centaur-tabs-headline-match)
-
-
-    (centaur-tabs-mode t)
-    (setq uniquify-separator "/"))
+    (centaur-tabs-group-by-projectile-project)
+    (centaur-tabs-mode t))
 #+end_src
 * Terminal
 ** Vterm
@@ -1144,7 +1176,7 @@ TODO: Fix for elisp
     ("S" #'git-gutter:stage-hunk "Stage hunk")
     ("r" #'git-gutter:revert-hunk "Revert hunk")
     ("q" (message "Abort") "Quit" :exit t))
-  (leader-def "g g" #'git-gutter-hydra/body)
+  (leader-def "h g" #'git-gutter-hydra/body)
 #+end_src
 * Text editing
 ** TODO multiple-cursors
