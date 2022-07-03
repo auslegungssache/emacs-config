@@ -55,6 +55,15 @@ Load use-package and make it install all packages by default
             (when insert (insert url)))
         (message "not hosted on github"))))
 #+end_src
+* no-littering
+#+begin_src emacs-lisp
+  (use-package no-littering
+    :config
+    (setq auto-save-file-name-transforms
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+    (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+    (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
+#+end_src
 * Behavior
 ** General.el
 #+begin_src emacs-lisp
@@ -136,7 +145,13 @@ Clean up the whitespace when saving
 #+end_src
 ** Recent
 #+begin_src emacs-lisp
-  (recentf-mode 1)
+  (use-package recentf
+    :straight nil
+    :config
+    (add-to-list 'recentf-exclude no-littering-var-directory)
+    (add-to-list 'recentf-exclude no-littering-etc-directory)
+
+    (recentf-mode 1))
 #+end_src
 ** Text replacing
 Replace selection when you start typing
@@ -168,7 +183,6 @@ TODO: add ligatures
     :after evil
     :diminish undo-tree-mode
     :config
-    (setq undo-tree-history-directory-alist `(("." . ,(expand-file-name "tmp/undo" user-emacs-directory))))
     ;;(setq undo-tree-auto-save-history t)
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)
@@ -811,7 +825,7 @@ TODO: uncomment and test org-log logging
     :after treemacs)
 
   (use-package treemacs-projectile
-    :after treemacs)
+    :after treemacs projectile)
 
   (use-package treemacs-magit
     :after treemacs)
@@ -827,6 +841,7 @@ TODO: uncomment and test org-log logging
 * Tabs
 #+begin_src emacs-lisp
   (use-package centaur-tabs
+    :after projectile
     :general
     (:states '(normal)
              "g t" 'centaur-tabs-forward
@@ -1281,18 +1296,6 @@ TODO: consider using devdocs-browser instead
            (buffer (get-buffer-create buffer-name)))
       (with-current-buffer buffer (emacs-lisp-mode))
       (pop-to-buffer buffer)))
-#+end_src
-* no-littering
-#+begin_src emacs-lisp
-  (use-package no-littering
-    :config
-    (add-to-list 'recentf-exclude no-littering-var-directory)
-    (add-to-list 'recentf-exclude no-littering-etc-directory)
-
-    (setq auto-save-file-name-transforms
-          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-    (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
-    (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
 #+end_src
 * Personal config
 #+begin_src emacs-lisp
