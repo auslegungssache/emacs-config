@@ -1361,3 +1361,6 @@ functionality.
     (let ((inhibit-read-only t))
       (setf (buffer-string) "")))
 #+end_src
+** Lisp
+*** Cider-like defun fringe
+When defun is up-to-date, show green in fringe.
