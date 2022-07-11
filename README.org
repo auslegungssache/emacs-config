@@ -24,7 +24,14 @@ This is a copypasted install script.
 Load use-package and make it install all packages by default
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
+  (use-package use-package
+    :config
+    (setq straight-use-package-by-default t)
+    (defun wrap-in-use-package ()
+      (interactive)
+      (let ((substring (buffer-substring (region-beginning) (region-end))))
+        (setf (buffer-substring (region-beginning) (region-end))
+              (format "(use-package emacs\n:config\n%s)" (s-trim substring))))))
 
   (use-package diminish)
 #+end_src
@@ -86,17 +93,21 @@ Inherit PATH from the shell
 #+end_src
 ** Initial buffer
 #+begin_src emacs-lisp
-  (setq inhibit-startup-screen t) ; don't show the info startup screen
-  (setq inhibit-startup-message t) ; ... and the message
-  (setq initial-scratch-message nil) ; remove all text from the scratch buffer
-  (defun display-startup-echo-area-message ()
-    (message "Welcome."))
-  (setq initial-major-mode 'org-mode) ; create scratch buffer with org mode
+  (use-package emacs
+    :config
+    (setq inhibit-startup-screen t) ; don't show the info startup screen
+    (setq inhibit-startup-message t) ; ... and the message
+    (setq initial-scratch-message nil) ; remove all text from the scratch buffer
+    (defun display-startup-echo-area-message ()
+      (message "Welcome."))
+    (setq initial-major-mode 'org-mode)) ; create scratch buffer with org mode
 #+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
 #+begin_src emacs-lisp
-  (global-auto-revert-mode 0)
+  (use-package emacs
+    :config
+    (global-auto-revert-mode 0))
 #+end_src
 ** TODO Scrolling
 Smoother scrolling
@@ -108,8 +119,10 @@ Smoother scrolling
 #+end_src
 *** Mouse
 #+begin_src emacs-lisp
-  (add-hook 'after-init-hook
-            (lambda () (set-mouse-color "white")))
+  (use-package emacs
+    :config
+    (add-hook 'after-init-hook
+              (lambda () (set-mouse-color "white"))))
 #+end_src
 ** Indent guides
 Show lines that highlight the indentation levels
@@ -128,16 +141,22 @@ TODO: add support for quitting any minibuffer dialogue with ESC
 ** Dialogs
 Make all prompts y-or-n
 #+begin_src emacs-lisp
-  (fset 'yes-or-no-p 'y-or-n-p)
+  (use-package emacs
+    :config
+    (fset 'yes-or-no-p 'y-or-n-p))
 #+end_src
 ** Saving
 #+begin_src emacs-lisp
-  (setq auto-save-no-message t)
+  (use-package emacs
+    :config
+    (setq auto-save-no-message t))
 #+end_src
 ** Saving
 Clean up the whitespace when saving
 #+begin_src emacs-lisp
-  (add-hook 'before-save-hook 'whitespace-cleanup)
+  (use-package emacs
+    :config
+    (add-hook 'before-save-hook 'whitespace-cleanup))
 #+end_src
 ** Recent
 #+begin_src emacs-lisp
@@ -152,12 +171,16 @@ Clean up the whitespace when saving
 ** Text replacing
 Replace selection when you start typing
 #+begin_src emacs-lisp
-  (delete-selection-mode t)
+  (use-package emacs
+    :config
+    (delete-selection-mode t))
 #+end_src
 ** Echoing status
 *** Keystrokes
 #+begin_src emacs-lisp
-  (setq echo-keystrokes 0.1) ; show keystrokes right away
+  (use-package emacs
+    :config
+    (setq echo-keystrokes 0.1)) ; show keystrokes right away
 #+end_src
 ** Parenthesis highlighting
 #+begin_src emacs-lisp
@@ -169,9 +192,11 @@ Replace selection when you start typing
 TODO: add more characters
 TODO: add ligatures
 #+begin_src emacs-lisp
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-  (setq inhibit-compacting-font-caches t)
-  (add-hook 'prog-mode-hook #'prettify-symbols-mode)
+  (use-package emacs
+    :config
+    (setq prettify-symbols-unprettify-at-point 'right-edge)
+    (setq inhibit-compacting-font-caches t)
+    (add-hook 'prog-mode-hook #'prettify-symbols-mode))
 #+end_src
 ** TODO Undo
 #+begin_src emacs-lisp
@@ -188,25 +213,32 @@ TODO: add ligatures
 *** TODO Remove undo-tree eventually
 ** Tooltips
 #+begin_src emacs-lisp
-  (setq x-gtk-use-system-tooltips nil)
+  (use-package emacs
+    :config
+    (setq x-gtk-use-system-tooltips nil))
 #+end_src
 ** GUI
 #+begin_src emacs-lisp
-  (setq frame-resize-pixelwise t) ; make emacs frames maximize fully
+  (use-package emacs
+    :config
+    ;; make emacs frames maximize fully
+    (setq frame-resize-pixelwise t))
 #+end_src
 ** Jump highlighting
 Alternative to beacon
 #+begin_src emacs-lisp
-  (require 'pulse)
-  (defun pulse-line (&rest _)
-    "Pulse the current line."
-    (pulse-momentary-highlight-one-line (point)))
+  (use-package pulse
+    :straight nil
+    :config
+    (defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
 
-  (set-face-background 'pulse-highlight-start-face "yellow")
+    (set-face-background 'pulse-highlight-start-face "yellow")
 
-  (dolist (command '(scroll-up-command scroll-down-command
-                                       recenter-top-bottom other-window))
-    (advice-add command :after #'pulse-line))
+    (dolist (command '(scroll-up-command scroll-down-command
+                                         recenter-top-bottom other-window))
+      (advice-add command :after #'pulse-line)))
 #+end_src
 ** expand-region
 #+begin_src emacs-lisp
@@ -225,19 +257,25 @@ Alternative to beacon
 *** Audio keys
 These keys get captured in Xorg with WSL
 #+begin_src emacs-lisp
-(global-set-key (kbd "<XF86AudioLowerVolume>") #'ignore)
-(global-set-key (kbd "<XF86AudioRaiseVolume>") #'ignore)
-(global-set-key (kbd "<XF86AudioMute>") #'ignore)
+  (use-package emacs
+    :config
+    (global-set-key (kbd "<XF86AudioLowerVolume>") #'ignore)
+    (global-set-key (kbd "<XF86AudioRaiseVolume>") #'ignore)
+    (global-set-key (kbd "<XF86AudioMute>") #'ignore))
 #+end_src
 ** read-only
 #+begin_src emacs-lisp
-  (setq view-read-only t)
+  (use-package emacs
+    :config
+    (setq view-read-only t))
 #+end_src
 ** upcase / downcase / capitalize
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-u") #'upcase-dwim)
-  (global-set-key (kbd "M-l") #'downcase-dwim)
-  (global-set-key (kbd "M-c") #'capitalize-dwim)
+  (use-package emacs
+    :config
+    (global-set-key (kbd "M-u") #'upcase-dwim)
+    (global-set-key (kbd "M-l") #'downcase-dwim)
+    (global-set-key (kbd "M-c") #'capitalize-dwim))
 #+end_src
 ** Uniquify
 #+begin_src emacs-lisp
@@ -275,39 +313,41 @@ These keys get captured in Xorg with WSL
 *** TODO Add icons to more files
 ** TODO WSL
 #+begin_src emacs-lisp
-  (defvar wsl-user nil)
+  (use-package emacs
+    :config
+    (defvar wsl-user nil)
 
-  (defun wsl-p ()
-    (not (eq
-          (or (string-match-p "Windows" (getenv "PATH"))
-              (string-match-p "Microsoft" (shell-command-to-string "uname -a")))
-          nil)))
+    (defun wsl-p ()
+      (not (eq
+            (or (string-match-p "Windows" (getenv "PATH"))
+                (string-match-p "Microsoft" (shell-command-to-string "uname -a")))
+            nil)))
 
-  (when (wsl-p)
-    (defun wsl-hostname ()
-      "Get the hostname of the host os."
+    (when (wsl-p)
+      (defun wsl-hostname ()
+        "Get the hostname of the host os."
+        (interactive)
+
+        (let ((hostname (s-trim (shell-command-to-string "grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'"))))
+          (message "Address is %s" hostname)
+          (kill-new hostname))))
+
+    (when (wsl-p)
+      (setq wsl-user
+            (string-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
+    (defun wsl-insert-home ()
       (interactive)
+      (if (wsl-p)
+          (insert (format "/mnt/c/Users/%s/" wsl-user))
+        (message "you're not on wsl")))
+    (global-set-key (kbd "C-c i w") #'wsl-insert-home)
 
-      (let ((hostname (s-trim (shell-command-to-string "grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'"))))
-        (message "Address is %s" hostname)
-        (kill-new hostname))))
+    (when (wsl-p)
+      (setq browse-url-browser-function #'browse-url-generic
+            browse-url-generic-program "explorer.exe"))
 
-  (when (wsl-p)
-    (setq wsl-user
-          (string-trim-right (shell-command-to-string "powershell.exe '$env:UserName'"))))
-  (defun wsl-insert-home ()
-    (interactive)
-    (if (wsl-p)
-        (insert (format "/mnt/c/Users/%s/" wsl-user))
-      (message "you're not on wsl")))
-  (global-set-key (kbd "C-c i w") #'wsl-insert-home)
-
-  (when (wsl-p)
-    (setq browse-url-browser-function #'browse-url-generic
-          browse-url-generic-program "explorer.exe"))
-
-  (when (wsl-p)
-    (global-set-key (kbd "<Scroll_Lock>") #'ignore))
+    (when (wsl-p)
+      (global-set-key (kbd "<Scroll_Lock>") #'ignore)))
 #+end_src
 *** TODO explorer.exe sometimes opens incorrectly
 ** TODO Emotes
@@ -368,7 +408,9 @@ Broken
 ** Help buffer
 Automatically select the help buffer, so that it'd be easier to close after reading
 #+begin_src emacs-lisp
-  (setq help-window-select t)
+  (use-package emacs
+    :config
+    (setq help-window-select t))
 #+end_src
 ** TODO Helpful
 #+begin_src emacs-lisp
@@ -427,12 +469,16 @@ Disabled because it needs the uncrustify binary
 ** Ibuffer
 Ibuffer provides a dired-like interface for working with buffers
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (use-package emacs
+    :config
+    (global-set-key (kbd "C-x C-b") 'ibuffer))
 #+end_src
 ** Windmove
 Allow navigating windows with Shift-<key arrow>
 #+begin_src emacs-lisp
-  (windmove-default-keybindings)
+  (use-package emacs
+    :config
+    (windmove-default-keybindings))
 #+end_src
 ** Eyebrowse
 Adds workspaces
@@ -498,8 +544,10 @@ something simpler
 #+end_src
 ** Recursive
 #+begin_src emacs-lisp
-  (setq enable-recursive-minibuffers t)
-  (setq minibuffer-depth-indicate-mode t)
+  (use-package emacs
+    :config
+    (setq enable-recursive-minibuffers t)
+    (setq minibuffer-depth-indicate-mode t))
 #+end_src
 ** Selectrum
 #+begin_src emacs-lisp
@@ -613,7 +661,9 @@ something simpler
 ** Font
 Use system font
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :height 100)
+  (use-package emacs
+    :config
+    (set-face-attribute 'default nil :height 100))
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
@@ -636,44 +686,58 @@ Color popout modes differently
 ** Editor frame
 Make Emacs more minimalist
 #+begin_src emacs-lisp
-  (scroll-bar-mode 0)
-  (tool-bar-mode 0)
-  (menu-bar-mode 0)
-  (blink-cursor-mode 0) ; disable cursor blinking
+  (use-package emacs
+    :config
+    (scroll-bar-mode 0)
+    (tool-bar-mode 0)
+    (menu-bar-mode 0)
+    (blink-cursor-mode 0))
 #+end_src
 
 Add some widgets
 #+begin_src emacs-lisp
-  ;;(global-hl-line-mode 1)
-  (column-number-mode 1)
-  (size-indication-mode 1)
+  (use-package emacs
+    :config
+    ;;(global-hl-line-mode 1)
+    (column-number-mode 1)
+    (size-indication-mode 1))
 #+end_src
 ** Fringe
 *** EOF
 #+begin_src emacs-lisp
-  (setq-default indicate-empty-lines t)
+  (use-package emacs
+    :config
+    (setq-default indicate-empty-lines t))
 #+end_src
 ** Frame title
 #+begin_src emacs-lisp
-  (setq-default frame-title-format "%b (%f)") ; add a bit better frame title
+  (use-package emacs
+    :config
+    ;; add a bit better frame title
+    (setq-default frame-title-format "%b (%f)"))
 #+end_src
 ** Bell
 #+begin_src emacs-lisp
-  (setq ring-bell-function (lambda ()))
-  (setq visible-bell nil)
+  (use-package emacs
+    :config
+    (setq ring-bell-function (lambda ()))
+    (setq visible-bell nil))
 #+end_src
 ** Line numbers
 #+begin_src emacs-lisp
-  (setq-default display-line-numbers-type 'relative)
-  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (use-package emacs
+    :config
+    (setq-default display-line-numbers-type 'relative)
+    (add-hook 'prog-mode-hook #'display-line-numbers-mode))
 #+end_src
 ** Save place
 #+begin_src emacs-lisp
-  (save-place-mode t)
+  (use-package emacs
+    :config
+    (save-place-mode t))
 #+end_src
 ** Modeline
 Use doom-modeline for more functionality
-
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :init
@@ -702,14 +766,17 @@ TODO: fix speed commands
 TODO: configure maintaining the ~/org/ directory
 TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
-  (setq org-use-speed-commands t)
-  (setq org-startup-indented t)
-  ;; (setq org-log-into-drawer t)
-  ;; (setq org-log-done 'time)
-  (setq org-support-shift-select t)
-  ;; (setq org-directory "~/org/")
-  ;; (setq org-agenda-files '("~/org/"))
-  (setq org-hide-emphasis-markers nil)
+  (use-package org
+    :straight nil
+    :config
+    (setq org-use-speed-commands t)
+    (setq org-startup-indented t)
+    ;; (setq org-log-into-drawer t)
+    ;; (setq org-log-done 'time)
+    (setq org-support-shift-select t)
+    ;; (setq org-directory "~/org/")
+    ;; (setq org-agenda-files '("~/org/"))
+    (setq org-hide-emphasis-markers nil))
 #+end_src
 ** Capture
 #+begin_src emacs-lisp
@@ -737,12 +804,18 @@ TODO: uncomment and test org-log logging
 ** Evil
 #+begin_src emacs-lisp
   ;; TODO: add make blocks cycleable from evil normal mode
+  (use-package evil-org
+    :after evil
+    :config
+    (add-hook 'org-mode-hook #'evil-org-mode))
 #+end_src
 ** Babel
 #+begin_src emacs-lisp
-  (setq org-src-tab-acts-natively t)
-  (setq org-src-preserve-indentation nil)
-  (setq org-src-window-setup 'current-window)
+  (use-package emacs
+    :config
+    (setq org-src-tab-acts-natively t)
+    (setq org-src-preserve-indentation nil)
+    (setq org-src-window-setup 'current-window))
 #+end_src
 *** Source blocks
 #+begin_src emacs-lisp
@@ -770,7 +843,9 @@ TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
   (use-package dired
     :straight nil
-    :no-require t)
+    :no-require t
+    :config
+    (setq dired-dwim-target t))
 #+end_src
 ** Keys
 #+begin_src emacs-lisp
@@ -792,10 +867,6 @@ TODO: uncomment and test org-log logging
     (setq dired-omit-files "^\\...+$")
     (add-to-list 'dired-omit-extensions ".eld")
     (add-hook 'dired-mode-hook #'dired-omit-mode))
-#+end_src
-** DWIM
-#+begin_src emacs-lisp
-  (setq dired-dwim-target t)
 #+end_src
 ** Details
 #+begin_src emacs-lisp
@@ -1121,8 +1192,10 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 *** Parenthesis
 #+begin_src emacs-lisp
-  (electric-pair-mode 1)
-  (show-paren-mode 1)
+  (use-package emacs
+    :config
+    (electric-pair-mode 1)
+    (show-paren-mode 1))
 #+end_src
 *** TODO Flycheck
 TODO: Fix for elisp
