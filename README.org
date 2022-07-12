@@ -89,11 +89,11 @@ Load use-package and make it install all packages by default
     (leader-def "SPC" #'execute-extended-command))
 #+end_src
 ** Libraries
-#+begin_example
+#+begin_src emacs-lisp
   (use-package s)
   (use-package f)
   (use-package dash)
-#+end_example
+#+end_src
 ** Path
 Inherit PATH from the shell
 #+begin_src emacs-lisp
