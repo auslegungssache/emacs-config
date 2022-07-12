@@ -4,13 +4,14 @@
          (native-comp-available-p))
     (progn
       (message "Native compilation is available")
-      (setq comp-deferred-compilation t))
+      (setq comp-deferred-compilation t
+            native-comp-async-report-warnings-errors nil))
   (message "Native complation is *not* available"))
 (if (functionp 'json-serialize)
     (message "Native JSON is available")
   (message "Native JSON is *not* available"))
 
-(set-language-environment   "utf-8")
+(set-language-environment "utf-8")
 
 ;; Make emacs more minimalist
 (scroll-bar-mode 0)

@@ -18,15 +18,19 @@ This is a copypasted install script.
         (goto-char (point-max))
         (eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+
   (setq straight-vc-git-default-clone-depth 1)
+  (setq straight-check-for-modifications nil)
 #+end_src
 ** use-package
 Load use-package and make it install all packages by default
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (use-package use-package
+    :demand
     :config
     (setq straight-use-package-by-default t)
+
     (defun wrap-in-use-package ()
       (interactive)
       (let ((substring (buffer-substring (region-beginning) (region-end))))
@@ -379,15 +383,16 @@ Add emojify https://github.com/iqbalansari/emacs-emojify
 * TODO Spelling and text autocompletion
 ** Ispell
 #+begin_src emacs-lisp
-(use-package ispell
-  :straight nil)
+  (use-package ispell
+    :defer
+    :straight nil)
 #+end_src
 ** Flyspell
 TODO: disable when changing modes to a programming mode
 #+begin_src emacs-lisp :tangle no
   (use-package flyspell
     :straight nil
-    :hook (prog-mode . flyspell-mode))
+    :hook prog-mode
 #+end_src
 Use flyspell
 ** TODO Autocompletion of words
@@ -901,6 +906,7 @@ TODO: uncomment and test org-log logging
 * Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
+    :defer
     :config
     (leader-def "t" #'treemacs-select-window))
 
@@ -1172,6 +1178,7 @@ View a file in a read-only window with syntax highlighting
     (global-tree-sitter-mode)
     (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
   (use-package tree-sitter-langs
+    :defer
     :after tree-sitter)
 #+end_src
 ** Web
@@ -1339,7 +1346,8 @@ Add it and make it compatible with Evil
 #+end_src
 ** TODO snippets
 #+begin_src emacs-lisp
-  (use-package yasnippet)
+  (use-package yasnippet
+    :defer)
 #+end_src
 ** Translating
 #+begin_src emacs-lisp
@@ -1351,11 +1359,17 @@ Add it and make it compatible with Evil
   ;; TODO: use emacs state in gts buffers
   ;; TODO: use minibuffer selection for languages everytime
 #+end_src
+* Optimization
+#+begin_src emacs-lisp
+  (use-package esup
+    :defer)
+#+end_src
 * Web services
 ** Pastebins
 Easy access to pastebins
 #+begin_src emacs-lisp
-  (use-package webpaste)
+  (use-package webpaste
+    :defer)
 #+end_src
 * Hydras
 ** Install
@@ -1367,7 +1381,8 @@ No hydras yet
 * Useful tools
 ** TODO Crux
 #+begin_src emacs-lisp
-  (use-package crux)
+  (use-package crux
+    :defer)
 #+end_src
 ** Devdocs
 TODO: consider using devdocs-browser instead
