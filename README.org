@@ -1146,6 +1146,14 @@ View a file in a read-only window with syntax highlighting
     :config
     (setq lsp-headerline-breadcrumb-enable nil))
 #+end_src
+** Tree Sitter
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :config
+    (global-tree-sitter-mode)
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (use-package tree-sitter-langs)
+#+end_src
 ** Web
 #+begin_src emacs-lisp
   (use-package web-mode
