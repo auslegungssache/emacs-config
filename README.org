@@ -663,7 +663,9 @@ Use system font
 #+begin_src emacs-lisp
   (use-package emacs
     :config
-    (set-face-attribute 'default nil :height 100))
+    (set-face-attribute 'default nil
+                        :family "Fira Code"
+                        :height 120))
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
