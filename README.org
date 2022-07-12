@@ -58,6 +58,12 @@ Load use-package and make it install all packages by default
             (when insert (insert url)))
         (message "not hosted on github"))))
 #+end_src
+* Garbage collection
+#+begin_src emacs-lisp
+  (use-package gcmh
+    :config
+    (gcmh-mode t))
+#+end_src
 * no-littering
 #+begin_src emacs-lisp
   (use-package no-littering
@@ -399,6 +405,7 @@ Broken
 ** Show keys
 #+begin_src emacs-lisp
   (use-package which-key
+    :disabled
     :config
     (which-key-mode)
     (setq which-key-idle-delay 0.5))
@@ -471,14 +478,15 @@ Disabled because it needs the uncrustify binary
 ** Ibuffer
 Ibuffer provides a dired-like interface for working with buffers
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (global-set-key (kbd "C-x C-b") 'ibuffer))
+  (use-package ibuffer
+    :straight nil
+    :bind ("C-x C-b" . #'ibuffer))
 #+end_src
 ** Windmove
 Allow navigating windows with Shift-<key arrow>
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package windmove
+    :straight nil
     :config
     (windmove-default-keybindings))
 #+end_src
@@ -654,7 +662,8 @@ something simpler
       "C-c ." #'embark-act
       "M-." #'embark-act
       "C-h B" #'embark-bindings)
-    (leader-def "." #'embark-act))
+    (leader-def "." #'embark-act)
+    (setq prefix-help-command #'embark-prefix-help-command))
 
   (use-package embark-consult
     :after embark consult)
@@ -730,7 +739,8 @@ Add some widgets
 #+end_src
 ** Save place
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package saveplace
+    :straight nil
     :config
     (save-place-mode t))
 #+end_src
@@ -810,7 +820,9 @@ TODO: uncomment and test org-log logging
 #+end_src
 ** Babel
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package org-src
+    :after org
+    :straight nil
     :config
     (setq org-src-tab-acts-natively t)
     (setq org-src-preserve-indentation nil)
@@ -881,10 +893,14 @@ TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
   (setq dired-auto-revert-buffer t)
 #+end_src
+* Esup
+#+begin_src emacs-lisp
+  (use-package esup
+    :defer)
+#+end_src
 * Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
-    :hook prog-mode
     :config
     (leader-def "t" #'treemacs-select-window))
 
@@ -1152,7 +1168,6 @@ View a file in a read-only window with syntax highlighting
 ** Tree Sitter
 #+begin_src emacs-lisp
   (use-package tree-sitter
-    :hook prog-mode
     :config
     (global-tree-sitter-mode)
     (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))

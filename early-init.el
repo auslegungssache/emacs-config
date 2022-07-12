@@ -1,5 +1,4 @@
-(setq gc-cons-threshold 200000000)
-(run-with-idle-timer 10 t #'garbage-collect)
+(setq gc-cons-threshold most-positive-fixnum)
 
 (if (and (fboundp 'native-comp-available-p)
          (native-comp-available-p))
@@ -12,13 +11,6 @@
   (message "Native JSON is *not* available"))
 
 (set-language-environment   "utf-8")
-(prefer-coding-system       'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
 
 ;; Make emacs more minimalist
 (scroll-bar-mode 0)
