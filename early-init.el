@@ -20,8 +20,10 @@
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
 
+;; Make emacs more minimalist
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
+(blink-cursor-mode 0)
 
 (setq frame-resize-pixelwise t)
