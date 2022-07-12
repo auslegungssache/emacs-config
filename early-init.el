@@ -7,6 +7,9 @@
       (message "Native compilation is available")
       (setq comp-deferred-compilation t))
   (message "Native complation is *not* available"))
+(if (functionp 'json-serialize)
+    (message "Native JSON is available")
+  (message "Native JSON is *not* available"))
 
 (set-language-environment   "utf-8")
 (prefer-coding-system       'utf-8)

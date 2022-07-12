@@ -1443,6 +1443,12 @@ functionality.
      (kill-new value)
      (message "%s" value)))
 #+end_src
+* Repeat mode
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (repeat-mode))
+#+end_src
 * REPL tools
 #+begin_src emacs-lisp
   (defun nuke ()
