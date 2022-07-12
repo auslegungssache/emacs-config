@@ -443,7 +443,8 @@ Disabled because it needs the uncrustify binary
 * Compiling
 ** RMSBolt
 #+begin_src emacs-lisp
-  (use-package rmsbolt)
+  (use-package rmsbolt
+    :defer)
 #+end_src
 * explain-pause-mode
 #+begin_src emacs-lisp
@@ -456,6 +457,7 @@ Disabled because it needs the uncrustify binary
 ** PDF
 #+begin_src emacs-lisp
   (use-package pdf-tools ;; This package causes issues
+    :defer
     :magic ("%PDF" . (lambda () (pdf-view-mode) (display-line-numbers-mode 0)))
     :config
     (add-hook 'pdf-tools-enabled-hook 'auto-revert-mode))
@@ -523,6 +525,7 @@ Automatically resize windows
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
+    :defer
     :diminish
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -686,15 +689,8 @@ Color popout modes differently
     (solaire-global-mode t))
 #+end_src
 ** Editor frame
+[[file:early-init.el::;; Make emacs more minimalist][Most is stored in the early-init.el file]]
 Make Emacs more minimalist
-#+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (scroll-bar-mode 0)
-    (tool-bar-mode 0)
-    (menu-bar-mode 0)
-    (blink-cursor-mode 0))
-#+end_src
 
 Add some widgets
 #+begin_src emacs-lisp
@@ -769,6 +765,7 @@ TODO: configure maintaining the ~/org/ directory
 TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
   (use-package org
+    :defer
     :straight nil
     :config
     (setq org-use-speed-commands t)
@@ -887,6 +884,7 @@ TODO: uncomment and test org-log logging
 * Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
+    :hook prog-mode
     :config
     (leader-def "t" #'treemacs-select-window))
 
@@ -897,6 +895,7 @@ TODO: uncomment and test org-log logging
     :after treemacs projectile)
 
   (use-package treemacs-magit
+    :defer
     :after treemacs)
 
   (use-package treemacs-all-the-icons
@@ -948,6 +947,7 @@ TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
   (use-package vterm
     :when (eq system-type 'gnu/linux)
+    :defer
     :config
     (setq-default vterm-exit-functions #'kill-buffer)
     (setq vterm-kill-buffer-on-exit t)
@@ -957,6 +957,7 @@ TODO: uncomment and test org-log logging
 *** eshell-vterm
 #+begin_src emacs-lisp
   (use-package eshell-vterm
+    :after vterm eshell
     :config
     (eshell-vterm-mode)
     (defalias 'eshell/v 'eshell-exec-visual))
@@ -964,9 +965,8 @@ TODO: uncomment and test org-log logging
 **** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
-   ;;; -*- legical-binding: t; -*-
-
   (use-package eshell
+    :defer
     :straight nil
     :config
     (setq eshell-scroll-to-bottom-on-input t)
@@ -1135,6 +1135,7 @@ View a file in a read-only window with syntax highlighting
 ** LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
+    :hook prog-mode
     :config
     (setq lsp-keymap-prefix "C-c l")
     (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
@@ -1151,10 +1152,12 @@ View a file in a read-only window with syntax highlighting
 ** Tree Sitter
 #+begin_src emacs-lisp
   (use-package tree-sitter
+    :hook prog-mode
     :config
     (global-tree-sitter-mode)
     (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-  (use-package tree-sitter-langs)
+  (use-package tree-sitter-langs
+    :after tree-sitter)
 #+end_src
 ** Web
 #+begin_src emacs-lisp
@@ -1174,11 +1177,13 @@ View a file in a read-only window with syntax highlighting
 #+end_src
 ** Typescript
 #+begin_src emacs-lisp
-  (use-package typescript-mode)
+  (use-package typescript-mode
+    :mode ("\\.ts$" "\\.tsx$"))
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
   (use-package cider
+    :mode ("\\.clj$" "\\.cljs$")
     :config
     (evil-set-initial-state 'cider-inspector-mode 'emacs))
 #+end_src
@@ -1187,6 +1192,7 @@ View a file in a read-only window with syntax highlighting
 #+begin_src emacs-lisp
   (setq inferior-lisp-program "sbcl")
   (use-package sly
+    :mode ("\\.cl$" "\\.lisp$")
     :config
     (add-hook 'sly-db-hook #'evil-emacs-state))
 #+end_src
@@ -1218,15 +1224,18 @@ TODO: Fix for elisp
 #+end_src
 *** TODO Quickrun
 #+begin_src emacs-lisp
-  (use-package quickrun)
+  (use-package quickrun
+    :defer)
 #+end_src
 * Git
 #+begin_src emacs-lisp
   (use-package magit
+    :defer
     :config
     (global-set-key (kbd "C-x g") 'magit-status))
 
   (use-package forge
+    :defer
     :after magit)
 #+end_src
 ** git gutter
@@ -1320,6 +1329,7 @@ Add it and make it compatible with Evil
 ** Translating
 #+begin_src emacs-lisp
   (use-package go-translate
+    :defer
     :config
     (setq gts-translate-list '(("en" "de") ("en" "cz") ("de" "en"))))
 
@@ -1347,7 +1357,8 @@ No hydras yet
 ** Devdocs
 TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
-  (use-package devdocs)
+  (use-package devdocs
+    :defer)
 #+end_src
 ** Playground
 #+begin_src emacs-lisp
@@ -1447,7 +1458,8 @@ functionality.
 #+end_src
 * Repeat mode
 #+begin_src emacs-lisp
-  (use-package emacs
+  (use-package repeat
+    :straight nil
     :config
     (repeat-mode))
 #+end_src
