@@ -538,7 +538,6 @@ Automatically resize windows
 ** Projectile
 #+begin_src emacs-lisp
   (use-package projectile
-    :defer
     :diminish
     :config
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
@@ -842,6 +841,7 @@ TODO: uncomment and test org-log logging
 * Evil
 #+begin_src emacs-lisp
   (use-package evil
+    :demand
     :config
     (evil-mode t)
 
@@ -931,7 +931,7 @@ TODO: uncomment and test org-log logging
 * Tabs
 #+begin_src emacs-lisp
   (use-package centaur-tabs
-    :after projectile
+    :demand
     :general
     (:states '(normal)
              "g t" 'centaur-tabs-forward
