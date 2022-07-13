@@ -2,6 +2,8 @@
 (set-background-color "#21242b")
 (set-foreground-color "#bbc2cf")
 
+(toggle-debug-on-error)
+
 (let ((file-name-handler-alist nil))
   (when (< emacs-major-version 27)
     (load-file (concat user-emacs-directory "early-init.el")))

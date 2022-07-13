@@ -127,7 +127,7 @@ Inherit PATH from the shell
 #+end_src
 ** Initial buffer
 #+begin_src emacs-lisp
-  (leaf startup
+  (leaf inhibit
     :preface
     (defun display-startup-echo-area-message ()
       (message "Welcome."))
@@ -135,7 +135,7 @@ Inherit PATH from the shell
     :setq ((inhibit-startup-screen . t)
            (inhibit-startup-message . t)
            (initial-scratch-message . nil)
-           (initial-major-mode 'org-mode)))
+           (initial-major-mode function org-mode)))
 #+end_src
 ** Loading
 Automatically revert a buffer when it changes on disk
