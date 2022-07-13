@@ -129,7 +129,7 @@ Inherit PATH from the shell
 #+begin_src emacs-lisp
   (leaf startup
     :preface
-    (defun display-startup-echo-area-message nil
+    (defun display-startup-echo-area-message ()
       (message "Welcome."))
 
     :setq ((inhibit-startup-screen . t)
@@ -505,8 +505,9 @@ Disabled because it needs the uncrustify binary
 #+end_src
 ** Books
 #+begin_src emacs-lisp
-  (use-package nov
-    :mode ("\\.epub\\'" . nov-mode))
+  (leaf nov
+    :mode ("\\.epub\\'")
+    :straight t)
 #+end_src
 * Buffer / window navigation
 ** Ibuffer
@@ -537,16 +538,17 @@ Adds workspaces
 ** ace-window
 Manipulate windows with ace
 #+begin_src emacs-lisp
-  (use-package ace-window
+  (leaf ace-window
     :bind (("M-o" . ace-window)
            ("C-c w" . ace-window))
+    :straight t
     :config
     (leader-def "w" #'ace-window))
 #+end_src
 ** winner
 #+begin_src emacs-lisp
-  (use-package winner
-    :straight nil
+  (leaf winner
+    :require t
     :config
     (winner-mode t))
 #+end_src
@@ -561,11 +563,10 @@ Automatically resize windows
 #+end_src
 ** TODO Ediff
 #+begin_src emacs-lisp
-  (use-package ediff
-    :straight nil
-    :config
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-    (setq ediff-split-window-function 'split-window-horizontally))
+  (leaf ediff
+    :require t
+    :setq ((ediff-window-setup-function quote ediff-setup-windows-plain)
+           (ediff-split-window-function quote split-window-horizontally)))
 #+end_src
 * Project navigation
 ** TODO counsel-rg
@@ -579,7 +580,10 @@ Automatically resize windows
     :diminish projectile-mode
     :setq ((projectile-enable-caching))
     :config
-    (leader-def "p p" #'projectile-commander "p f" #'projectile-find-file "p s" #'projectile-switch-project)
+    (leader-def
+      "p p" #'projectile-commander
+      "p f" #'projectile-find-file
+      "p s" #'projectile-switch-project)
     (projectile-global-mode t))
 #+end_src
 *** TODO Remove projectile
@@ -588,59 +592,76 @@ something simpler
 * Completion
 ** Mini frame
 #+begin_src emacs-lisp
-  (use-package mini-frame)
+  (leaf mini-frame
+    :straight t
+    :require t)
 #+end_src
 ** Recursive
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (setq enable-recursive-minibuffers t)
-    (setq minibuffer-depth-indicate-mode t))
+  (leaf recursive-minibuffer
+    :setq ((enable-recursive-minibuffers . t)
+           (minibuffer-depth-indicate-mode . t)))
 #+end_src
 ** Selectrum
 #+begin_src emacs-lisp
-  (use-package orderless)
-  (use-package selectrum
-    :after orderless
-    :bind (("C-c ," . #'selectrum-quick-select)
-           ("C-c r" . #'selectrum-repeat)
-           :map selectrum-minibuffer-map
-           ("<escape>" . #'abort-recursive-edit))
-    :custom-face
-    (selectrum-current-candidate ((t (:foreground "#68f3ca"))))
-    :config
-    (selectrum-mode t)
-    (setq completion-styles '(orderless)))
+  (leaf orderless
+    :straight t
+    :require t)
 
-  (use-package selectrum-prescient
+  (leaf selectrum
+    :bind (("C-c ," . selectrum-quick-select)
+           ("C-c r" . selectrum-repeat)
+           (selectrum-minibuffer-map
+            ("<escape>" . abort-recursive-edit)))
+    :custom-face ((selectrum-current-candidate '((t
+                                                 (:foreground "#68f3ca")))))
+    :after orderless
+    :straight t
+    :require t
+    :setq ((completion-styles quote (orderless)))
     :config
-    (setq selectrum-prescient-enable-filtering nil)
+    (selectrum-mode t))
+
+  (leaf selectrum-prescient
+    :straight t
+    :require t
+    :setq ((selectrum-prescient-enable-filtering))
+    :config
     (selectrum-prescient-mode t)
     (prescient-persist-mode t))
 #+end_src
 *** TODO Make functions like find-file work like in Ivy (backspaces goes to parent)
 *** Marginalia
 #+begin_src emacs-lisp
-(use-package marginalia
-  :config
-  (marginalia-mode t))
+  (leaf marginalia
+    :straight t
+    :require t
+    :config
+    (marginalia-mode t))
 #+end_src
 ** Consult
 #+begin_src emacs-lisp
-  (use-package consult
+  (leaf consult
     :bind (("C-x b" . consult-buffer)
            ("C-c m" . consult-imenu)
            ("C-c s" . consult-line)
            ("C-x M-:" . consult-complex-command))
+    :straight t
     :config
     (leader-def "s" #'consult-line))
-  (use-package consult-dir
+
+  (leaf consult-dir
+    :straight t
+    :require t
     :config
     (leader-def
       "d" #'consult-dir
       "D" #'dired
       "f" #'find-file))
-  (use-package consult-flycheck)
+
+  (leaf consult-flycheck
+    :straight t
+    :require t)
 #+end_src
 ** At point
 #+begin_src emacs-lisp
@@ -691,26 +712,27 @@ something simpler
 #+end_src
 * Embark
 #+begin_src emacs-lisp
-  (use-package embark
-    :after evil
+  (leaf embark
+    :straight t
+    :require t
+    :setq ((prefix-help-command function embark-prefix-help-command))
     :config
-    (general-def
-      :keymaps '(global emacs normal emacs)
-      "C-c ." #'embark-act
-      "M-." #'embark-act
-      "C-h B" #'embark-bindings)
-    (leader-def "." #'embark-act)
-    (setq prefix-help-command #'embark-prefix-help-command))
+    (general-def :keymaps
+      '(global emacs normal emacs)
+      "C-c ." #'embark-act "M-." #'embark-act "C-h B" #'embark-bindings)
+    (leader-def "." #'embark-act))
 
-  (use-package embark-consult
-    :after embark consult)
+  (leaf embark-consult
+    :after (consult embark)
+    :straight t
+    :require t)
 #+end_src
 ** TODO Relearn
 * Aesthetics
 ** Font
 Use system font
 #+begin_src emacs-lisp
-  (use-package emacs
+  (leaf font
     :config
     (set-face-attribute 'default nil
                         :family "Fira Code"
@@ -732,7 +754,9 @@ Use system font
 Color popout modes differently
 
 #+begin_src emacs-lisp
-  (use-package solaire-mode
+  (leaf solaire-mode
+    :straight t
+    :require t
     :config
     (solaire-global-mode t))
 #+end_src
@@ -742,44 +766,40 @@ Make Emacs more minimalist
 
 Add some widgets
 #+begin_src emacs-lisp
-  (use-package emacs
+  (leaf decoration
     :config
-    ;;(global-hl-line-mode 1)
     (column-number-mode 1)
     (size-indication-mode 1))
 #+end_src
 ** Fringe
 *** EOF
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (setq-default indicate-empty-lines t))
+  (leaf empty-lines
+    :setq-default ((indicate-empty-lines . t)))
 #+end_src
 ** Frame title
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    ;; add a bit better frame title
-    (setq-default frame-title-format "%b (%f)"))
+  (leaf frame-title
+    :setq-default ((frame-title-format . "%b (%f)")))
 #+end_src
 ** Bell
 #+begin_src emacs-lisp
-  (use-package emacs
+  (leaf bell
+    :setq ((visible-bell))
     :config
-    (setq ring-bell-function (lambda ()))
-    (setq visible-bell nil))
+    (setq ring-bell-function (lambda ())))
 #+end_src
 ** Line numbers
 #+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (setq-default display-line-numbers-type 'relative)
-    (add-hook 'prog-mode-hook #'display-line-numbers-mode))
+  (leaf display-line-numbers
+    :hook ((prog-mode-hook . display-line-numbers-mode))
+    :require t
+    :setq-default ((display-line-numbers-type quote relative)))
 #+end_src
 ** Save place
 #+begin_src emacs-lisp
-  (use-package saveplace
-    :straight nil
+  (leaf saveplace
+    :require t
     :config
     (save-place-mode t))
 #+end_src
@@ -795,37 +815,35 @@ Use doom-modeline for more functionality
 #+end_src
 *** Clock
 #+begin_src emacs-lisp
-  (use-package display-time
-    :no-require t
-    :straight nil
-    :init
-    (setq display-time-24hr-format t)
-    (setq display-time-day-and-date t)
-    (setq display-time-default-load-average nil)
+  (leaf time
+    :require t
+    :setq ((display-time-24hr-format . t)
+           (display-time-day-and-date . t)
+           (display-time-default-load-average))
     :config
     (display-time-mode t))
 #+end_src
 *** Modeline hiding
 #+begin_src emacs-lisp
-  (use-package hide-mode-line)
+  (leaf hide-mode-line
+    :straight t
+    :require t)
 #+end_src
 * Org
 TODO: fix speed commands
 TODO: configure maintaining the ~/org/ directory
 TODO: uncomment and test org-log logging
 #+begin_src emacs-lisp
-  (use-package org
-    :defer
-    :straight nil
-    :config
-    (setq org-use-speed-commands t)
-    (setq org-startup-indented t)
-    ;; (setq org-log-into-drawer t)
-    ;; (setq org-log-done 'time)
-    (setq org-support-shift-select t)
-    ;; (setq org-directory "~/org/")
-    ;; (setq org-agenda-files '("~/org/"))
-    (setq org-hide-emphasis-markers nil))
+  (leaf org
+    :setq ((org-use-speed-commands . t)
+           (org-startup-indented . t)
+           (org-support-shift-select . t)
+           (org-hide-emphasis-markers)))
+
+  ;; (setq org-log-into-drawer t)
+  ;; (setq org-log-done 'time)
+  ;; (setq org-directory "~/org/")
+  ;; (setq org-agenda-files '("~/org/"))
 #+end_src
 ** Capture
 #+begin_src emacs-lisp
@@ -853,20 +871,20 @@ TODO: uncomment and test org-log logging
 ** Evil
 #+begin_src emacs-lisp
   ;; TODO: add make blocks cycleable from evil normal mode
-  (use-package evil-org
-    :after evil
-    :config
-    (add-hook 'org-mode-hook #'evil-org-mode))
+  (leaf evil-org
+    :after evil org
+    :hook (org-mode-hook)
+    :straight t
+    :require t)
 #+end_src
 ** Babel
 #+begin_src emacs-lisp
-  (use-package org-src
+  (leaf org-src
     :after org
-    :straight nil
-    :config
-    (setq org-src-tab-acts-natively t)
-    (setq org-src-preserve-indentation nil)
-    (setq org-src-window-setup 'current-window))
+    :require t
+    :setq ((org-src-tab-acts-natively . t)
+           (org-src-preserve-indentation)
+           (org-src-window-setup quote current-window)))
 #+end_src
 *** Source blocks
 #+begin_src emacs-lisp
@@ -890,17 +908,15 @@ TODO: uncomment and test org-log logging
 #+end_src
 ** Lispy
 #+begin_src emacs-lisp
-  (use-package evil-lispy
-    :hook ((emacs-lisp-mode . evil-lispy-mode)
-           (clojure-mode . evil-lispy-mode)))
+  (leaf evil-lispy
+    :hook (emacs-lisp-mode-hook clojure-mode-hook)
+    :straight t)
 #+end_src
 * Dired
 #+begin_src emacs-lisp
-  (use-package dired
-    :straight nil
-    :no-require t
-    :config
-    (setq dired-dwim-target t))
+  (leaf dired
+    :require t
+    :setq ((dired-dwim-target . t)))
 #+end_src
 ** Keys
 #+begin_src emacs-lisp
@@ -908,30 +924,36 @@ TODO: uncomment and test org-log logging
 #+end_src
 ** Narrowing
 #+begin_src emacs-lisp
-  (use-package dired-narrow
-    :bind (:map dired-mode-map
-                (")" . #'dired-narrow)))
+  (leaf dired-narrow
+    :bind ((dired-mode-map
+            (")" . dired-narrow)))
+    :straight t
+    :require t)
 #+end_src
 ** Omit
 #+begin_src emacs-lisp
-  (use-package dired-x
-    :straight nil
-    :bind (:map dired-mode-map
-                ("O" . #'dired-omit-mode))
+  (leaf dired-x
+    :bind ((dired-mode-map
+            ("O" . dired-omit-mode)))
+    :hook ((dired-mode-hook . dired-omit-mode))
+    :require t
+    :setq ((dired-omit-files . "^\\...+$"))
     :config
-    (setq dired-omit-files "^\\...+$")
-    (add-to-list 'dired-omit-extensions ".eld")
-    (add-hook 'dired-mode-hook #'dired-omit-mode))
+    (add-to-list 'dired-omit-extensions ".eld"))
 #+end_src
 ** Details
 #+begin_src emacs-lisp
   (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (use-package dired-collapse
-    :hook (dired-mode . dired-collapse))
-  (use-package dired-subtree
-    :bind (:map dired-mode-map
-                (("i" . 'dired-subtree-insert)
-                 ("I" . 'dired-subtree-remove))))
+  (leaf dired-collapse
+    :commands dired-collapse
+    :hook (dired-mode-hook)
+    :straight t)
+  (leaf dired-subtree
+    :bind ((dired-mode-map
+            ("i" . dired-subtree-insert)
+            ("I" . dired-subtree-remove)))
+    :straight t
+    :require t)
 #+end_src
 ** Interacting with the outside
 #+begin_src emacs-lisp
@@ -939,69 +961,71 @@ TODO: uncomment and test org-log logging
 #+end_src
 * Esup
 #+begin_src emacs-lisp
-  (use-package esup
-    :defer)
+  (leaf esup
+    :straight t)
 #+end_src
 * Treemacs
 #+begin_src emacs-lisp
-  (use-package treemacs
-    :defer
+  (leaf treemacs
+    :after t
+    :straight t
+    :require t
     :config
     (leader-def "t" #'treemacs-select-window))
 
-  (use-package treemacs-evil
-    :after treemacs)
+  (leaf treemacs-evil
+    :after treemacs evil
+    :straight t
+    :require t)
 
-  (use-package treemacs-projectile
-    :after treemacs projectile)
+  (leaf treemacs-projectile
+    :after treemacs projectile
+    :straight t
+    :require t)
 
-  (use-package treemacs-magit
-    :defer
-    :after treemacs)
+  (leaf treemacs-magit
+    :after treemacs magit
+    :straight t
+    :require t)
 
-  (use-package treemacs-all-the-icons
-    :after treemacs
+  (leaf treemacs-all-the-icons
+    :after treemacs all-the-icons
+    :straight t
+    :require t
     :config
     (treemacs-load-theme 'all-the-icons))
 
-  (use-package lsp-treemacs
-    :after treemacs lsp-mode)
+  (leaf lsp-treemacs
+    :after treemacs lsp-mode
+    :straight t
+    :require t)
 #+end_src
 * Tabs
 #+begin_src emacs-lisp
-  (use-package centaur-tabs
-    :demand
-    :general
-    (:states '(normal)
-             "g t" 'centaur-tabs-forward
-             "g T" 'centaur-tabs-backward)
+  (leaf centaur-tabs
+    :straight t
+    :require t
+    :setq ((centaur-tabs-style . "slant")
+           (centaur-tabs-height . 32)
+           (centaur-tabs-set-icons . t)
+           (centaur-tabs-show-navigation-buttons . t)
+           (x-underline-at-descent-line . t)
+           (centaur-tabs-set-bar quote under)
+           (centaur-tabs-cycle-scope quote tabs)
+           (centaur-tabs-enable-ido-completion)
+           (centaur-tabs-modified-marker . "●")
+           (centaur-tabs-set-modified-marker . t)
+           (centaur-tabs-down-tab-text . " ▼ ")
+           (centaur-tabs-forward-tab-text . " ▶ ")
+           (centaur-tabs-backward-tab-text . " ◀ ")
+           (uniquify-separator . "/"))
     :config
-    (setq centaur-tabs-style "slant"
-          centaur-tabs-height 32
-          centaur-tabs-set-icons t
-          centaur-tabs-show-navigation-buttons t
-
-          x-underline-at-descent-line t
-          centaur-tabs-set-bar 'under
-
-          centaur-tabs-cycle-scope 'tabs
-          centaur-tabs-enable-ido-completion nil
-
-          centaur-tabs-modified-marker "●"
-          centaur-tabs-set-modified-marker t
-
-          centaur-tabs-down-tab-text " ▼ "
-          centaur-tabs-forward-tab-text " ▶ "
-          centaur-tabs-backward-tab-text " ◀ "
-
-          uniquify-separator "/")
-
-    (leader-def
-      "g t s" 'centaur-tabs-switch-group)
-
+    (leader-def "g t s" 'centaur-tabs-switch-group)
     (centaur-tabs-headline-match)
     (centaur-tabs-group-by-projectile-project)
-    (centaur-tabs-mode t))
+    (centaur-tabs-mode t)
+    (general-def :states '(normal)
+      "g t" 'centaur-tabs-forward "g T" 'centaur-tabs-backward :package 'centaur-tabs))
 #+end_src
 * Terminal
 ** Vterm
@@ -1026,12 +1050,11 @@ TODO: uncomment and test org-log logging
 **** TODO [#A] Fix error when exiting buffer
 ** Eshell
 #+begin_src emacs-lisp
-  (use-package eshell
-    :defer
-    :straight nil
+  (leaf eshell
+    :after t
+    :setq ((eshell-scroll-to-bottom-on-input . t)
+           (eshell-banner-message . ""))
     :config
-    (setq eshell-scroll-to-bottom-on-input t)
-    (setq eshell-banner-message "")
     (leader-def "e" #'eshell))
 
   (defun eshell-current-p ()
@@ -1058,7 +1081,9 @@ TODO: uncomment and test org-log logging
 #+end_src
 *** Up
 #+begin_src emacs-lisp
-  (use-package eshell-up
+  (leaf eshell-up
+    :straight t
+    :require t
     :config
     (defalias 'eshell/up #'eshell-up))
 #+end_src
@@ -1195,36 +1220,41 @@ View a file in a read-only window with syntax highlighting
 * Programming
 ** LSP
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :hook prog-mode
+  (leaf lsp-mode
+    :commands lsp
+    :hook (prog-mode-hook python-mode-hook typescript-mode-hook web-mode-hook)
+    :straight t
     :config
     (setq lsp-keymap-prefix "C-c l")
-    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
+    (define-key lsp-mode-map
+                (kbd "C-c l")
+                lsp-command-map))
 
-    :hook ((python-mode . lsp)
-           (typescript-mode . lsp)
-           (web-mode . lsp)))
-
-  (use-package lsp-ui
+  (leaf lsp-ui
     :after lsp-mode
-    :config
-    (setq lsp-headerline-breadcrumb-enable nil))
+    :straight t
+    :require t
+    :setq ((lsp-headerline-breadcrumb-enable)))
 #+end_src
 ** Tree Sitter
 #+begin_src emacs-lisp
-  (use-package tree-sitter
+  (leaf tree-sitter
+    :hook ((tree-sitter-after-on-hook . tree-sitter-hl-mode))
+    :straight t
+    :require t
     :config
-    (global-tree-sitter-mode)
-    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-  (use-package tree-sitter-langs
-    :defer
-    :after tree-sitter)
+    (global-tree-sitter-mode))
+
+  (leaf tree-sitter-langs
+    :after tree-sitter
+    :straight t
+    :require t)
 #+end_src
 ** Web
 #+begin_src emacs-lisp
-  (use-package web-mode
-    :mode (("\\.html" . web-mode)
-           ("\\.svelte" . web-mode))
+  (leaf web-mode
+    :mode ("\\.html" "\\.svelte")
+    :straight t
     :config
     (setq web-mode-markup-indent-offset 4)
     (setq web-mode-css-indent-offset 2)
@@ -1233,18 +1263,19 @@ View a file in a read-only window with syntax highlighting
     (setq web-mode-block-padding 4)
     (setq web-mode-style-padding 2)
     (setq web-mode-script-padding 4)
-
     (setq web-mode-enable-auto-pairing t))
 #+end_src
 ** Typescript
 #+begin_src emacs-lisp
-  (use-package typescript-mode
-    :mode ("\\.ts$" "\\.tsx$"))
+  (leaf typescript-mode
+    :mode ("\\.ts$" "\\.tsx$")
+    :straight t)
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
-  (use-package cider
+  (leaf cider
     :mode ("\\.clj$" "\\.cljs$")
+    :straight t
     :config
     (evil-set-initial-state 'cider-inspector-mode 'emacs))
 #+end_src
@@ -1252,8 +1283,9 @@ View a file in a read-only window with syntax highlighting
 *** Sly
 #+begin_src emacs-lisp
   (setq inferior-lisp-program "sbcl")
-  (use-package sly
+  (leaf sly
     :mode ("\\.cl$" "\\.lisp$")
+    :straight t
     :config
     (add-hook 'sly-db-hook #'evil-emacs-state))
 #+end_src
@@ -1263,13 +1295,15 @@ View a file in a read-only window with syntax highlighting
   (setq-default tab-width 4)
   (setq-default indent-tabs-mode nil)
 
-  (use-package aggressive-indent
+  (leaf aggressive-indent
+    :straight t
+    :require t
     :config
     (global-aggressive-indent-mode 1))
 #+end_src
 *** Parenthesis
 #+begin_src emacs-lisp
-  (use-package emacs
+  (leaf paren
     :config
     (electric-pair-mode 1)
     (show-paren-mode 1))
@@ -1277,43 +1311,53 @@ View a file in a read-only window with syntax highlighting
 *** TODO Flycheck
 TODO: Fix for elisp
 #+begin_src emacs-lisp
-  (use-package flycheck
-    :init
+  (leaf flycheck
+    :straight t
+    :require t
+    :setq-default ((flycheck-disabled-checkers quote
+                                               (emacs-list-checkdoc)))
     :config
-    (global-flycheck-mode 0)
-    (setq-default flycheck-disabled-checkers '(emacs-list-checkdoc)))
+    (global-flycheck-mode 0))
 #+end_src
 *** TODO Quickrun
 #+begin_src emacs-lisp
-  (use-package quickrun
-    :defer)
+  (leaf quickrun
+    :straight t)
 #+end_src
 * Git
 #+begin_src emacs-lisp
-  (use-package magit
-    :defer
-    :config
-    (global-set-key (kbd "C-x g") 'magit-status))
+  (leaf magit
+    :after t
+    :bind (("C-x g" . magit-status))
+    :straight t
+    :require t)
 
-  (use-package forge
-    :defer
-    :after magit)
+  (leaf forge
+    :after magit
+    :straight t
+    :require t)
 #+end_src
 ** git gutter
 #+begin_src emacs-lisp
-  (use-package git-gutter
-    :diminish
-    :init
-    (setq git-gutter:hide-gutter t)
-    (setq git-gutter:verbosity 0)
-    (setq git-gutter:update-interval .02)
+  (leaf git-gutter
+    :pre-setq ((git-gutter:hide-gutter . t)
+               (git-gutter:verbosity . 0)
+               (git-gutter:update-interval . 0.02))
+    :straight t
+    :require t
+    :diminish git-gutter-mode
     :config
     (global-git-gutter-mode t))
 
-  (use-package fringe-helper)
-  (use-package git-gutter-fringe
-    :diminish
+  (leaf fringe-helper
+    :straight t
+    :require t)
+
+  (leaf git-gutter-fringe
     :after git-gutter fringe-helper
+    :straight t
+    :require t
+    :diminish git-gutter-fringe-mode
     :config
     (fringe-helper-define 'git-gutter-fr:deleted 'bottom
       "X......."
@@ -1324,12 +1368,11 @@ TODO: Fix for elisp
       "XXXXXX.."
       "XXXXXXX."
       "XXXXXXXX")
+
     (set-face-foreground 'git-gutter-fr:deleted "red")
     (set-face-background 'git-gutter-fr:deleted "transparent")
-
     (set-face-background 'git-gutter-fr:added "#98be65")
     (fringe-helper-define 'git-gutter-fr:added nil "")
-
     (set-face-background 'git-gutter-fr:modified "#d19a66")
     (fringe-helper-define 'git-gutter-fr:modified nil ""))
 
@@ -1351,83 +1394,95 @@ TODO: Fix for elisp
 Add it and make it compatible with Evil
 
 #+begin_src emacs-lisp
-  (use-package multiple-cursors)
+  (leaf multiple-cursors
+    :straight t
+    :require t)
 #+end_src
 ** Olivetti
 #+begin_src emacs-lisp
-  (use-package olivetti
-    :config
-    (setq-default olivetti-body-width 0.8))
+  (leaf olivetti
+    :straight t
+    :require t
+    :setq-default ((olivetti-body-width . 0.8)))
 #+end_src
 ** avy
 #+begin_src emacs-lisp
-  (use-package avy
+  (leaf avy
+    :straight t
+    :require t
     :config
     (leader-def
       "a a" #'avy-goto-char-timer
       "a l" #'avy-goto-line
-
       "a r c" #'avy-copy-region
       "a r m" #'avy-move-region
       "a r k" #'avy-kill-region))
 #+end_src
 ** ace-link
 #+begin_src emacs-lisp
-  (use-package ace-link
+  (leaf ace-link
+    :straight t
+    :require t
     :config
     (leader-def "l" #'ace-link))
 #+end_src
 ** move-text
 #+begin_src emacs-lisp
-  (use-package move-text
+  (leaf move-text
+    :straight t
+    :require t
     :config
     (move-text-default-bindings))
 #+end_src
 ** TODO snippets
 #+begin_src emacs-lisp
-  (use-package yasnippet
-    :defer)
+  (leaf yasnippet
+    :straight t)
 #+end_src
 ** Translating
 #+begin_src emacs-lisp
-  (use-package go-translate
-    :defer
-    :config
-    (setq gts-translate-list '(("en" "de") ("en" "cz") ("de" "en"))))
-
+  (leaf go-translate
+    :straight t
+    :require t
+    :setq ((gts-translate-list quote
+                               (("en" "de")
+                                ("en" "cz")
+                                ("de" "en")))))
   ;; TODO: use emacs state in gts buffers
   ;; TODO: use minibuffer selection for languages everytime
 #+end_src
 * Optimization
 #+begin_src emacs-lisp
-  (use-package esup
-    :defer)
+  (leaf esup
+    :straight t)
 #+end_src
 * Web services
 ** Pastebins
 Easy access to pastebins
 #+begin_src emacs-lisp
-  (use-package webpaste
-    :defer)
+  (leaf webpaste
+    :straight t)
 #+end_src
 * Hydras
 ** Install
 #+begin_src emacs-lisp
-  (use-package hydra)
+  (leaf hydra
+    :straight t
+    :require t)
 #+end_src
 ** Scripts
 No hydras yet
 * Useful tools
 ** TODO Crux
 #+begin_src emacs-lisp
-  (use-package crux
-    :defer)
+  (leaf crux
+    :straight t)
 #+end_src
 ** Devdocs
 TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
-  (use-package devdocs
-    :defer)
+  (leaf devdocs
+    :straight t)
 #+end_src
 ** Playground
 #+begin_src emacs-lisp
@@ -1527,8 +1582,8 @@ functionality.
 #+end_src
 * Repeat mode
 #+begin_src emacs-lisp
-  (use-package repeat
-    :straight nil
+  (leaf repeat
+    :require t
     :config
     (repeat-mode))
 #+end_src
