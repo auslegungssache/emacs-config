@@ -20,6 +20,9 @@ This is a copypasted install script.
     (load bootstrap-file nil 'nomessage))
 
   (setq straight-vc-git-default-clone-depth 1)
+  ;; A full history (in the case of editing the code) can be fetched
+  ;; with M-x magit-remote-unshallow
+
   (setq straight-check-for-modifications nil)
 #+end_src
 *** repo finder
@@ -353,45 +356,47 @@ These keys get captured in Xorg with WSL
 *** TODO Add icons to more files
 ** TODO WSL
 #+begin_src emacs-lisp
-  (leaf my-wsl-tools
-    :preface
-    (defun wsl-p nil
-      (not (eq
-            (or
-             (string-match-p "Windows"
-                             (getenv "PATH"))
-             (string-match-p "Microsoft"
-                             (shell-command-to-string "uname -a")))
-            nil)))
+  (defvar wsl-user)
 
-    (defun wsl-insert-home nil
+  (defun wsl-p nil
+    (not (eq
+          (or
+           (string-match-p "Windows"
+                           (getenv "PATH"))
+           (string-match-p "Microsoft"
+                           (shell-command-to-string "uname -a")))
+          nil)))
+
+  (defun wsl-insert-home nil
+    (interactive)
+    (if (wsl-p)
+        (insert
+         (format "/mnt/c/Users/%s/" wsl-user))
+      (message "you're not on wsl")))
+
+  (defun explorer-current-dir ()
+    (interactive)
+
+    (shell-command (format "explorer.exe .") nil nil))
+
+  (when (wsl-p)
+    (defun wsl-hostname nil
+      "Get the hostname of the host os."
       (interactive)
-      (if (wsl-p)
-          (insert
-           (format "/mnt/c/Users/%s/" wsl-user))
-        (message "you're not on wsl")))
-
-    :bind (("C-c i w" . wsl-insert-home))
-    :setq ((wsl-user))
-    :config
-    (when (wsl-p)
-      (defun wsl-hostname nil
-        "Get the hostname of the host os."
-        (interactive)
-        (let ((hostname (s-trim
-                         (shell-command-to-string "grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'"))))
-          (message "Address is %s" hostname)
-          (kill-new hostname))))
-    (when (wsl-p)
-      (setq wsl-user (string-trim-right
-                      (shell-command-to-string "powershell.exe '$env:UserName'"))))
-    (when (wsl-p)
-      (setq browse-url-browser-function #'browse-url-generic
-            browse-url-generic-program "explorer.exe"))
-    (when (wsl-p)
-      (global-set-key
-       (kbd "<Scroll_Lock>")
-       #'ignore)))
+      (let ((hostname (s-trim
+                       (shell-command-to-string "grep -m 1 nameserver /etc/resolv.conf | awk '{print $2}'"))))
+        (message "Address is %s" hostname)
+        (kill-new hostname))))
+  (when (wsl-p)
+    (setq wsl-user (string-trim-right
+                    (shell-command-to-string "powershell.exe '$env:UserName'"))))
+  (when (wsl-p)
+    (setq browse-url-browser-function #'browse-url-generic
+          browse-url-generic-program "explorer.exe"))
+  (when (wsl-p)
+    (global-set-key
+     (kbd "<Scroll_Lock>")
+     #'ignore))
 #+end_src
 *** TODO explorer.exe sometimes opens incorrectly
 ** TODO Emotes
@@ -436,6 +441,19 @@ Broken
   (use-package refine
     :config
     (add-hook 'refine-mode-hook #'evil-emacs-state))
+#+end_src
+* Mule
+#+begin_src emacs-lisp
+  (leaf mule
+    :require t
+    :config
+    (leader-def
+      "m m" #'set-input-method
+      "m t" #'toggle-input-method
+      "m i" #'describe-input-method
+      "m e" (lambda ()
+              (interactive)
+              (set-input-method "emoji"))))
 #+end_src
 * Help
 ** Show keys
@@ -838,6 +856,7 @@ TODO: uncomment and test org-log logging
     :setq ((org-use-speed-commands . t)
            (org-startup-indented . t)
            (org-support-shift-select . t)
+           (org-catch-invisible-edits 'show-and-error)
            (org-hide-emphasis-markers)))
 
   ;; (setq org-log-into-drawer t)
@@ -1479,10 +1498,24 @@ No hydras yet
     :straight t)
 #+end_src
 ** Devdocs
-TODO: consider using devdocs-browser instead
 #+begin_src emacs-lisp
   (leaf devdocs
-    :straight t)
+    :straight t
+    :config
+    ;; TODO: Add support for ace-link
+    ;; TODO: Add Evil navigation
+    (evil-set-initial-state 'devdocs-mode 'emacs)
+
+    (defun devdocs-browser ()
+      (interactive)
+
+      (if (eq major-mode 'devdocs-mode)
+          (progn
+            (devdocs-copy-url)
+            (let ((url (pop kill-ring)))
+              (browse-url url)
+              (message "%s opened!" url)))
+        (message "ERROR: You are not in devdocs mode"))))
 #+end_src
 ** Playground
 #+begin_src emacs-lisp
@@ -1598,3 +1631,10 @@ functionality.
 ** Lisp
 *** Cider-like defun fringe
 When defun is up-to-date, show green in fringe.
+* TODO Screenshot
+This doesn't load properly.
+#+begin_src emacs-lisp :tangle no
+  (leaf screenshot
+    :straight (screenshot :type git :host github :repo "tecosaur/screenshot")
+    :require t)
+#+end_src
