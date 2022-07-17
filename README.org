@@ -329,14 +329,6 @@ These keys get captured in Xorg with WSL
     :straight t
     :require t)
 #+end_src
-*** Dired
-#+begin_src emacs-lisp
-  (leaf all-the-icons-dired
-    :hook (dired-mode-hook)
-    :straight t
-    :require t
-    :setq ((all-the-icons-dired-monochrome)))
-#+end_src
 *** Completion
 #+begin_src emacs-lisp
   (leaf all-the-icons-completion
@@ -627,12 +619,12 @@ something simpler
     :require t)
 
   (leaf selectrum
-    :bind (("C-c ," . selectrum-quick-select)
-           ("C-c r" . selectrum-repeat)
+    :bind (("C-c r" . selectrum-repeat)
            (selectrum-minibuffer-map
+            ("C-c ," . selectrum-quick-select)
             ("<escape>" . abort-recursive-edit)))
     :custom-face ((selectrum-current-candidate '((t
-                                                 (:foreground "#68f3ca")))))
+                                                  (:foreground "#68f3ca")))))
     :after orderless
     :straight t
     :require t
@@ -945,51 +937,13 @@ TODO: uncomment and test org-log logging
     :require t
     :setq ((dired-dwim-target . t)))
 #+end_src
-** Keys
-#+begin_src emacs-lisp
-  (define-key dired-mode-map (kbd "SPC") nil)
-#+end_src
-** Narrowing
-#+begin_src emacs-lisp
-  (leaf dired-narrow
-    :bind ((dired-mode-map
-            (")" . dired-narrow)))
-    :straight t
-    :require t)
-#+end_src
 ** Omit
 #+begin_src emacs-lisp
   (leaf dired-x
-    :bind ((dired-mode-map
-            ("O" . dired-omit-mode)))
-    :hook ((dired-mode-hook . dired-omit-mode))
     :require t
     :setq ((dired-omit-files . "^\\...+$"))
     :config
     (add-to-list 'dired-omit-extensions ".eld"))
-#+end_src
-** Details
-#+begin_src emacs-lisp
-  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (leaf dired-collapse
-    :commands dired-collapse
-    :hook (dired-mode-hook)
-    :straight t)
-  (leaf dired-subtree
-    :bind ((dired-mode-map
-            ("i" . dired-subtree-insert)
-            ("I" . dired-subtree-remove)))
-    :straight t
-    :require t)
-#+end_src
-** Interacting with the outside
-#+begin_src emacs-lisp
-  (setq dired-auto-revert-buffer t)
-#+end_src
-* Esup
-#+begin_src emacs-lisp
-  (leaf esup
-    :straight t)
 #+end_src
 * Treemacs
 #+begin_src emacs-lisp
@@ -1054,6 +1008,27 @@ TODO: uncomment and test org-log logging
     (general-def :states '(normal)
       "g t" 'centaur-tabs-forward "g T" 'centaur-tabs-backward :package 'centaur-tabs))
 #+end_src
+* Dirvish
+#+begin_src emacs-lisp
+  (leaf dirvish
+    :straight t
+    :require t
+    :bind ((dirvish-mode-map
+            ("J" . #'dired-goto-file)
+            ("j" . #'dired-next-line)
+            ("k" . #'dired-previous-line)
+            ("<left>" . #'dired-up-directory)
+            ("<right>" . #'dired-find-file)))
+    :hook (((dirvish-mode-hook dirvish-peek-mode-hook) . centaur-tabs-local-mode)
+           (dirvish-mode-hook . (lambda () (toggle-truncate-lines t))))
+    :setq ((dirvish-attributes quote (vc-state subtree-state all-the-icons collapse git-msg file-size))
+           (dired-listing-switches . "-l --almost-all --human-readable --time-style=long-iso --group-directories-first --no-group"))
+    :config
+    (evil-set-initial-state 'dirvish-mode 'emacs)
+    (dirvish-override-dired-mode)
+    (dirvish-peek-mode))
+#+end_src
+** TODO No centaur-tabs in dirvish-peek
 * Terminal
 ** Vterm
 #+begin_src emacs-lisp
@@ -1646,3 +1621,5 @@ This doesn't load properly.
     :straight (screenshot :type git :host github :repo "tecosaur/screenshot")
     :require t)
 #+end_src
+* TODO Spotify
+Add some way to use spotify.
