@@ -911,6 +911,14 @@ TODO: uncomment and test org-log logging
   (add-to-list 'org-structure-template-alist '("e" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("s" . "src sh"))
 #+end_src
+* Pandoc
+#+begin_src emacs-lisp
+  (leaf pandoc-mode
+    :straight t
+    :require t
+    :config
+    (add-hook 'org-mode-hook #'pandoc-mode))
+#+end_src
 * Evil
 #+begin_src emacs-lisp
   (leaf evil
