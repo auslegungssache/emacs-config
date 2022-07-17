@@ -239,18 +239,13 @@ TODO: add ligatures
     :setq ((prettify-symbols-unprettify-at-point quote right-edge)
            (inhibit-compacting-font-caches . t)))
 #+end_src
-** TODO Undo
+** Undo
 #+begin_src emacs-lisp
-  (leaf undo-tree
+  (leaf vundo
     :straight t
     :require t
-    :setq ((undo-tree-visualizer-timestamps . t)
-           (undo-tree-visualizer-diff . t)
-           (evil-undo-system quote undo-tree))
-    :config
-    (global-undo-tree-mode))
+    :bind ("C-x u" . #'vundo))
 #+end_src
-*** TODO Remove undo-tree eventually
 ** Tooltips
 #+begin_src emacs-lisp
   (leaf gtk
@@ -342,8 +337,7 @@ These keys get captured in Xorg with WSL
   (leaf all-the-icons-ibuffer
     :straight t
     :require t
-    :config
-    (all-the-icons-ibuffer-mode t))
+    :hook (ibuffer-mode-hook . all-the-icons-ibuffer-mode))
 #+end_src
 *** TODO Add icons to more files
 ** TODO WSL
