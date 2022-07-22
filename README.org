@@ -232,12 +232,19 @@ Replace selection when you start typing
     :straight t
     :require t)
 #+end_src
+** Fira Code
+#+begin_src emacs-lisp
+  (leaf fira-code-mode
+    :when (eq system-type 'gnu/linux)
+    :straight t
+    :require t
+    :config
+    (global-fira-code-mode t))
+#+end_src
 ** Prettify symbols
-TODO: add more characters
-TODO: add ligatures
 #+begin_src emacs-lisp
   (leaf prettify-symbols
-    :hook ((prog-mode-hook . prettify-symbols-mode))
+    :disabled
     :setq ((prettify-symbols-unprettify-at-point quote right-edge)
            (inhibit-compacting-font-caches . t)))
 #+end_src
