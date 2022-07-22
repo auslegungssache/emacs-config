@@ -1,6 +1,8 @@
 #+TITLE: aeggy's emacs config
 #+AUTHOR: aeggy
 
+* TODO Other good configurations
+https://gist.github.com/Ladicle/119c57fc97439c1b103f7847aa03be52
 * Package management
 ** Straight
 *** Load
@@ -850,6 +852,8 @@ TODO: uncomment and test org-log logging
   ;; (setq org-directory "~/org/")
   ;; (setq org-agenda-files '("~/org/"))
 #+end_src
+
+https://alphapapa.github.io/org-almanac/
 ** Capture
 #+begin_src emacs-lisp
   (setq org-capture-templates
@@ -1617,3 +1621,5 @@ This doesn't load properly.
 #+end_src
 * TODO Spotify
 Add some way to use spotify.
+* TODO Elfeed
+TODO: https://blog.dornea.nu/2022/06/29/rss/atom-emacs-and-elfeed/
