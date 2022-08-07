@@ -1639,3 +1639,11 @@ TODO: https://blog.dornea.nu/2022/06/29/rss/atom-emacs-and-elfeed/
                         :font "Menlo"
                         :height 140))
 #+end_src
+* Roam
+#+begin_src emacs-lisp
+  (leaf org-roam
+    :straight t
+    :require t
+    :config
+    (setq org-roam-directory (file-truename "~/org/roam")))
+#+end_src
