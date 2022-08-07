@@ -1630,3 +1630,8 @@ This doesn't load properly.
 Add some way to use spotify.
 * TODO Elfeed
 TODO: https://blog.dornea.nu/2022/06/29/rss/atom-emacs-and-elfeed/
+* TODO Presentations
+org-tree-slide perhaps
+* Quake-popup
+Emacs doesn't need this, if you just do everything from Emacs.
+* TODO Vertico vs Selectrum
