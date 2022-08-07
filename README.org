@@ -1027,6 +1027,7 @@ https://alphapapa.github.io/org-almanac/
     :hook (((dirvish-mode-hook dirvish-peek-mode-hook) . centaur-tabs-local-mode)
            (dirvish-mode-hook . (lambda () (toggle-truncate-lines t))))
     :setq ((dirvish-attributes quote (vc-state subtree-state all-the-icons collapse git-msg file-size))
+           (dirvish-reuse-session . t)
            (dired-listing-switches . "-l --almost-all --human-readable --time-style=long-iso --group-directories-first --no-group"))
     :config
     (evil-set-initial-state 'dirvish-mode 'emacs)
@@ -1650,5 +1651,9 @@ Emacs doesn't need this, if you just do everything from Emacs.
     :straight t
     :require t
     :config
-    (setq org-roam-directory (file-truename "~/org/roam")))
+    (setq org-roam-directory (file-truename "~/org/roam"))
+
+    (org-roam-db-autosync-mode))
 #+end_src
+* Isearch
+Isearch is an incredibly useful tool, able to replace many other tools, like for example highlight-symbol.
