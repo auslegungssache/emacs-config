@@ -1660,7 +1660,19 @@ Emacs doesn't need this, if you just do everything from Emacs.
     :require t
     :config
     (setq org-roam-directory (file-truename "~/org/roam"))
+    (setq org-roam-capture-templates `(("D" "default" plain "%?"
+                                        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                        :unnarrowed t)
 
+                                       ("y" "Note with a datetree pointing to this year" plain "%?"
+                                        :target (file+olp "journal.org" ,(list "Journal" (format-time-string "%Y")))
+                                        :unnarrowed t)
+                                       ("m" "Note with a datetree pointing to this month" plain "%?"
+                                        :target (file+olp "journal.org" ,(list "Journal" (format-time-string "%Y") (format-time-string "%m. - %B")))
+                                        :unnarrowed t)
+                                       ("d" "Note with a datetree pointing to today" plain "%?"
+                                        :target (file+olp "journal.org" ,(list "Journal" (format-time-string "%Y") (format-time-string "%m. - %B") (format-time-string "<%F %a>")))
+                                        :unnarrowed t)))
     (org-roam-db-autosync-mode))
 #+end_src
 * Isearch
