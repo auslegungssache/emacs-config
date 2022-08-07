@@ -1635,3 +1635,20 @@ org-tree-slide perhaps
 * Quake-popup
 Emacs doesn't need this, if you just do everything from Emacs.
 * TODO Vertico vs Selectrum
+* MacOS-only
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq dired-listing-switches "-al")
+    (setq dired-use-ls-dired nil)
+    (set-face-attribute 'default nil
+                        :font "Menlo"
+                        :height 140))
+#+end_src
+* Roam
+#+begin_src emacs-lisp
+  (leaf org-roam
+    :straight t
+    :require t
+    :config
+    (setq org-roam-directory (file-truename "~/org/roam")))
+#+end_src
