@@ -1677,3 +1677,8 @@ Emacs doesn't need this, if you just do everything from Emacs.
 #+end_src
 * Isearch
 Isearch is an incredibly useful tool, able to replace many other tools, like for example highlight-symbol.
+* TODO GTD
+https://www.labri.fr/perso/nrougier/GTD/index.html
+* TODO Xref
+Jump to definition
+** TODO dumb-jump
