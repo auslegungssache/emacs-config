@@ -154,7 +154,6 @@ Automatically revert a buffer when it changes on disk
 Smoother scrolling
 #+begin_src emacs-lisp
   (leaf good-scroll
-    :disabled t
     :straight t
     :require t
     :config
@@ -750,7 +749,7 @@ Use system font
     :config
     (set-face-attribute 'default nil
                         :family "Fira Code"
-                        :height 120))
+                        :height 160))
 #+end_src
 ** Colorscheme
 #+begin_src emacs-lisp
