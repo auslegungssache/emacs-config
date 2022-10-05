@@ -1548,10 +1548,12 @@ No hydras yet
 #+end_src
 * Personal config
 #+begin_src emacs-lisp
-  (let ((personal-config (f-join user-emacs-directory "personal-config.el")))
-    (when (f-exists? personal-config)
-      (message "Personal config found! Loading")
-      (load personal-config)))
+  (add-hook 'after-init-hook
+            (lambda ()
+              (let ((personal-config (f-join user-emacs-directory "personal-config.el")))
+                (when (f-exists? personal-config)
+                  (message "Personal config found! Loading")
+                  (load personal-config)))))
 #+end_src
 * TODO Calc
 ** TODO Learn how to use it
@@ -1673,7 +1675,18 @@ Emacs doesn't need this, if you just do everything from Emacs.
                                        ("d" "Note with a datetree pointing to today" plain "%?"
                                         :target (file+olp "journal.org" ,(list "Journal" (format-time-string "%Y") (format-time-string "%m. - %B") (format-time-string "<%F %a>")))
                                         :unnarrowed t)))
-    (org-roam-db-autosync-mode))
+    (org-roam-db-autosync-mode)
+    (defun org-roam-dired ()
+      (interactive)
+      (dired org-roam-directory)))
+  (leaf org-roam-ui
+    :after org-roam
+    :straight t
+    :require t
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t))
 #+end_src
 * Isearch
 Isearch is an incredibly useful tool, able to replace many other tools, like for example highlight-symbol.
