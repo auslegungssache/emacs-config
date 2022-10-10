@@ -150,24 +150,6 @@ Automatically revert a buffer when it changes on disk
     :config
     (global-auto-revert-mode 0))
 #+end_src
-** TODO Scrolling
-Smoother scrolling
-#+begin_src emacs-lisp
-  (leaf good-scroll
-    :straight t
-    :require t
-    :config
-    (good-scroll-mode t))
-  ;; TODO: Fix weird jumping
-#+end_src
-*** Mouse
-#+begin_src emacs-lisp
-  (leaf mouse-color
-    :config
-    (add-hook 'after-init-hook
-              (lambda ()
-                (set-mouse-color "white"))))
-#+end_src
 ** Indent guides
 Show lines that highlight the indentation levels
 #+begin_src emacs-lisp
@@ -235,7 +217,7 @@ Replace selection when you start typing
 ** Fira Code
 #+begin_src emacs-lisp
   (leaf fira-code-mode
-    :when (eq system-type 'gnu/linux)
+    :when (and (eq system-type 'gnu/linux) (display-graphic-p))
     :straight t
     :require t
     :config
@@ -310,13 +292,6 @@ These keys get captured in Xorg with WSL
 #+begin_src emacs-lisp
   (leaf read-only
     :setq ((view-read-only . t)))
-#+end_src
-** upcase / downcase / capitalize
-#+begin_src emacs-lisp
-  (leaf cases
-    :bind (("M-u" . upcase-dwim)
-           ("M-l" . downcase-dwim)
-           ("M-c" . capitalize-dwim)))
 #+end_src
 ** Uniquify
 #+begin_src emacs-lisp
@@ -761,7 +736,9 @@ Use system font
     :straight t
     :require t
     :config
-    (load-theme 'doom-one t))
+    (if (display-graphic-p)
+        (load-theme 'doom-one t)
+      (load-theme 'doom-miramare t)))
 #+end_src
 ** Solaire
 Color popout modes differently
@@ -852,7 +829,8 @@ TODO: uncomment and test org-log logging
            (org-startup-indented . t)
            (org-support-shift-select . t)
            (org-catch-invisible-edits 'show-and-error)
-           (org-hide-emphasis-markers)))
+           (org-hide-emphasis-markers)
+           (org-indent-mode-turns-on-hiding-stars)))
 
   ;; (setq org-log-into-drawer t)
   ;; (setq org-log-done 'time)
