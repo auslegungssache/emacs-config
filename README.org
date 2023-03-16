@@ -1011,6 +1011,10 @@ https://alphapapa.github.io/org-almanac/
     (evil-set-initial-state 'dirvish-mode 'emacs)
     (dirvish-override-dired-mode)
     (dirvish-peek-mode))
+
+  (leaf dirvish-centaur
+    :after dirvish centaur-tabs
+    :hook (((dirvish-mode-hook dirvish-peek-mode-hook) . centaur-tabs-local-mode)))
 #+end_src
 ** TODO No centaur-tabs in dirvish-peek
 * Terminal
