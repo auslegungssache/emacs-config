@@ -967,6 +967,7 @@ https://alphapapa.github.io/org-almanac/
 * Tabs
 #+begin_src emacs-lisp
   (leaf centaur-tabs
+    :disabled t
     :straight t
     :require t
     :setq ((centaur-tabs-style . "slant")
@@ -1002,8 +1003,7 @@ https://alphapapa.github.io/org-almanac/
             ("k" . #'dired-previous-line)
             ("<left>" . #'dired-up-directory)
             ("<right>" . #'dired-find-file)))
-    :hook (((dirvish-mode-hook dirvish-peek-mode-hook) . centaur-tabs-local-mode)
-           (dirvish-mode-hook . (lambda () (toggle-truncate-lines t))))
+    :hook ((dirvish-mode-hook . (lambda () (toggle-truncate-lines t))))
     :setq ((dirvish-attributes quote (vc-state subtree-state all-the-icons collapse git-msg file-size))
            (dirvish-reuse-session . t)
            (dired-listing-switches . "-l --almost-all --human-readable --time-style=long-iso --group-directories-first --no-group"))
