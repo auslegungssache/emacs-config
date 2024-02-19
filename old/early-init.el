@@ -20,5 +20,3 @@
 (blink-cursor-mode 0)
 
 (setq frame-resize-pixelwise t)
-
-(setq package-enable-at-startup nil)

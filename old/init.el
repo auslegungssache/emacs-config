@@ -1,3 +1,7 @@
+;; Prevent white flash
+(set-background-color "#21242b")
+(set-foreground-color "#bbc2cf")
+
 (toggle-debug-on-error)
 
 (let ((file-name-handler-alist nil))
